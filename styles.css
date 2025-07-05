@@ -20,6 +20,45 @@ body {
   background: #111111;
 }
 
+/* Camera system for subtle category shifts */
+.camera-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  transform-origin: center center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle camera shifts for categories */
+.camera-viewport.shift-architecture {
+  transform: translateY(-30px);
+}
+
+.camera-viewport.shift-biology {
+  transform: translateX(-25px) translateY(20px);
+}
+
+.camera-viewport.shift-technology {
+  transform: translateX(25px) translateY(20px);
+}
+
+/* Combined shifts for multiple categories */
+.camera-viewport.shift-architecture.shift-biology {
+  transform: translateX(-15px) translateY(-5px);
+}
+
+.camera-viewport.shift-architecture.shift-technology {
+  transform: translateX(15px) translateY(-5px);
+}
+
+.camera-viewport.shift-biology.shift-technology {
+  transform: translateX(0px) translateY(25px);
+}
+
+.camera-viewport.shift-architecture.shift-biology.shift-technology {
+  transform: translateX(0px) translateY(0px);
+}
+
 .background-grid {
   position: absolute;
   top: 0;
@@ -125,16 +164,6 @@ body {
   background: rgba(45, 45, 45, 0.9);
   border-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-}
-
-/* Camera system for smooth transitions */
-.camera-viewport {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  transform-origin: center center;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Central node - 强制居中定位 */
@@ -424,15 +453,6 @@ body {
   border-color: rgba(255, 255, 255, 0.4);
   color: #ffffff;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-  transform: translate(-50%, -50%) translateY(-200px) scale(1.05);
-}
-
-.orbital-tab[data-angle="120"].active {
-  transform: translate(-50%, -50%) translateX(-173px) translateY(100px) scale(1.05);
-}
-
-.orbital-tab[data-angle="240"].active {
-  transform: translate(-50%, -50%) translateX(173px) translateY(100px) scale(1.05);
 }
 
 .tab-icon {

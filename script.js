@@ -8,6 +8,7 @@ class ConstellationPortfolio {
     this.navButtons = document.querySelectorAll(".nav-btn")
     this.orbitalTabs = document.querySelectorAll(".orbital-tab")
     this.selectedCategories = new Set()
+    this.cameraViewport = document.getElementById("camera-viewport")
 
     this.projectData = {
       "smart-building": {
@@ -88,14 +89,6 @@ class ConstellationPortfolio {
         awards: ["Interdisciplinary Innovation Award 2023", "Future Architecture Prize 2023"],
       },
     }
-
-    this.cameraScale = 1
-    this.cameraTranslateX = 0
-    this.cameraTranslateY = 0
-    this.baseCameraX = 0
-    this.baseCameraY = 0
-    this.categoryOffsetX = 0
-    this.categoryOffsetY = 0
 
     this.init()
   }
@@ -205,50 +198,18 @@ class ConstellationPortfolio {
       tab.classList.add("active")
     }
 
-    this.updateCameraForCategories()
+    this.updateCameraPosition()
     this.filterProjects()
   }
 
-  updateCameraForCategories() {
-    // Calculate camera offset based on selected categories
-    let offsetX = 0
-    let offsetY = 0
-    const offsetStrength = 30 // Subtle movement amount
+  updateCameraPosition() {
+    // Remove all camera shift classes
+    this.cameraViewport.classList.remove("shift-architecture", "shift-biology", "shift-technology")
 
+    // Add shift classes based on selected categories
     this.selectedCategories.forEach((category) => {
-      switch (category) {
-        case "architecture":
-          offsetY -= offsetStrength // Move up
-          break
-        case "biology":
-          offsetX -= offsetStrength * 0.866 // Move left (cos 120°)
-          offsetY += offsetStrength * 0.5 // Move down (sin 120°)
-          break
-        case "technology":
-          offsetX += offsetStrength * 0.866 // Move right (cos 240°)
-          offsetY += offsetStrength * 0.5 // Move down (sin 240°)
-          break
-      }
+      this.cameraViewport.classList.add(`shift-${category}`)
     })
-
-    // Average the offset if multiple categories are selected
-    if (this.selectedCategories.size > 1) {
-      offsetX /= this.selectedCategories.size
-      offsetY /= this.selectedCategories.size
-    }
-
-    this.categoryOffsetX = offsetX
-    this.categoryOffsetY = offsetY
-
-    // Apply the camera transform with smooth transition
-    this.applyCameraTransform()
-  }
-
-  applyCameraTransform() {
-    const totalX = this.cameraTranslateX + this.baseCameraX + this.categoryOffsetX
-    const totalY = this.cameraTranslateY + this.baseCameraY + this.categoryOffsetY
-    const transform = `translate(${totalX}px, ${totalY}px) scale(${this.cameraScale})`
-    this.cameraViewport.style.transform = transform
   }
 
   filterProjects() {
@@ -474,18 +435,6 @@ class ConstellationPortfolio {
     setInterval(() => {
       this.updateAllConnections()
     }, 100)
-  }
-
-  resetCamera() {
-    this.clearCameraFocus()
-    this.cameraScale = 1
-    this.cameraTranslateX = 0
-    this.cameraTranslateY = 0
-    this.baseCameraX = 0
-    this.baseCameraY = 0
-    this.categoryOffsetX = 0
-    this.categoryOffsetY = 0
-    this.applyCameraTransform()
   }
 }
 
