@@ -9,6 +9,12 @@ class ConstellationPortfolio {
     this.orbitalTabs = document.querySelectorAll(".orbital-tab")
     this.selectedCategories = new Set()
 
+    // Drag functionality
+    this.isDragging = false
+    this.dragTarget = null
+    this.dragOffset = { x: 0, y: 0 }
+    this.dragStartPos = { x: 0, y: 0 }
+
     this.projectData = {
       "smart-building": {
         title: "Smart Building Interface",
@@ -95,6 +101,7 @@ class ConstellationPortfolio {
   init() {
     this.createConnections()
     this.bindEvents()
+    this.bindDragEvents()
     this.startAnimations()
   }
 
@@ -185,7 +192,143 @@ class ConstellationPortfolio {
     window.addEventListener("resize", () => this.updateAllConnections())
   }
 
+  bindDragEvents() {
+    this.orbitalTabs.forEach((tab) => {
+      // Mouse events
+      tab.addEventListener("mousedown", (e) => this.handleDragStart(e))
+
+      // Touch events for mobile
+      tab.addEventListener("touchstart", (e) => this.handleDragStart(e), { passive: false })
+    })
+
+    // Global mouse/touch events
+    document.addEventListener("mousemove", (e) => this.handleDragMove(e))
+    document.addEventListener("mouseup", (e) => this.handleDragEnd(e))
+    document.addEventListener("touchmove", (e) => this.handleDragMove(e), { passive: false })
+    document.addEventListener("touchend", (e) => this.handleDragEnd(e))
+  }
+
+  handleDragStart(e) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    this.isDragging = true
+    this.dragTarget = e.currentTarget
+
+    const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX
+    const clientY = e.type === "touchstart" ? e.touches[0].clientY : e.clientY
+
+    const rect = this.dragTarget.getBoundingClientRect()
+    this.dragOffset = {
+      x: clientX - rect.left - rect.width / 2,
+      y: clientY - rect.top - rect.height / 2,
+    }
+
+    this.dragStartPos = {
+      x: clientX,
+      y: clientY,
+    }
+
+    // Add dragging class for visual feedback
+    this.dragTarget.classList.add("dragging")
+    document.body.style.cursor = "grabbing"
+
+    // Pause orbital animation during drag
+    this.dragTarget.parentElement.style.animationPlayState = "paused"
+  }
+
+  handleDragMove(e) {
+    if (!this.isDragging || !this.dragTarget) return
+
+    e.preventDefault()
+
+    const clientX = e.type === "touchmove" ? e.touches[0].clientX : e.clientX
+    const clientY = e.type === "touchmove" ? e.touches[0].clientY : e.clientY
+
+    const deltaX = clientX - this.dragStartPos.x
+    const deltaY = clientY - this.dragStartPos.y
+
+    // Update category node position
+    this.dragTarget.style.transform = `translateX(-50%) translate(${deltaX}px, ${deltaY}px)`
+    this.dragTarget.style.zIndex = "1000"
+
+    // Move connected project nodes
+    this.moveConnectedProjects(this.dragTarget.dataset.category, deltaX, deltaY)
+
+    // Update connections in real-time
+    this.updateAllConnections()
+  }
+
+  handleDragEnd(e) {
+    if (!this.isDragging || !this.dragTarget) return
+
+    this.isDragging = false
+
+    // Remove dragging class
+    this.dragTarget.classList.remove("dragging")
+    document.body.style.cursor = "default"
+
+    // Resume orbital animation
+    this.dragTarget.parentElement.style.animationPlayState = "running"
+
+    // Reset z-index
+    this.dragTarget.style.zIndex = ""
+
+    // Add smooth transition back
+    this.dragTarget.style.transition = "transform 0.3s ease"
+
+    // Reset connected projects transition
+    this.resetConnectedProjectsTransition(this.dragTarget.dataset.category)
+
+    // Clear transition after animation
+    setTimeout(() => {
+      if (this.dragTarget) {
+        this.dragTarget.style.transition = ""
+      }
+    }, 300)
+
+    this.dragTarget = null
+  }
+
+  moveConnectedProjects(category, deltaX, deltaY) {
+    const projectNodes = document.querySelectorAll(".project-node")
+
+    projectNodes.forEach((projectNode) => {
+      const projectCategories = projectNode.dataset.categories.split(",")
+
+      // Check if this project belongs to the dragged category and is visible
+      if (projectCategories.includes(category) && !projectNode.classList.contains("hidden")) {
+        projectNode.style.transform = `translate(${deltaX}px, ${deltaY}px)`
+        projectNode.style.zIndex = "999"
+      }
+    })
+  }
+
+  resetConnectedProjectsTransition(category) {
+    const projectNodes = document.querySelectorAll(".project-node")
+
+    projectNodes.forEach((projectNode) => {
+      const projectCategories = projectNode.dataset.categories.split(",")
+
+      if (projectCategories.includes(category) && !projectNode.classList.contains("hidden")) {
+        projectNode.style.transition = "transform 0.3s ease"
+        projectNode.style.transform = "translate(0px, 0px)"
+        projectNode.style.zIndex = ""
+
+        // Clear transition after animation
+        setTimeout(() => {
+          projectNode.style.transition = ""
+        }, 300)
+      }
+    })
+  }
+
   handleTabClick(event) {
+    // Prevent click if we just finished dragging
+    if (Math.abs(event.clientX - this.dragStartPos.x) > 5 || Math.abs(event.clientY - this.dragStartPos.y) > 5) {
+      return
+    }
+
     const tab = event.currentTarget
     const category = tab.dataset.category
 
@@ -419,9 +562,11 @@ class ConstellationPortfolio {
       }
     })
 
-    // Update connections periodically
+    // Update connections periodically (less frequent during drag)
     setInterval(() => {
-      this.updateAllConnections()
+      if (!this.isDragging) {
+        this.updateAllConnections()
+      }
     }, 100)
   }
 }

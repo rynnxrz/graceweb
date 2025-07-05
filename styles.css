@@ -342,164 +342,109 @@ body {
   }
 }
 
-/* Orbital Navigation - 行星轨道系统 */
+/* Orbital Navigation */
 .orbital-nav {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 50;
-  pointer-events: none;
 }
 
-/* 轨道容器 - 不同初始位置和真实行星速度 */
-.orbit-track {
+.nav-orbit {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.orbital-tab {
   position: absolute;
   top: 50%;
   left: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* Architecture - 内轨道，初始位置0度 */
-.orbit-track.track-1 {
-  width: 280px;
-  height: 280px;
-  animation: orbit-clockwise 120s linear infinite;
-  transform: translate(-50%, -50%) rotate(0deg);
-}
-
-/* Biology - 中轨道，初始位置120度 */
-.orbit-track.track-2 {
-  width: 360px;
-  height: 360px;
-  animation: orbit-clockwise 180s linear infinite;
-  transform: translate(-50%, -50%) rotate(120deg);
-}
-
-/* Technology - 外轨道，初始位置240度 */
-.orbit-track.track-3 {
-  width: 440px;
-  height: 440px;
-  animation: orbit-clockwise 240s linear infinite;
-  transform: translate(-50%, -50%) rotate(240deg);
-}
-
-@keyframes orbit-clockwise {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
-/* 轨道上的类别节点 - 黑白灰配色 */
-.orbital-tab {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  background: rgba(40, 40, 40, 0.95);
+  width: 80px;
+  height: 80px;
+  background: rgba(40, 40, 40, 0.9);
   backdrop-filter: blur(12px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.15);
   border-radius: 50%;
-  cursor: pointer;
+  cursor: grab;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #cccccc;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
-  pointer-events: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  top: -35px;
-  left: 50%;
-  transform: translateX(-50%);
+  transform-origin: center;
+  user-select: none;
 }
 
-/* 文字反向旋转保持朝上 */
-.orbital-tab .tab-content {
-  animation: counter-rotate-architecture 120s linear infinite reverse;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.orbital-tab:active {
+  cursor: grabbing;
 }
 
-.orbit-track.track-1 .orbital-tab .tab-content {
-  animation: counter-rotate-architecture 120s linear infinite reverse;
-}
-
-.orbit-track.track-2 .orbital-tab .tab-content {
-  animation: counter-rotate-biology 180s linear infinite reverse;
-}
-
-.orbit-track.track-3 .orbital-tab .tab-content {
-  animation: counter-rotate-technology 240s linear infinite reverse;
-}
-
-@keyframes counter-rotate-architecture {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes counter-rotate-biology {
-  0% {
-    transform: rotate(-120deg);
-  }
-  100% {
-    transform: rotate(240deg);
-  }
-}
-
-@keyframes counter-rotate-technology {
-  0% {
-    transform: rotate(-240deg);
-  }
-  100% {
-    transform: rotate(120deg);
-  }
-}
-
-.orbital-tab:hover {
-  background: rgba(60, 60, 60, 0.98);
+.orbital-tab.dragging {
+  cursor: grabbing;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  transform: translateX(-50%) scale(1.1) !important;
   border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(60, 60, 60, 0.95);
+}
+
+.orbital-tab[data-angle="0"] {
+  transform: translate(-50%, -50%) translateY(-120px);
+}
+
+.orbital-tab[data-angle="120"] {
+  transform: translate(-50%, -50%) translateX(-104px) translateY(60px);
+}
+
+.orbital-tab[data-angle="240"] {
+  transform: translate(-50%, -50%) translateX(104px) translateY(60px);
+}
+
+.orbital-tab:hover:not(.dragging) {
+  background: rgba(50, 50, 50, 0.95);
+  border-color: rgba(255, 255, 255, 0.3);
   color: #ffffff;
-  transform: translateX(-50%) scale(1.1);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.orbital-tab[data-angle="0"]:hover:not(.dragging) {
+  transform: translate(-50%, -50%) translateY(-120px) scale(1.1);
+}
+
+.orbital-tab[data-angle="120"]:hover:not(.dragging) {
+  transform: translate(-50%, -50%) translateX(-104px) translateY(60px) scale(1.1);
+}
+
+.orbital-tab[data-angle="240"]:hover:not(.dragging) {
+  transform: translate(-50%, -50%) translateX(104px) translateY(60px) scale(1.1);
 }
 
 .orbital-tab.active {
-  background: rgba(80, 80, 80, 0.98);
-  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(60, 60, 60, 0.95);
+  border-color: rgba(255, 255, 255, 0.4);
   color: #ffffff;
-  transform: translateX(-50%) scale(1.15);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 .tab-icon {
-  font-size: 18px;
-  margin-bottom: 2px;
+  font-size: 20px;
+  margin-bottom: 4px;
   filter: grayscale(100%);
-  transition: all 0.3s ease;
+  pointer-events: none;
 }
 
-.orbital-tab.active .tab-icon,
-.orbital-tab:hover .tab-icon {
+.orbital-tab.active .tab-icon {
   filter: grayscale(0%);
 }
 
 .tab-label {
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 0.2px;
-  text-align: center;
+  pointer-events: none;
 }
 
 /* Modal enhancements */
@@ -588,15 +533,15 @@ body {
   opacity: 0;
 }
 
-/* Geometric guides - 轨道指示线 */
+/* Geometric guides */
 .constellation-container::before {
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 280px;
-  height: 280px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  width: 400px;
+  height: 400px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
@@ -607,27 +552,9 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 360px;
-  height: 360px;
-  border: 1px solid rgba(255, 255, 255, 0.02);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-}
-
-/* 第三条轨道指示线 */
-.constellation-container {
-  position: relative;
-}
-
-.constellation-container:before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 440px;
-  height: 440px;
-  border: 1px solid rgba(255, 255, 255, 0.01);
+  width: 600px;
+  height: 600px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
@@ -654,32 +581,46 @@ body {
     max-width: 100px;
   }
 
-  .orbit-track.track-1 {
-    width: 220px;
-    height: 220px;
-  }
-
-  .orbit-track.track-2 {
-    width: 280px;
-    height: 280px;
-  }
-
-  .orbit-track.track-3 {
-    width: 340px;
-    height: 340px;
+  .nav-orbit {
+    width: 250px;
+    height: 250px;
   }
 
   .orbital-tab {
-    width: 55px;
-    height: 55px;
-    font-size: 9px;
+    width: 60px;
+    height: 60px;
+    font-size: 10px;
+  }
+
+  .orbital-tab[data-angle="0"] {
+    transform: translate(-50%, -50%) translateY(-100px);
+  }
+
+  .orbital-tab[data-angle="120"] {
+    transform: translate(-50%, -50%) translateX(-87px) translateY(50px);
+  }
+
+  .orbital-tab[data-angle="240"] {
+    transform: translate(-50%, -50%) translateX(87px) translateY(50px);
   }
 
   .tab-icon {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .tab-label {
-    font-size: 7px;
+    font-size: 9px;
+  }
+}
+
+/* Smooth drag animations */
+@media (prefers-reduced-motion: no-preference) {
+  .orbital-tab {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease, box-shadow
+      0.3s ease;
+  }
+
+  .project-node {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
