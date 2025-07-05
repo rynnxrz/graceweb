@@ -9,16 +9,6 @@ class ConstellationPortfolio {
     this.orbitalTabs = document.querySelectorAll(".orbital-tab")
     this.selectedCategories = new Set()
 
-    this.cameraViewport = document.getElementById("camera-viewport")
-    this.focusIndicator = document.getElementById("focus-indicator")
-    this.resetCameraBtn = document.getElementById("reset-camera")
-    this.zoomInBtn = document.getElementById("zoom-in")
-    this.zoomOutBtn = document.getElementById("zoom-out")
-    this.currentFocusedNode = null
-    this.cameraScale = 1
-    this.cameraTranslateX = 0
-    this.cameraTranslateY = 0
-
     this.projectData = {
       "smart-building": {
         title: "Smart Building Interface",
@@ -99,6 +89,14 @@ class ConstellationPortfolio {
       },
     }
 
+    this.cameraScale = 1
+    this.cameraTranslateX = 0
+    this.cameraTranslateY = 0
+    this.baseCameraX = 0
+    this.baseCameraY = 0
+    this.categoryOffsetX = 0
+    this.categoryOffsetY = 0
+
     this.init()
   }
 
@@ -168,12 +166,6 @@ class ConstellationPortfolio {
   }
 
   updateAllConnections() {
-    // Update focus indicator position if active
-    if (this.currentFocusedNode && this.focusIndicator.classList.contains("active")) {
-      const rect = this.currentFocusedNode.getBoundingClientRect()
-      this.showFocusIndicator(rect)
-    }
-
     const lines = this.connections.querySelectorAll(".connection-line")
     lines.forEach((line) => this.updateConnectionPosition(line))
   }
@@ -199,29 +191,6 @@ class ConstellationPortfolio {
 
     // Window resize
     window.addEventListener("resize", () => this.updateAllConnections())
-
-    // Camera control events
-    this.resetCameraBtn.addEventListener("click", () => this.resetCamera())
-    this.zoomInBtn.addEventListener("click", () => this.zoomIn())
-    this.zoomOutBtn.addEventListener("click", () => this.zoomOut())
-
-    // Keyboard shortcuts for camera
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        const modal = document.getElementById("modal-overlay")
-        if (modal.classList.contains("active")) {
-          modal.classList.remove("active")
-        } else if (this.currentFocusedNode) {
-          this.resetCamera()
-        }
-      } else if (e.key === "=" || e.key === "+") {
-        this.zoomIn()
-      } else if (e.key === "-") {
-        this.zoomOut()
-      } else if (e.key === "0") {
-        this.resetCamera()
-      }
-    })
   }
 
   handleTabClick(event) {
@@ -236,7 +205,50 @@ class ConstellationPortfolio {
       tab.classList.add("active")
     }
 
+    this.updateCameraForCategories()
     this.filterProjects()
+  }
+
+  updateCameraForCategories() {
+    // Calculate camera offset based on selected categories
+    let offsetX = 0
+    let offsetY = 0
+    const offsetStrength = 30 // Subtle movement amount
+
+    this.selectedCategories.forEach((category) => {
+      switch (category) {
+        case "architecture":
+          offsetY -= offsetStrength // Move up
+          break
+        case "biology":
+          offsetX -= offsetStrength * 0.866 // Move left (cos 120°)
+          offsetY += offsetStrength * 0.5 // Move down (sin 120°)
+          break
+        case "technology":
+          offsetX += offsetStrength * 0.866 // Move right (cos 240°)
+          offsetY += offsetStrength * 0.5 // Move down (sin 240°)
+          break
+      }
+    })
+
+    // Average the offset if multiple categories are selected
+    if (this.selectedCategories.size > 1) {
+      offsetX /= this.selectedCategories.size
+      offsetY /= this.selectedCategories.size
+    }
+
+    this.categoryOffsetX = offsetX
+    this.categoryOffsetY = offsetY
+
+    // Apply the camera transform with smooth transition
+    this.applyCameraTransform()
+  }
+
+  applyCameraTransform() {
+    const totalX = this.cameraTranslateX + this.baseCameraX + this.categoryOffsetX
+    const totalY = this.cameraTranslateY + this.baseCameraY + this.categoryOffsetY
+    const transform = `translate(${totalX}px, ${totalY}px) scale(${this.cameraScale})`
+    this.cameraViewport.style.transform = transform
   }
 
   filterProjects() {
@@ -355,18 +367,12 @@ class ConstellationPortfolio {
     const node = event.currentTarget
     const nodeType = node.dataset.node
 
-    // Focus camera on clicked node
-    this.focusOnNode(node)
-
-    // Small delay before showing modal to allow camera transition
-    setTimeout(() => {
-      if (nodeType === "project") {
-        const projectId = node.dataset.project
-        this.showProjectModal(projectId)
-      } else if (nodeType === "grace") {
-        this.showAboutModal()
-      }
-    }, 600)
+    if (nodeType === "project") {
+      const projectId = node.dataset.project
+      this.showProjectModal(projectId)
+    } else if (nodeType === "grace") {
+      this.showAboutModal()
+    }
   }
 
   showProjectModal(projectId) {
@@ -470,116 +476,15 @@ class ConstellationPortfolio {
     }, 100)
   }
 
-  focusOnNode(node) {
-    // Clear previous focus
-    this.clearCameraFocus()
-
-    // Set new focused node
-    this.currentFocusedNode = node
-    node.classList.add("camera-focused")
-
-    // Get node position
-    const rect = node.getBoundingClientRect()
-    const viewportRect = this.cameraViewport.getBoundingClientRect()
-
-    // Calculate center offset
-    const nodeCenterX = rect.left + rect.width / 2
-    const nodeCenterY = rect.top + rect.height / 2
-    const viewportCenterX = viewportRect.width / 2
-    const viewportCenterY = viewportRect.height / 2
-
-    // Calculate translation needed to center the node
-    const translateX = viewportCenterX - nodeCenterX
-    const translateY = viewportCenterY - nodeCenterY
-
-    // Determine zoom level based on node type
-    let scale = 1.5
-    if (node.classList.contains("project-node")) {
-      scale = 2
-      this.cameraViewport.classList.add("focused-project")
-    } else {
-      this.cameraViewport.classList.add("focused")
-    }
-
-    // Apply camera transform
-    this.cameraScale = scale
-    this.cameraTranslateX = translateX
-    this.cameraTranslateY = translateY
-
-    this.applyCameraTransform()
-
-    // Show focus indicator
-    this.showFocusIndicator(rect)
-
-    // Highlight related connections
-    this.highlightNodeConnections(node)
-
-    // Update camera controls
-    this.resetCameraBtn.classList.add("active")
-  }
-
-  applyCameraTransform() {
-    const transform = `translate(${this.cameraTranslateX}px, ${this.cameraTranslateY}px) scale(${this.cameraScale})`
-    this.cameraViewport.style.transform = transform
-  }
-
-  clearCameraFocus() {
-    // Remove focus classes
-    if (this.currentFocusedNode) {
-      this.currentFocusedNode.classList.remove("camera-focused")
-    }
-
-    // Reset camera viewport classes
-    this.cameraViewport.classList.remove("focused", "focused-project")
-
-    // Hide focus indicator
-    this.focusIndicator.classList.remove("active")
-
-    // Clear connection highlights
-    const lines = this.connections.querySelectorAll(".connection-line")
-    lines.forEach((line) => line.classList.remove("camera-active"))
-
-    // Reset camera controls
-    this.resetCameraBtn.classList.remove("active")
-
-    this.currentFocusedNode = null
-  }
-
   resetCamera() {
     this.clearCameraFocus()
     this.cameraScale = 1
     this.cameraTranslateX = 0
     this.cameraTranslateY = 0
-    this.applyCameraTransform()
-  }
-
-  showFocusIndicator(nodeRect) {
-    const indicator = this.focusIndicator
-    const size = Math.max(nodeRect.width, nodeRect.height) + 40
-
-    indicator.style.width = size + "px"
-    indicator.style.height = size + "px"
-    indicator.style.left = nodeRect.left + nodeRect.width / 2 - size / 2 + "px"
-    indicator.style.top = nodeRect.top + nodeRect.height / 2 - size / 2 + "px"
-    indicator.classList.add("active")
-  }
-
-  highlightNodeConnections(node) {
-    const lines = this.connections.querySelectorAll(".connection-line")
-    lines.forEach((line) => {
-      if (line.node1 === node || line.node2 === node) {
-        line.classList.add("camera-active")
-      }
-    })
-  }
-
-  zoomIn() {
-    this.cameraScale = Math.min(this.cameraScale * 1.2, 3)
-    this.applyCameraTransform()
-  }
-
-  zoomOut() {
-    this.cameraScale = Math.max(this.cameraScale / 1.2, 0.5)
+    this.baseCameraX = 0
+    this.baseCameraY = 0
+    this.categoryOffsetX = 0
+    this.categoryOffsetY = 0
     this.applyCameraTransform()
   }
 }

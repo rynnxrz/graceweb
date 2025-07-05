@@ -8,7 +8,6 @@
 </head>
 <body>
     <div class="constellation-container">
-        <div class="camera-viewport" id="camera-viewport">
         <!-- Background grid for visual depth -->
         <div class="background-grid"></div>
         
@@ -17,10 +16,6 @@
             <!-- Lines will be dynamically generated -->
         </svg>
         
-        <!-- Focus indicator -->
-        <div class="focus-indicator" id="focus-indicator"></div>
-        
-        <!-- All existing nodes content stays the same -->
         <!-- Central profile node -->
         <div class="node central-node" id="grace-node" data-node="grace">
             <div class="profile-layout">
@@ -33,7 +28,7 @@
             <div class="node-glow"></div>
         </div>
         
-        <!-- All project nodes remain the same -->
+        <!-- Project nodes - initially hidden -->
         <div class="node project-node hidden" data-node="project" data-categories="architecture,technology" data-project="smart-building">
             <div class="node-content">
                 <div class="project-image">
@@ -135,14 +130,6 @@
         </div>
     </div>
     
-    <!-- Camera controls -->
-    <div class="camera-controls">
-        <button class="camera-btn" id="reset-camera" title="Reset View">⌂</button>
-        <button class="camera-btn" id="zoom-in" title="Zoom In">+</button>
-        <button class="camera-btn" id="zoom-out" title="Zoom Out">−</button>
-    </div>
-</div>
-    
     <!-- Project detail modal -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal-content">
@@ -153,7 +140,7 @@
         </div>
     </div>
     
-    <!-- Orbital Navigation - move outside camera viewport -->
+    <!-- Orbital Navigation -->
     <div class="orbital-nav">
         <div class="nav-orbit">
             <button class="orbital-tab" data-category="architecture" data-angle="0">
