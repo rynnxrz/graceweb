@@ -352,7 +352,7 @@ body {
   pointer-events: none;
 }
 
-/* 轨道容器 */
+/* 轨道容器 - 不同初始位置和真实行星速度 */
 .orbit-track {
   position: absolute;
   top: 50%;
@@ -362,22 +362,28 @@ body {
   transform: translate(-50%, -50%);
 }
 
+/* Architecture - 内轨道，初始位置0度 */
 .orbit-track.track-1 {
   width: 280px;
   height: 280px;
-  animation: orbit-clockwise 20s linear infinite;
+  animation: orbit-clockwise 120s linear infinite;
+  transform: translate(-50%, -50%) rotate(0deg);
 }
 
+/* Biology - 中轨道，初始位置120度 */
 .orbit-track.track-2 {
   width: 360px;
   height: 360px;
-  animation: orbit-clockwise 30s linear infinite;
+  animation: orbit-clockwise 180s linear infinite;
+  transform: translate(-50%, -50%) rotate(120deg);
 }
 
+/* Technology - 外轨道，初始位置240度 */
 .orbit-track.track-3 {
   width: 440px;
   height: 440px;
-  animation: orbit-clockwise 40s linear infinite;
+  animation: orbit-clockwise 240s linear infinite;
+  transform: translate(-50%, -50%) rotate(240deg);
 }
 
 @keyframes orbit-clockwise {
@@ -389,7 +395,7 @@ body {
   }
 }
 
-/* 轨道上的类别节点 */
+/* 轨道上的类别节点 - 黑白灰配色 */
 .orbital-tab {
   position: absolute;
   width: 70px;
@@ -409,82 +415,73 @@ body {
   font-weight: 500;
   pointer-events: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Architecture - 内轨道 */
-.orbital-tab[data-category="architecture"] {
   top: -35px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(60, 40, 20, 0.95);
-  border-color: rgba(255, 180, 100, 0.3);
 }
 
-/* Biology - 中轨道 */
-.orbital-tab[data-category="biology"] {
-  top: -35px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20, 60, 40, 0.95);
-  border-color: rgba(100, 255, 180, 0.3);
+/* 文字反向旋转保持朝上 */
+.orbital-tab .tab-content {
+  animation: counter-rotate-architecture 120s linear infinite reverse;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Technology - 外轨道 */
-.orbital-tab[data-category="technology"] {
-  top: -35px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20, 40, 60, 0.95);
-  border-color: rgba(100, 180, 255, 0.3);
+.orbit-track.track-1 .orbital-tab .tab-content {
+  animation: counter-rotate-architecture 120s linear infinite reverse;
+}
+
+.orbit-track.track-2 .orbital-tab .tab-content {
+  animation: counter-rotate-biology 180s linear infinite reverse;
+}
+
+.orbit-track.track-3 .orbital-tab .tab-content {
+  animation: counter-rotate-technology 240s linear infinite reverse;
+}
+
+@keyframes counter-rotate-architecture {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes counter-rotate-biology {
+  0% {
+    transform: rotate(-120deg);
+  }
+  100% {
+    transform: rotate(240deg);
+  }
+}
+
+@keyframes counter-rotate-technology {
+  0% {
+    transform: rotate(-240deg);
+  }
+  100% {
+    transform: rotate(120deg);
+  }
 }
 
 .orbital-tab:hover {
+  background: rgba(60, 60, 60, 0.98);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
   transform: translateX(-50%) scale(1.1);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
-.orbital-tab[data-category="architecture"]:hover {
-  background: rgba(80, 50, 30, 0.98);
-  border-color: rgba(255, 180, 100, 0.6);
-  color: #ffffff;
-}
-
-.orbital-tab[data-category="biology"]:hover {
-  background: rgba(30, 80, 50, 0.98);
-  border-color: rgba(100, 255, 180, 0.6);
-  color: #ffffff;
-}
-
-.orbital-tab[data-category="technology"]:hover {
-  background: rgba(30, 50, 80, 0.98);
-  border-color: rgba(100, 180, 255, 0.6);
-  color: #ffffff;
-}
-
 .orbital-tab.active {
+  background: rgba(80, 80, 80, 0.98);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #ffffff;
   transform: translateX(-50%) scale(1.15);
   box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
-}
-
-.orbital-tab[data-category="architecture"].active {
-  background: rgba(100, 60, 40, 0.98);
-  border-color: rgba(255, 180, 100, 0.8);
-  color: #ffffff;
-  box-shadow: 0 0 25px rgba(255, 180, 100, 0.4);
-}
-
-.orbital-tab[data-category="biology"].active {
-  background: rgba(40, 100, 60, 0.98);
-  border-color: rgba(100, 255, 180, 0.8);
-  color: #ffffff;
-  box-shadow: 0 0 25px rgba(100, 255, 180, 0.4);
-}
-
-.orbital-tab[data-category="technology"].active {
-  background: rgba(40, 60, 100, 0.98);
-  border-color: rgba(100, 180, 255, 0.8);
-  color: #ffffff;
-  box-shadow: 0 0 25px rgba(100, 180, 255, 0.4);
 }
 
 .tab-icon {
