@@ -136,10 +136,11 @@ body {
   z-index: 100;
 }
 
+/* Central node - increase spacing */
 .central-node .profile-layout {
   position: relative;
-  width: 200px;
-  height: 140px;
+  width: 220px;
+  height: 160px;
   z-index: 2;
 }
 
@@ -353,16 +354,16 @@ body {
 
 .nav-orbit {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 400px; /* Match the visible circle */
+  height: 400px; /* Match the visible circle */
 }
 
 .orbital-tab {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   background: rgba(40, 40, 40, 0.9);
   backdrop-filter: blur(12px);
   border: 2px solid rgba(255, 255, 255, 0.15);
@@ -379,32 +380,33 @@ body {
   transform-origin: center;
 }
 
+/* Position tabs on the 400px orbit circle */
 .orbital-tab[data-angle="0"] {
-  transform: translate(-50%, -50%) translateY(-120px);
+  transform: translate(-50%, -50%) translateY(-200px); /* 400px/2 = 200px radius */
 }
 
 .orbital-tab[data-angle="120"] {
-  transform: translate(-50%, -50%) translateX(-104px) translateY(60px);
+  transform: translate(-50%, -50%) translateX(-173px) translateY(100px); /* cos(120°) * 200, sin(120°) * 200 */
 }
 
 .orbital-tab[data-angle="240"] {
-  transform: translate(-50%, -50%) translateX(104px) translateY(60px);
+  transform: translate(-50%, -50%) translateX(173px) translateY(100px); /* cos(240°) * 200, sin(240°) * 200 */
 }
 
 .orbital-tab:hover {
   background: rgba(50, 50, 50, 0.95);
   border-color: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%) translateY(-120px) scale(1.1);
+  transform: translate(-50%, -50%) translateY(-200px) scale(1.1);
   color: #ffffff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .orbital-tab[data-angle="120"]:hover {
-  transform: translate(-50%, -50%) translateX(-104px) translateY(60px) scale(1.1);
+  transform: translate(-50%, -50%) translateX(-173px) translateY(100px) scale(1.1);
 }
 
 .orbital-tab[data-angle="240"]:hover {
-  transform: translate(-50%, -50%) translateX(104px) translateY(60px) scale(1.1);
+  transform: translate(-50%, -50%) translateX(173px) translateY(100px) scale(1.1);
 }
 
 .orbital-tab.active {
@@ -545,8 +547,8 @@ body {
 /* Responsive design */
 @media (max-width: 768px) {
   .profile-layout {
-    width: 160px;
-    height: 120px;
+    width: 180px;
+    height: 140px;
   }
 
   .profile-image {
@@ -564,26 +566,39 @@ body {
   }
 
   .nav-orbit {
-    width: 250px;
-    height: 250px;
+    width: 300px; /* Smaller orbit for mobile */
+    height: 300px;
   }
 
   .orbital-tab {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     font-size: 10px;
   }
 
+  /* Position on smaller 300px orbit */
   .orbital-tab[data-angle="0"] {
-    transform: translate(-50%, -50%) translateY(-100px);
+    transform: translate(-50%, -50%) translateY(-150px);
   }
 
   .orbital-tab[data-angle="120"] {
-    transform: translate(-50%, -50%) translateX(-87px) translateY(50px);
+    transform: translate(-50%, -50%) translateX(-130px) translateY(75px);
   }
 
   .orbital-tab[data-angle="240"] {
-    transform: translate(-50%, -50%) translateX(87px) translateY(50px);
+    transform: translate(-50%, -50%) translateX(130px) translateY(75px);
+  }
+
+  .orbital-tab:hover {
+    transform: translate(-50%, -50%) translateY(-150px) scale(1.1);
+  }
+
+  .orbital-tab[data-angle="120"]:hover {
+    transform: translate(-50%, -50%) translateX(-130px) translateY(75px) scale(1.1);
+  }
+
+  .orbital-tab[data-angle="240"]:hover {
+    transform: translate(-50%, -50%) translateX(130px) translateY(75px) scale(1.1);
   }
 
   .tab-icon {
