@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grace - Multidisciplinary Designer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="constellation-container">
+        <!-- Background grid for visual depth -->
+        <div class="background-grid"></div>
+        
+        <!-- SVG for connection lines -->
+        <svg class="connections" width="100%" height="100%">
+            <!-- Lines will be dynamically generated -->
+        </svg>
+        
+        <!-- Central profile node -->
+        <div class="node central-node" id="grace-node" data-node="grace">
+            <div class="profile-layout">
+                <div class="profile-name">Grace</div>
+                <div class="profile-image">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg" alt="Grace Profile" />
+                </div>
+                <div class="profile-description">Multidisciplinary Designer</div>
+            </div>
+            <div class="node-glow"></div>
+        </div>
+        
+        <!-- Project nodes - initially hidden -->
+        <div class="node project-node hidden" data-node="project" data-categories="architecture,technology" data-project="smart-building">
+            <div class="node-content">
+                <div class="project-image">
+                    <img src="/placeholder.svg?height=60&width=60" alt="Smart Building Project" />
+                </div>
+                <h4>Smart Building Interface</h4>
+                <div class="project-tags">
+                    <span class="tag architecture">Architecture</span>
+                    <span class="tag technology">Technology</span>
+                </div>
+                <div class="intersection-indicator" data-categories="architecture,technology"></div>
+            </div>
+            <div class="node-glow"></div>
+        </div>
+        
+        <div class="node project-node hidden" data-node="project" data-categories="biology,technology" data-project="bio-sensors">
+            <div class="node-content">
+                <div class="project-image">
+                    <img src="/placeholder.svg?height=60&width=60" alt="Bio Sensors Project" />
+                </div>
+                <h4>Bio-Responsive Sensors</h4>
+                <div class="project-tags">
+                    <span class="tag biology">Biology</span>
+                    <span class="tag technology">Technology</span>
+                </div>
+                <div class="intersection-indicator" data-categories="biology,technology"></div>
+            </div>
+            <div class="node-glow"></div>
+        </div>
+        
+        <div class="node project-node hidden" data-node="project" data-categories="architecture" data-project="sustainable-design">
+            <div class="node-content">
+                <div class="project-image">
+                    <img src="/placeholder.svg?height=60&width=60" alt="Sustainable Design Project" />
+                </div>
+                <h4>Sustainable Housing</h4>
+                <div class="project-tags">
+                    <span class="tag architecture">Architecture</span>
+                </div>
+            </div>
+            <div class="node-glow"></div>
+        </div>
+        
+        <div class="node project-node hidden" data-node="project" data-categories="biology" data-project="ecosystem-viz">
+            <div class="node-content">
+                <div class="project-image">
+                    <img src="/placeholder.svg?height=60&width=60" alt="Ecosystem Visualization" />
+                </div>
+                <h4>Ecosystem Visualization</h4>
+                <div class="project-tags">
+                    <span class="tag biology">Biology</span>
+                </div>
+            </div>
+            <div class="node-glow"></div>
+        </div>
+        
+        <div class="node project-node hidden" data-node="project" data-categories="technology" data-project="ai-interface">
+            <div class="node-content">
+                <div class="project-image">
+                    <img src="/placeholder.svg?height=60&width=60" alt="AI Interface Project" />
+                </div>
+                <h4>AI Design Interface</h4>
+                <div class="project-tags">
+                    <span class="tag technology">Technology</span>
+                </div>
+            </div>
+            <div class="node-glow"></div>
+        </div>
+        
+        <div class="node project-node hidden" data-node="project" data-categories="architecture,biology" data-project="biophilic-space">
+            <div class="node-content">
+                <div class="project-image">
+                    <img src="/placeholder.svg?height=60&width=60" alt="Biophilic Space Project" />
+                </div>
+                <h4>Biophilic Workspace</h4>
+                <div class="project-tags">
+                    <span class="tag architecture">Architecture</span>
+                    <span class="tag biology">Biology</span>
+                </div>
+                <div class="intersection-indicator" data-categories="architecture,biology"></div>
+            </div>
+            <div class="node-glow"></div>
+        </div>
+
+        <div class="node project-node hidden" data-node="project" data-categories="architecture,biology,technology" data-project="integrated-system">
+            <div class="node-content">
+                <div class="project-image">
+                    <img src="/placeholder.svg?height=60&width=60" alt="Integrated System Project" />
+                </div>
+                <h4>Bio-Tech Architecture</h4>
+                <div class="project-tags">
+                    <span class="tag architecture">Architecture</span>
+                    <span class="tag biology">Biology</span>
+                    <span class="tag technology">Technology</span>
+                </div>
+                <div class="intersection-indicator triple" data-categories="architecture,biology,technology"></div>
+            </div>
+            <div class="node-glow"></div>
+        </div>
+    </div>
+    
+    <!-- Project detail modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Orbital Navigation -->
+    <div class="orbital-nav">
+        <div class="nav-orbit">
+            <button class="orbital-tab" data-category="architecture" data-angle="0">
+                <span class="tab-icon">🏗️</span>
+                <span class="tab-label">Architecture</span>
+            </button>
+            <button class="orbital-tab" data-category="biology" data-angle="120">
+                <span class="tab-icon">🧬</span>
+                <span class="tab-label">Biology</span>
+            </button>
+            <button class="orbital-tab" data-category="technology" data-angle="240">
+                <span class="tab-icon">⚡</span>
+                <span class="tab-label">Tech</span>
+            </button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

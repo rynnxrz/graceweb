@@ -1,0 +1,164 @@
+/* Additional layout refinements */
+
+/* Improve the radial organization */
+.constellation-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(100, 200, 255, 0.03) 0%, transparent 50%),
+    linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+/* Add subtle sector divisions */
+.constellation-container .sector-guide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 300px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(100, 200, 255, 0.1) 50%, transparent 100%);
+  transform-origin: bottom center;
+  pointer-events: none;
+}
+
+.sector-guide.architecture {
+  transform: translate(-50%, -100%) rotate(0deg);
+}
+
+.sector-guide.biology {
+  transform: translate(-50%, -100%) rotate(120deg);
+}
+
+.sector-guide.technology {
+  transform: translate(-50%, -100%) rotate(240deg);
+}
+
+/* Enhanced project clustering */
+.project-cluster {
+  position: relative;
+}
+
+.project-cluster::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Responsive adjustments for the new layout */
+@media (max-width: 1024px) {
+  .architecture-node {
+    top: 12%;
+    left: 50%;
+  }
+
+  .biology-node {
+    top: 65%;
+    left: 20%;
+  }
+
+  .technology-node {
+    top: 65%;
+    right: 20%;
+  }
+
+  .project-node:nth-child(7) {
+    top: 5%;
+    left: 30%;
+  }
+  .project-node:nth-child(9) {
+    top: 5%;
+    right: 30%;
+  }
+  .project-node:nth-child(12) {
+    top: 22%;
+    left: 20%;
+  }
+  .project-node:nth-child(8) {
+    top: 50%;
+    left: 8%;
+  }
+  .project-node:nth-child(10) {
+    top: 78%;
+    left: 12%;
+  }
+  .project-node:nth-child(11) {
+    top: 50%;
+    right: 8%;
+  }
+}
+
+@media (max-width: 768px) {
+  .central-node .node-content {
+    width: 140px;
+  }
+
+  .category-node .node-content {
+    width: 100px;
+  }
+
+  .project-node .node-content {
+    width: 90px;
+  }
+
+  .architecture-node {
+    top: 10%;
+  }
+
+  .biology-node {
+    top: 70%;
+    left: 15%;
+  }
+
+  .technology-node {
+    top: 70%;
+    right: 15%;
+  }
+}
+
+/* Add visual hierarchy with subtle shadows */
+.central-node {
+  z-index: 20;
+}
+
+.category-node {
+  z-index: 15;
+}
+
+.project-node {
+  z-index: 10;
+}
+
+/* Enhanced connection styling */
+.connection-line {
+  stroke-dasharray: 0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.category-connection {
+  stroke-width: 3;
+  stroke: rgba(100, 200, 255, 0.4);
+}
+
+.project-connection {
+  stroke-width: 2;
+  stroke: rgba(100, 200, 255, 0.25);
+}
+
+.connection-line.active.category-connection {
+  stroke: rgba(100, 200, 255, 0.9);
+  stroke-width: 4;
+}
+
+.connection-line.active.project-connection {
+  stroke: rgba(100, 200, 255, 0.7);
+  stroke-width: 3;
+}
