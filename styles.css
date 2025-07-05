@@ -20,43 +20,43 @@ body {
   background: #111111;
 }
 
-/* Camera system for subtle category shifts */
+/* Camera viewport for organic movement */
 .camera-viewport {
   position: relative;
   width: 100vw;
   height: 100vh;
+  transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
   transform-origin: center center;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Subtle camera shifts for categories */
+/* Subtle camera shifts for category focus */
 .camera-viewport.shift-architecture {
-  transform: translateY(-30px);
+  transform: translate(0, -30px) scale(1.02);
 }
 
 .camera-viewport.shift-biology {
-  transform: translateX(-25px) translateY(20px);
+  transform: translate(-25px, 15px) scale(1.02);
 }
 
 .camera-viewport.shift-technology {
-  transform: translateX(25px) translateY(20px);
+  transform: translate(25px, 15px) scale(1.02);
 }
 
-/* Combined shifts for multiple categories */
+/* Multi-category combinations */
 .camera-viewport.shift-architecture.shift-biology {
-  transform: translateX(-15px) translateY(-5px);
+  transform: translate(-12px, -8px) scale(1.03);
 }
 
 .camera-viewport.shift-architecture.shift-technology {
-  transform: translateX(15px) translateY(-5px);
+  transform: translate(12px, -8px) scale(1.03);
 }
 
 .camera-viewport.shift-biology.shift-technology {
-  transform: translateX(0px) translateY(25px);
+  transform: translate(0, 15px) scale(1.03);
 }
 
 .camera-viewport.shift-architecture.shift-biology.shift-technology {
-  transform: translateX(0px) translateY(0px);
+  transform: translate(0, 0) scale(1.05);
 }
 
 .background-grid {

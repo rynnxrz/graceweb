@@ -8,6 +8,8 @@ class ConstellationPortfolio {
     this.navButtons = document.querySelectorAll(".nav-btn")
     this.orbitalTabs = document.querySelectorAll(".orbital-tab")
     this.selectedCategories = new Set()
+
+    // Add camera viewport control
     this.cameraViewport = document.getElementById("camera-viewport")
 
     this.projectData = {
@@ -198,18 +200,8 @@ class ConstellationPortfolio {
       tab.classList.add("active")
     }
 
-    this.updateCameraPosition()
     this.filterProjects()
-  }
-
-  updateCameraPosition() {
-    // Remove all camera shift classes
-    this.cameraViewport.classList.remove("shift-architecture", "shift-biology", "shift-technology")
-
-    // Add shift classes based on selected categories
-    this.selectedCategories.forEach((category) => {
-      this.cameraViewport.classList.add(`shift-${category}`)
-    })
+    this.updateCameraPosition()
   }
 
   filterProjects() {
@@ -281,6 +273,16 @@ class ConstellationPortfolio {
     })
 
     this.updateIntersectionIndicators(visibleProjects)
+  }
+
+  updateCameraPosition() {
+    // Remove all existing shift classes
+    this.cameraViewport.classList.remove("shift-architecture", "shift-biology", "shift-technology")
+
+    // Add shift classes based on selected categories
+    this.selectedCategories.forEach((category) => {
+      this.cameraViewport.classList.add(`shift-${category}`)
+    })
   }
 
   updateIntersectionIndicators(visibleProjects) {
