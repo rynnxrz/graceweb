@@ -342,30 +342,61 @@ body {
   }
 }
 
-/* Orbital Navigation */
+/* Orbital Navigation - 行星轨道系统 */
 .orbital-nav {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 50;
+  pointer-events: none;
 }
 
-.nav-orbit {
-  position: relative;
-  width: 300px;
-  height: 300px;
-}
-
-.orbital-tab {
+/* 轨道容器 */
+.orbit-track {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 80px;
-  height: 80px;
-  background: rgba(40, 40, 40, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbit-track.track-1 {
+  width: 280px;
+  height: 280px;
+  animation: orbit-clockwise 20s linear infinite;
+}
+
+.orbit-track.track-2 {
+  width: 360px;
+  height: 360px;
+  animation: orbit-clockwise 30s linear infinite;
+}
+
+.orbit-track.track-3 {
+  width: 440px;
+  height: 440px;
+  animation: orbit-clockwise 40s linear infinite;
+}
+
+@keyframes orbit-clockwise {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* 轨道上的类别节点 */
+.orbital-tab {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: rgba(40, 40, 40, 0.95);
   backdrop-filter: blur(12px);
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -374,59 +405,104 @@ body {
   align-items: center;
   justify-content: center;
   color: #cccccc;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
-  transform-origin: center;
+  pointer-events: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.orbital-tab[data-angle="0"] {
-  transform: translate(-50%, -50%) translateY(-120px);
+/* Architecture - 内轨道 */
+.orbital-tab[data-category="architecture"] {
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(60, 40, 20, 0.95);
+  border-color: rgba(255, 180, 100, 0.3);
 }
 
-.orbital-tab[data-angle="120"] {
-  transform: translate(-50%, -50%) translateX(-104px) translateY(60px);
+/* Biology - 中轨道 */
+.orbital-tab[data-category="biology"] {
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 60, 40, 0.95);
+  border-color: rgba(100, 255, 180, 0.3);
 }
 
-.orbital-tab[data-angle="240"] {
-  transform: translate(-50%, -50%) translateX(104px) translateY(60px);
+/* Technology - 外轨道 */
+.orbital-tab[data-category="technology"] {
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 40, 60, 0.95);
+  border-color: rgba(100, 180, 255, 0.3);
 }
 
 .orbital-tab:hover {
-  background: rgba(50, 50, 50, 0.95);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%) translateY(-120px) scale(1.1);
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.orbital-tab[data-category="architecture"]:hover {
+  background: rgba(80, 50, 30, 0.98);
+  border-color: rgba(255, 180, 100, 0.6);
   color: #ffffff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-.orbital-tab[data-angle="120"]:hover {
-  transform: translate(-50%, -50%) translateX(-104px) translateY(60px) scale(1.1);
+.orbital-tab[data-category="biology"]:hover {
+  background: rgba(30, 80, 50, 0.98);
+  border-color: rgba(100, 255, 180, 0.6);
+  color: #ffffff;
 }
 
-.orbital-tab[data-angle="240"]:hover {
-  transform: translate(-50%, -50%) translateX(104px) translateY(60px) scale(1.1);
+.orbital-tab[data-category="technology"]:hover {
+  background: rgba(30, 50, 80, 0.98);
+  border-color: rgba(100, 180, 255, 0.6);
+  color: #ffffff;
 }
 
 .orbital-tab.active {
-  background: rgba(60, 60, 60, 0.95);
-  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateX(-50%) scale(1.15);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+}
+
+.orbital-tab[data-category="architecture"].active {
+  background: rgba(100, 60, 40, 0.98);
+  border-color: rgba(255, 180, 100, 0.8);
   color: #ffffff;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 25px rgba(255, 180, 100, 0.4);
+}
+
+.orbital-tab[data-category="biology"].active {
+  background: rgba(40, 100, 60, 0.98);
+  border-color: rgba(100, 255, 180, 0.8);
+  color: #ffffff;
+  box-shadow: 0 0 25px rgba(100, 255, 180, 0.4);
+}
+
+.orbital-tab[data-category="technology"].active {
+  background: rgba(40, 60, 100, 0.98);
+  border-color: rgba(100, 180, 255, 0.8);
+  color: #ffffff;
+  box-shadow: 0 0 25px rgba(100, 180, 255, 0.4);
 }
 
 .tab-icon {
-  font-size: 20px;
-  margin-bottom: 4px;
+  font-size: 18px;
+  margin-bottom: 2px;
   filter: grayscale(100%);
+  transition: all 0.3s ease;
 }
 
-.orbital-tab.active .tab-icon {
+.orbital-tab.active .tab-icon,
+.orbital-tab:hover .tab-icon {
   filter: grayscale(0%);
 }
 
 .tab-label {
-  font-size: 10px;
+  font-size: 8px;
   letter-spacing: 0.2px;
+  text-align: center;
 }
 
 /* Modal enhancements */
@@ -515,15 +591,15 @@ body {
   opacity: 0;
 }
 
-/* Geometric guides */
+/* Geometric guides - 轨道指示线 */
 .constellation-container::before {
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 400px;
-  height: 400px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
@@ -534,9 +610,27 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 600px;
-  height: 600px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  width: 360px;
+  height: 360px;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+/* 第三条轨道指示线 */
+.constellation-container {
+  position: relative;
+}
+
+.constellation-container:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 440px;
+  height: 440px;
+  border: 1px solid rgba(255, 255, 255, 0.01);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
@@ -563,34 +657,32 @@ body {
     max-width: 100px;
   }
 
-  .nav-orbit {
-    width: 250px;
-    height: 250px;
+  .orbit-track.track-1 {
+    width: 220px;
+    height: 220px;
+  }
+
+  .orbit-track.track-2 {
+    width: 280px;
+    height: 280px;
+  }
+
+  .orbit-track.track-3 {
+    width: 340px;
+    height: 340px;
   }
 
   .orbital-tab {
-    width: 60px;
-    height: 60px;
-    font-size: 10px;
-  }
-
-  .orbital-tab[data-angle="0"] {
-    transform: translate(-50%, -50%) translateY(-100px);
-  }
-
-  .orbital-tab[data-angle="120"] {
-    transform: translate(-50%, -50%) translateX(-87px) translateY(50px);
-  }
-
-  .orbital-tab[data-angle="240"] {
-    transform: translate(-50%, -50%) translateX(87px) translateY(50px);
+    width: 55px;
+    height: 55px;
+    font-size: 9px;
   }
 
   .tab-icon {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .tab-label {
-    font-size: 9px;
+    font-size: 7px;
   }
 }
