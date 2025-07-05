@@ -12,51 +12,50 @@ body {
   height: 100vh;
 }
 
+/* Camera viewport system for organic movement */
+.camera-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: center center;
+}
+
+.camera-viewport.shift-architecture {
+  transform: translate(0, -40px) scale(1.02);
+}
+
+.camera-viewport.shift-biology {
+  transform: translate(-35px, 25px) scale(1.02);
+}
+
+.camera-viewport.shift-technology {
+  transform: translate(35px, 25px) scale(1.02);
+}
+
+/* Multiple category shifts - blend the movements */
+.camera-viewport.shift-architecture.shift-biology {
+  transform: translate(-20px, -10px) scale(1.03);
+}
+
+.camera-viewport.shift-architecture.shift-technology {
+  transform: translate(20px, -10px) scale(1.03);
+}
+
+.camera-viewport.shift-biology.shift-technology {
+  transform: translate(0, 35px) scale(1.03);
+}
+
+.camera-viewport.shift-architecture.shift-biology.shift-technology {
+  transform: translate(0, 0) scale(1.05);
+}
+
 .constellation-container {
   position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   background: #111111;
-}
-
-/* Camera viewport for organic movement */
-.camera-viewport {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
-  transform-origin: center center;
-}
-
-/* Subtle camera shifts for category focus */
-.camera-viewport.shift-architecture {
-  transform: translate(0, -30px) scale(1.02);
-}
-
-.camera-viewport.shift-biology {
-  transform: translate(-25px, 15px) scale(1.02);
-}
-
-.camera-viewport.shift-technology {
-  transform: translate(25px, 15px) scale(1.02);
-}
-
-/* Multi-category combinations */
-.camera-viewport.shift-architecture.shift-biology {
-  transform: translate(-12px, -8px) scale(1.03);
-}
-
-.camera-viewport.shift-architecture.shift-technology {
-  transform: translate(12px, -8px) scale(1.03);
-}
-
-.camera-viewport.shift-biology.shift-technology {
-  transform: translate(0, 15px) scale(1.03);
-}
-
-.camera-viewport.shift-architecture.shift-biology.shift-technology {
-  transform: translate(0, 0) scale(1.05);
 }
 
 .background-grid {

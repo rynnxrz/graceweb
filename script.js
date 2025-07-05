@@ -9,7 +9,7 @@ class ConstellationPortfolio {
     this.orbitalTabs = document.querySelectorAll(".orbital-tab")
     this.selectedCategories = new Set()
 
-    // Add camera viewport control
+    // Add camera viewport reference
     this.cameraViewport = document.getElementById("camera-viewport")
 
     this.projectData = {
