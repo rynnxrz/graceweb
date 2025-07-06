@@ -2,15 +2,23 @@ class ConstellationPortfolio {
   constructor() {
     this.nodes = document.querySelectorAll(".node")
     this.connections = document.querySelector(".connections")
-    this.modal = document.getElementById("modal-overlay")
-    this.modalBody = document.getElementById("modal-body")
-    this.modalClose = document.getElementById("modal-close")
+    this.projectDetailNode = document.getElementById("project-detail-node")
+    this.projectDetailBody = document.getElementById("project-detail-body")
+    this.projectDetailClose = document.getElementById("project-detail-close")
     this.navButtons = document.querySelectorAll(".nav-btn")
     this.orbitalTabs = document.querySelectorAll(".orbital-tab")
     this.selectedCategories = new Set()
 
     // Add camera viewport reference
     this.cameraViewport = document.getElementById("camera-viewport")
+    
+    // Cache DOM elements for performance
+    this.backgroundGrid = document.querySelector('.background-grid')
+    this.intersectionIndicators = document.querySelectorAll(".intersection-indicator")
+    
+    // Performance optimization flags
+    this.isAnimating = false
+    this.animationFrame = null
 
     this.projectData = {
       "smart-building": {
@@ -178,10 +186,10 @@ class ConstellationPortfolio {
       tab.addEventListener("click", (e) => this.handleTabClick(e))
     })
 
-    // Modal events
-    this.modalClose.addEventListener("click", () => this.closeModal())
-    this.modal.addEventListener("click", (e) => {
-      if (e.target === this.modal) this.closeModal()
+    // Project detail events
+    this.projectDetailClose.addEventListener("click", () => this.closeProjectDetail())
+    this.projectDetailNode.addEventListener("click", (e) => {
+      if (e.target === this.projectDetailNode) this.closeProjectDetail()
     })
 
     // Window resize
@@ -276,25 +284,68 @@ class ConstellationPortfolio {
   }
 
   updateCameraPosition() {
-    // Remove all existing shift classes
-    this.cameraViewport.classList.remove("shift-architecture", "shift-biology", "shift-technology")
+    // Prevent multiple simultaneous camera updates
+    if (this.isAnimating) return
+    this.isAnimating = true
 
-    // Add shift classes based on selected categories
-    this.selectedCategories.forEach((category) => {
-      this.cameraViewport.classList.add(`shift-${category}`)
+    // Use requestAnimationFrame for smooth updates
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame)
+    }
+
+    this.animationFrame = requestAnimationFrame(() => {
+      // Remove all existing shift classes
+      this.cameraViewport.classList.remove("shift-architecture", "shift-biology", "shift-technology", "shift-project-detail")
+
+      // Add a subtle transition effect for smoother movement
+      const hasProjectDetail = this.projectDetailNode.classList.contains("show")
+      if (this.selectedCategories.size === 0 && !hasProjectDetail) {
+        // When no categories selected and no project detail, smoothly return to center
+        this.cameraViewport.style.transition = "transform 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      } else {
+        // When categories are selected or project detail is shown, use the standard transition
+        this.cameraViewport.style.transition = "transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      }
+
+      // Add shift classes based on selected categories
+      this.selectedCategories.forEach((category) => {
+        this.cameraViewport.classList.add(`shift-${category}`)
+      })
+
+      // Add project detail shift if detail node is shown
+      if (hasProjectDetail) {
+        this.cameraViewport.classList.add("shift-project-detail")
+      }
+
+      // Add a subtle parallax effect to the background grid (cached element)
+      if (this.backgroundGrid) {
+        const shouldScale = this.selectedCategories.size > 0 || hasProjectDetail
+        if (shouldScale) {
+          this.backgroundGrid.style.transition = "transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+          this.backgroundGrid.style.transform = "scale(1.1)"
+        } else {
+          this.backgroundGrid.style.transition = "transform 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+          this.backgroundGrid.style.transform = "scale(1)"
+        }
+      }
+
+      // Reset animation flag after a short delay
+      setTimeout(() => {
+        this.isAnimating = false
+      }, 100)
     })
   }
 
   updateIntersectionIndicators(visibleProjects) {
-    // Reset all indicators
-    document.querySelectorAll(".intersection-indicator").forEach((indicator) => {
-      indicator.classList.remove("active")
+    // Reset all indicators using cached elements
+    this.intersectionIndicators.forEach((indicator) => {
+      indicator.classList.remove("active", "triple")
     })
 
     // Activate indicators for visible projects with multiple categories
+    const selectedArray = Array.from(this.selectedCategories)
     visibleProjects.forEach((project) => {
       const categories = project.dataset.categories.split(",")
-      const selectedArray = Array.from(this.selectedCategories)
       const matchingCategories = categories.filter((cat) => selectedArray.includes(cat))
 
       if (matchingCategories.length > 1) {
@@ -327,95 +378,186 @@ class ConstellationPortfolio {
   }
 
   handleNodeClick(event) {
+    // Prevent rapid clicking
+    if (this.isAnimating) return
+    
     const node = event.currentTarget
     const nodeType = node.dataset.node
 
     if (nodeType === "project") {
       const projectId = node.dataset.project
-      this.showProjectModal(projectId)
+      this.showProjectDetail(projectId)
     } else if (nodeType === "grace") {
-      this.showAboutModal()
+      this.showAboutDetail()
     }
   }
 
-  showProjectModal(projectId) {
+  showProjectDetail(projectId) {
     const project = this.projectData[projectId]
     if (!project) return
 
-    const intersectionBadge =
-      project.categories.length > 1
-        ? `<div class="intersection-badge">
+    // Use DocumentFragment for better performance
+    const fragment = document.createDocumentFragment()
+    
+    // Create intersection badge if needed
+    if (project.categories.length > 1) {
+      const badge = document.createElement('div')
+      badge.className = 'intersection-badge'
+      badge.innerHTML = `
         <span class="intersection-icon">⚡</span>
         <span>Interdisciplinary Project</span>
-      </div>`
-        : ""
+      `
+      fragment.appendChild(badge)
+    }
 
-    this.modalBody.innerHTML = `
-      <div class="project-modal">
-        ${intersectionBadge}
-        <img src="${project.image}" alt="${project.title}" style="width: 100%; border-radius: 16px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1);">
-        <h2 style="margin-bottom: 12px; color: #ffffff; font-size: 28px; font-weight: 700;">${project.title}</h2>
-        <p style="margin-bottom: 20px; color: #cccccc; font-size: 16px; line-height: 1.5;">${project.description}</p>
-        <p style="margin-bottom: 24px; line-height: 1.6; color: #ffffff; font-size: 14px;">${project.details}</p>
-        
-        <div class="project-meta">
-          <div class="meta-section">
-            <h4 style="color: #ffffff; margin-bottom: 8px; font-size: 14px;">Categories</h4>
-            <div class="project-tags" style="justify-content: flex-start; margin-bottom: 16px;">
-              ${project.categories.map((cat) => `<span class="tag ${cat.toLowerCase()}" style="font-size: 11px; padding: 4px 8px;">${cat}</span>`).join("")}
-            </div>
-          </div>
-          
-          ${
-            project.collaborators
-              ? `
-          <div class="meta-section">
-            <h4 style="color: #ffffff; margin-bottom: 8px; font-size: 14px;">Collaborators</h4>
-            <p style="color: #cccccc; font-size: 13px; margin-bottom: 16px;">${project.collaborators.join(", ")}</p>
-          </div>
-          `
-              : ""
-          }
-          
-          ${
-            project.awards
-              ? `
-          <div class="meta-section">
-            <h4 style="color: #ffffff; margin-bottom: 8px; font-size: 14px;">Awards</h4>
-            <p style="color: #cccccc; font-size: 13px; margin-bottom: 16px;">${project.awards.join(", ")}</p>
-          </div>
-          `
-              : ""
-          }
-          
-          <div class="meta-footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
-            <span style="color: #999999; font-size: 13px;">Year: ${project.year}</span>
-            ${project.categories.length > 1 ? '<span style="color: #ffffff; font-size: 12px; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 8px;">Interdisciplinary</span>' : ""}
-          </div>
-        </div>
+    // Create main content elements
+    const img = document.createElement('img')
+    img.src = project.image
+    img.alt = project.title
+    img.className = 'project-detail-image'
+    fragment.appendChild(img)
+
+    const title = document.createElement('h2')
+    title.className = 'project-detail-title'
+    title.textContent = project.title
+    fragment.appendChild(title)
+
+    const description = document.createElement('p')
+    description.className = 'project-detail-description'
+    description.textContent = project.description
+    fragment.appendChild(description)
+
+    const details = document.createElement('p')
+    details.className = 'project-detail-details'
+    details.textContent = project.details
+    fragment.appendChild(details)
+
+    // Create meta section
+    const meta = document.createElement('div')
+    meta.className = 'project-detail-meta'
+    
+    // Categories section
+    const categoriesSection = document.createElement('div')
+    categoriesSection.className = 'project-detail-section'
+    categoriesSection.innerHTML = `
+      <h4>Categories</h4>
+      <div class="project-detail-tags">
+        ${project.categories.map((cat) => `<span class="tag ${cat.toLowerCase()}">${cat}</span>`).join("")}
       </div>
     `
+    meta.appendChild(categoriesSection)
 
-    this.modal.classList.add("active")
-  }
+    // Collaborators section
+    if (project.collaborators) {
+      const collabSection = document.createElement('div')
+      collabSection.className = 'project-detail-section'
+      collabSection.innerHTML = `
+        <h4>Collaborators</h4>
+        <p>${project.collaborators.join(", ")}</p>
+      `
+      meta.appendChild(collabSection)
+    }
 
-  showAboutModal() {
-    this.modalBody.innerHTML = `
-      <div class="about-modal">
-        <img src="/images/grace-profile.jpeg" alt="Grace Profile" style="width: 120px; height: 120px; border-radius: 12px; margin: 0 auto 24px; display: block; border: 3px solid rgba(255, 255, 255, 0.3);">
-        <h2 style="text-align: center; margin-bottom: 16px; color: #ffffff; font-size: 32px;">Grace</h2>
-        <h3 style="text-align: center; margin-bottom: 24px; color: #cccccc; font-size: 18px;">Multidisciplinary Designer</h3>
-        <p style="margin-bottom: 20px; line-height: 1.6; color: #ffffff; font-size: 15px;">Grace is a visionary designer who bridges the worlds of architecture, biology, and technology. Her work explores the intersections between these disciplines, creating innovative solutions that are both functional and beautiful.</p>
-        <p style="margin-bottom: 20px; line-height: 1.6; color: #cccccc; font-size: 14px;">With a background in sustainable design and a passion for biomimicry, Grace brings a unique perspective to every project, whether it's designing smart buildings, creating bio-responsive interfaces, or visualizing complex ecosystems.</p>
-        <p style="line-height: 1.6; color: #cccccc; font-size: 14px;">Her interdisciplinary approach has led to groundbreaking work in sustainable architecture, biotechnology interfaces, and innovative design solutions that harmonize human needs with natural systems.</p>
-      </div>
+    // Awards section
+    if (project.awards) {
+      const awardsSection = document.createElement('div')
+      awardsSection.className = 'project-detail-section'
+      awardsSection.innerHTML = `
+        <h4>Awards</h4>
+        <p>${project.awards.join(", ")}</p>
+      `
+      meta.appendChild(awardsSection)
+    }
+
+    // Footer
+    const footer = document.createElement('div')
+    footer.className = 'project-detail-footer'
+    footer.innerHTML = `
+      <span class="project-detail-year">Year: ${project.year}</span>
+      ${project.categories.length > 1 ? '<span class="project-detail-badge">Interdisciplinary</span>' : ""}
     `
+    meta.appendChild(footer)
 
-    this.modal.classList.add("active")
+    fragment.appendChild(meta)
+
+    // Clear and append new content
+    this.projectDetailBody.innerHTML = ''
+    this.projectDetailBody.appendChild(fragment)
+
+    // Show with slight delay for smoother animation
+    requestAnimationFrame(() => {
+      this.projectDetailNode.classList.add("show")
+      this.updateCameraPosition()
+    })
   }
 
-  closeModal() {
-    this.modal.classList.remove("active")
+  showAboutDetail() {
+    // Use DocumentFragment for better performance
+    const fragment = document.createDocumentFragment()
+
+    // Create image
+    const img = document.createElement('img')
+    img.src = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg"
+    img.alt = "Grace Profile"
+    img.className = "project-detail-image"
+    img.style.height = "250px"
+    img.style.objectPosition = "center"
+    fragment.appendChild(img)
+
+    // Create title
+    const title = document.createElement('h2')
+    title.className = 'project-detail-title'
+    title.textContent = 'Grace'
+    fragment.appendChild(title)
+
+    // Create description
+    const description = document.createElement('p')
+    description.className = 'project-detail-description'
+    description.textContent = 'Multidisciplinary Designer'
+    fragment.appendChild(description)
+
+    // Create details
+    const details = document.createElement('p')
+    details.className = 'project-detail-details'
+    details.textContent = 'Grace is a visionary designer who bridges the worlds of architecture, biology, and technology. Her work explores the intersections between these disciplines, creating innovative solutions that are both functional and beautiful.'
+    fragment.appendChild(details)
+
+    // Create meta section
+    const meta = document.createElement('div')
+    meta.className = 'project-detail-meta'
+    
+    const backgroundSection = document.createElement('div')
+    backgroundSection.className = 'project-detail-section'
+    backgroundSection.innerHTML = `
+      <h4>Background</h4>
+      <p>With a background in sustainable design and a passion for biomimicry, Grace brings a unique perspective to every project, whether it's designing smart buildings, creating bio-responsive interfaces, or visualizing complex ecosystems.</p>
+    `
+    meta.appendChild(backgroundSection)
+
+    const approachSection = document.createElement('div')
+    approachSection.className = 'project-detail-section'
+    approachSection.innerHTML = `
+      <h4>Approach</h4>
+      <p>Her interdisciplinary approach has led to groundbreaking work in sustainable architecture, biotechnology interfaces, and innovative design solutions that harmonize human needs with natural systems.</p>
+    `
+    meta.appendChild(approachSection)
+
+    fragment.appendChild(meta)
+
+    // Clear and append new content
+    this.projectDetailBody.innerHTML = ''
+    this.projectDetailBody.appendChild(fragment)
+
+    // Show with slight delay for smoother animation
+    requestAnimationFrame(() => {
+      this.projectDetailNode.classList.add("show")
+      this.updateCameraPosition()
+    })
+  }
+
+  closeProjectDetail() {
+    this.projectDetailNode.classList.remove("show")
+    this.updateCameraPosition()
   }
 
   startAnimations() {
@@ -433,24 +575,40 @@ class ConstellationPortfolio {
       }
     })
 
-    // Update connections periodically
-    setInterval(() => {
-      this.updateAllConnections()
-    }, 100)
+    // Use more efficient connection updates
+    this.startConnectionUpdates()
+  }
+
+  startConnectionUpdates() {
+    let lastUpdate = 0
+    const updateConnections = (timestamp) => {
+      // Throttle updates to 30fps instead of 10fps for better performance
+      if (timestamp - lastUpdate >= 33) {
+        this.updateAllConnections()
+        lastUpdate = timestamp
+      }
+      requestAnimationFrame(updateConnections)
+    }
+    requestAnimationFrame(updateConnections)
   }
 }
 
 // Initialize the portfolio when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
-  new ConstellationPortfolio()
+  window.constellationPortfolio = new ConstellationPortfolio()
 })
 
 // Keyboard shortcuts
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
-    const modal = document.getElementById("modal-overlay")
-    if (modal.classList.contains("active")) {
-      modal.classList.remove("active")
+    const projectDetailNode = document.getElementById("project-detail-node")
+    if (projectDetailNode.classList.contains("show")) {
+      projectDetailNode.classList.remove("show")
+      // Update camera position
+      const portfolio = window.constellationPortfolio
+      if (portfolio) {
+        portfolio.updateCameraPosition()
+      }
     }
   }
 })
