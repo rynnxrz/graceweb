@@ -45,23 +45,37 @@
 [2026-02-03 22:48:30]   ✓ whare-piwakawaka
 [2026-02-03 22:48:30]   ✓ other-projects
 [2026-02-03 22:48:30] Next test in 1800 seconds...
-y
-[2026-02-03 22:18:24]   ✓ ultra-plant
-[2026-02-03 22:18:25]   ✓ shadow-of-dream
-[2026-02-03 22:18:25]   ✓ whare-piwakawaka
-[2026-02-03 22:18:25]   ✓ other-projects
-[2026-02-03 22:18:25] Next test in 1800 seconds...
-[2026-02-03 22:48:25] ✓ Site is UP (HTTP 200)
-[2026-02-03 22:48:25] Testing images...
-[2026-02-03 22:48:25]   ✗ co-silo-ferry-1.png - HTTP/2 404 
-[2026-02-03 22:48:26]   ✗ other-projects-cover.png - HTTP/2 404 
-[2026-02-03 22:48:26]   ✗ ultra-plant-1.png - HTTP/2 404 
-[2026-02-03 22:48:26]   ✗ shadow-of-dream-1.png - HTTP/2 404 
-[2026-02-03 22:48:26]   ✗ whare-piwakawaka-1.png - HTTP/2 404 
-[2026-02-03 22:48:26] Testing project detail pages...
-[2026-02-03 22:48:27]   ✓ co-silo-ferry
-[2026-02-03 22:48:27]   ✓ ultra-plant
-[2026-02-03 22:48:27]   ✓ shadow-of-dream
+/Users/ssxu/.openclaw/workspace/graceweb/scripts/test-agent.sh: line 59: 62161 Terminated: 15          sleep $INTERVAL
+[2026-02-03 23:17:32] ✓ Site is UP (HTTP 200)
+[2026-02-03 23:17:32] Testing images...
+[2026-02-03 23:17:33]   ✓ co-silo-ferry-1.png
+[2026-02-03 23:17:33]   ✓ other-projects-cover.png
+[2026-02-03 23:17:34]   ✓ ultra-plant-1.png
+[2026-02-03 23:17:35]   ✓ shadow-of-dream-1.png
+[2026-02-03 23:17:35]   ✓ whare-piwakawaka-1.png
+[2026-02-03 23:17:35] Testing project detail pages...
+[2026-02-03 23:17:35]   ✓ co-silo-ferry
+[2026-02-03 23:17:35]   ✓ ultra-plant
+[2026-02-03 23:17:36]   ✓ shadow-of-dream
+[2026-02-03 23:17:36]   ✓ whare-piwakawaka
+[2026-02-03 23:17:36]   ✓ other-projects
+[2026-02-03 23:17:36] Next test in 1800 seconds...
+026-02-03 22:48:27]   ✓ shadow-of-dream
 [2026-02-03 22:48:27]   ✓ whare-piwakawaka
 [2026-02-03 22:48:27]   ✓ other-projects
 [2026-02-03 22:48:27] Next test in 1800 seconds...
+/Users/ssxu/.openclaw/workspace/graceweb/scripts/test-agent.sh: line 59: 62090 Terminated: 15          sleep $INTERVAL
+[2026-02-03 23:17:32] ✓ Site is UP (HTTP 200)
+[2026-02-03 23:17:32] Testing images...
+[2026-02-03 23:17:32]   ✗ co-silo-ferry-1.png - HTTP/2 404 
+[2026-02-03 23:17:33]   ✗ other-projects-cover.png - HTTP/2 404 
+[2026-02-03 23:17:33]   ✗ ultra-plant-1.png - HTTP/2 404 
+[2026-02-03 23:17:33]   ✗ shadow-of-dream-1.png - HTTP/2 404 
+[2026-02-03 23:17:33]   ✗ whare-piwakawaka-1.png - HTTP/2 404 
+[2026-02-03 23:17:33] Testing project detail pages...
+[2026-02-03 23:17:33]   ✓ co-silo-ferry
+[2026-02-03 23:17:34]   ✓ ultra-plant
+[2026-02-03 23:17:34]   ✓ shadow-of-dream
+[2026-02-03 23:17:34]   ✓ whare-piwakawaka
+[2026-02-03 23:17:34]   ✓ other-projects
+[2026-02-03 23:17:34] Next test in 1800 seconds...

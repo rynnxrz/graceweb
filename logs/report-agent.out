@@ -41,7 +41,8 @@
 📄 Full report: logs/progress-summary.md
 
 ========================================
-2026-02-03 22:48:23] [REPORT] Summary generated: logs/progress-summary.md
+/Users/ssxu/.openclaw/workspace/graceweb/scripts/report-agent.sh: line 89: 61902 Terminated: 15          sleep $REPORT_INTERVAL
+[2026-02-03 23:17:32] [REPORT] Summary generated: logs/progress-summary.md
 
 ========================================
      GRACEWEB PROGRESS REPORT
@@ -49,7 +50,20 @@
 
 📊 Stats:       12 specs completed,        0 pending
 📷 Images:       17 loaded
-📝 Last commit: 91f6d56 fix: Dynamic image path resolution for GitHub Pages
+📝 Last commit: db2d818 fix: Correct getImagePath - remove duplicate /graceweb
+
+📄 Full report: logs/progress-summary.md
+
+========================================
+6-02-03 23:17:32] [REPORT] Summary generated: logs/progress-summary.md
+
+========================================
+     GRACEWEB PROGRESS REPORT
+========================================
+
+📊 Stats:       12 specs completed,        0 pending
+📷 Images:       17 loaded
+📝 Last commit: db2d818 fix: Correct getImagePath - remove duplicate /graceweb
 
 📄 Full report: logs/progress-summary.md
 
