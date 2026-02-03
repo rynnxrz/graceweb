@@ -1,18 +1,18 @@
-[2026-02-03 21:41:30] ========================================
-[2026-02-03 21:41:30] Test Agent Started - Monitoring https://rynnxrz.github.io/graceweb
-[2026-02-03 21:41:30] Interval: 1800 seconds
-[2026-02-03 21:41:30] ========================================
-[2026-02-03 21:41:30] ✓ Site is UP (HTTP 200)
-[2026-02-03 21:41:30] Testing images...
-[2026-02-03 21:41:30]   ✗ co-silo-ferry-1.png - HTTP/2 404 
-[2026-02-03 21:41:31]   ✗ other-projects-cover.png - HTTP/2 404 
-[2026-02-03 21:41:31]   ✗ ultra-plant-1.png - HTTP/2 404 
-[2026-02-03 21:41:31]   ✗ shadow-of-dream-1.png - HTTP/2 404 
-[2026-02-03 21:41:31]   ✗ whare-piwakawaka-1.png - HTTP/2 404 
-[2026-02-03 21:41:31] Testing project detail pages...
-[2026-02-03 21:41:31]   ✓ co-silo-ferry
-[2026-02-03 21:41:32]   ✓ ultra-plant
-[2026-02-03 21:41:32]   ✓ shadow-of-dream
-[2026-02-03 21:41:32]   ✓ whare-piwakawaka
-[2026-02-03 21:41:32]   ✓ other-projects
-[2026-02-03 21:41:32] Next test in 1800 seconds...
+[2026-02-03 21:51:42] ========================================
+[2026-02-03 21:51:42] Test Agent Started - Monitoring https://rynnxrz.github.io/graceweb
+[2026-02-03 21:51:42] Interval: 1800 seconds
+[2026-02-03 21:51:42] ========================================
+[2026-02-03 21:51:42] ✓ Site is UP (HTTP 200)
+[2026-02-03 21:51:42] Testing images...
+[2026-02-03 21:51:42]   ✓ co-silo-ferry-1.png
+[2026-02-03 21:51:43]   ✓ other-projects-cover.png
+[2026-02-03 21:51:44]   ✓ ultra-plant-1.png
+[2026-02-03 21:51:44]   ✓ shadow-of-dream-1.png
+[2026-02-03 21:51:45]   ✓ whare-piwakawaka-1.png
+[2026-02-03 21:51:45] Testing project detail pages...
+[2026-02-03 21:51:45]   ✓ co-silo-ferry
+[2026-02-03 21:51:45]   ✓ ultra-plant
+[2026-02-03 21:51:45]   ✓ shadow-of-dream
+[2026-02-03 21:51:46]   ✓ whare-piwakawaka
+[2026-02-03 21:51:46]   ✓ other-projects
+[2026-02-03 21:51:46] Next test in 1800 seconds...

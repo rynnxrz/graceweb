@@ -32,5 +32,5 @@ curl -sI https://rynnxrz.github.io/graceweb/index.html
 gh pages set --branch main --source /
 ```
 
-**Output when complete:** `<promise>DONE</promise>`
+**Completed:** 2026-02-03
 **Priority:** HIGH
