@@ -19,7 +19,7 @@ test_site() {
         # Test images
         log "Testing images..."
         for img in co-silo-ferry-1.png other-projects-cover.png ultra-plant-1.png shadow-of-dream-1.png whare-piwakawaka-1.png; do
-            img_status=$(curl -sI "$SITE_URL/images/projects/$img" | head -1)
+            img_status=$(curl -sI "$SITE_URL/public/images/projects/$img" | head -1)
             if echo "$img_status" | grep -q "HTTP/2 200"; then
                 log "  ✓ $img"
             else

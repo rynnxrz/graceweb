@@ -16,3 +16,21 @@
 [2026-02-03 21:41:32]   ✓ whare-piwakawaka
 [2026-02-03 21:41:32]   ✓ other-projects
 [2026-02-03 21:41:32] Next test in 1800 seconds...
+[2026-02-03 21:43:38] ========================================
+[2026-02-03 21:43:38] Test Agent Started - Monitoring https://rynnxrz.github.io/graceweb
+[2026-02-03 21:43:38] Interval: 1800 seconds
+[2026-02-03 21:43:38] ========================================
+[2026-02-03 21:43:38] ✓ Site is UP (HTTP 200)
+[2026-02-03 21:43:38] Testing images...
+[2026-02-03 21:43:38]   ✗ co-silo-ferry-1.png - HTTP/2 404 
+[2026-02-03 21:43:38]   ✗ other-projects-cover.png - HTTP/2 404 
+[2026-02-03 21:43:38]   ✗ ultra-plant-1.png - HTTP/2 404 
+[2026-02-03 21:43:38]   ✗ shadow-of-dream-1.png - HTTP/2 404 
+[2026-02-03 21:43:39]   ✗ whare-piwakawaka-1.png - HTTP/2 404 
+[2026-02-03 21:43:39] Testing project detail pages...
+[2026-02-03 21:43:39]   ✓ co-silo-ferry
+[2026-02-03 21:43:39]   ✓ ultra-plant
+[2026-02-03 21:43:39]   ✓ shadow-of-dream
+[2026-02-03 21:43:39]   ✓ whare-piwakawaka
+[2026-02-03 21:43:39]   ✓ other-projects
+[2026-02-03 21:43:39] Next test in 1800 seconds...
