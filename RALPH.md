@@ -37,30 +37,39 @@ A spec-driven development loop for continuously improving the Grace portfolio we
 Created a complete agent management system for continuous improvement:
 
 ```
-┌─────────────────────────────────────────────────┐
-│                   CEO (Main)                     │
-│              Coordinates all agents               │
-└─────────────────────────────────────────────────┘
-                         │
-        ┌────────────────┼────────────────┐
-        ▼                ▼                ▼
-┌───────────────┐  ┌───────────────┐  ┌───────────────┐
-│ Test Agent   │  │ Fix Agent    │  │ Ralph Loop   │
-│ Every 30min │  │ Every 5min   │  │ Specs→Fix   │
-│ - Site up    │  │ - Ralph loop │  │              │
-│ - Images     │  │ - Fix issues │  │              │
-│ - Pages      │  │ - Commit    │  │              │
-└───────────────┘  └───────────────┘  └───────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                    CEO (Main - Bob)                              │
+│               Coordinates ALL agents                              │
+└─────────────────────────────────────────────────────────────────┘
+                                    │
+         ┌────────────────────────────┼────────────────────────────┐
+         ▼                            ▼                            ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Test Agent   │    │   Fix Agent    │    │  Report Agent   │
+│  audit-website  │    │  ralph-wiggum  │    │   NEW! ⭐       │
+├─────────────────┤    ├─────────────────┤    ├─────────────────┤
+│ Every 30 min   │    │ Every 5 min     │    │ Every 30 min    │
+│ • Site uptime   │    │ • Find issues  │    │ • Summarize     │
+│ • Images load   │    │ • Create spec │    │ • Report to     │
+│ • Pages work    │    │ • Fix issues  │    │   human         │
+│ • SEO health    │    │ • Commit      │    │ • Track         │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                            │                            │
+         └────────────────────────────┼────────────────────────────┘
+                                      ▼
+                         ┌─────────────────────┐
+                         │   GitHub (main)      │
+                         └─────────────────────┘
 ```
 
-### Agents
-- **Test Agent**: Continuously monitors site availability, images, and pages
-- **Fix Agent**: Reactively fixes issues using Ralph Wiggum method
-- **CEO**: Manages both agents
+### All 3 Agents
+- **Test Agent**: Monitors site health (every 30 min)
+- **Fix Agent**: Fixes issues using Ralph Wiggum (every 5 min)
+- **Report Agent**: ⭐ NEW - Summarizes progress (every 30 min)
 
 ### Commands
 ```bash
-# Start both agents
+# Start ALL agents (Test + Fix + Report)
 bash scripts/ceo.sh start
 
 # Check status
@@ -69,9 +78,15 @@ bash scripts/ceo.sh status
 # Stop all
 bash scripts/ceo.sh stop
 
-# Run single test
-bash scripts/ceo.sh test
+# Individual operations
+bash scripts/ceo.sh test    # Run test
+bash scripts/ceo.sh fix     # Run fix
+bash scripts/ceo.sh report   # Generate report ⭐
 ```
+
+### Report Agent Output
+- `logs/progress-summary.md` - Updated every 30 minutes
+- Console summary every 30 minutes during active monitoring
 
 ### Known Issue - GitHub Pages 404
 - Status: ⚠️ Site returning 404

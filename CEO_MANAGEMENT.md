@@ -1,59 +1,106 @@
 # Graceweb - CEO Agent Management System
 
 ## Architecture
-- **CEO (Main)**: Me - coordinates all agents
-- **Test Agent**: Continuously audits website health
-- **Fix Agent**: Uses Ralph Wiggum to fix issues
 
-## Agents Setup
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         CEO (Main - Bob)                          │
+│              Coordinates all agents, continuous improvement      │
+└─────────────────────────────────────────────────────────────────┘
+                                    │
+         ┌────────────────────────────┼────────────────────────────┐
+         ▼                            ▼                            ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Test Agent   │    │   Fix Agent    │    │  Report Agent   │
+│  (audit-web)   │    │  (Ralph)      │    │  (Progress)    │
+├─────────────────┤    ├─────────────────┤    ├─────────────────┤
+│ Every 30 min   │    │ Every 5 min    │    │ Every 30 min    │
+│ • Site uptime   │    │ • Find issues  │    │ • Summarize     │
+│ • Images load   │    │ • Create spec │    │ • Report to     │
+│ • Pages work    │    │ • Fix issues  │    │   human         │
+│ • SEO health    │    │ • Commit fix  │    │ • Track progress │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                            │                            │
+         └────────────────────────────┼────────────────────────────┘
+                                      ▼
+                         ┌─────────────────────┐
+                         │   GitHub (main)      │
+                         │   Continuous Deploy  │
+                         └─────────────────────┘
+```
 
-### Test Agent (Continuous Monitoring)
-Runs every 30 minutes to check:
+## Agents
+
+### Test Agent
+**Skill:** audit-website  
+**Frequency:** Every 30 minutes  
+**Monitors:**
 - Website availability
 - Image loading
-- Page performance
-- Broken links
+- Project detail pages
 - SEO issues
+- Performance
 
-### Fix Agent (Ralph Wiggum)
-When Test Agent finds issues:
-1. Creates a spec in specs/
-2. Implements fix
-3. Commits and pushes
-4. Reports completion
+### Fix Agent  
+**Skill:** ralph-wiggum  
+**Frequency:** Every 5 minutes  
+**Responsibilities:**
+- Check for pending specs
+- Run Ralph loop
+- Fix issues found
+- Commit and push
+
+### Report Agent ⭐ NEW
+**Frequency:** Every 30 minutes  
+**Responsibilities:**
+- Generate progress summary
+- Report to human
+- Track completed work
+- Highlight pending tasks
 
 ## Workflow
+
 ```
-Test Agent → Found Issues → Fix Agent → Ralph Loop → Done
-     ↑                                    ↓
-     └──── Continuous Monitoring ←──────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                     CONTINUOUS CYCLE                             │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Test → Report → CEO Decides → Fix (Ralph) → Test → ...       │
+│    ↑                                                          │
+│    └──────────────────────────────────────────────────────     │
+│                                                                 │
+│  Report Agent generates summary every 30 min                    │
+│  Human reviews → CEO coordinates fixes                          │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-## Running the System
+## Commands
 
 ```bash
-# Start Test Agent (continuous monitoring)
-./scripts/test-agent.sh
+# Start all agents
+bash scripts/ceo.sh start
 
-# Start Fix Agent (reactive)
-./scripts/fix-agent.sh
+# Check status
+bash scripts/ceo.sh status
 
-# Or run both
-./scripts/ceo-system.sh
+# Stop all
+bash scripts/ceo.sh stop
+
+# Manual operations
+bash scripts/ceo.sh test     # Run test
+bash scripts/ceo.sh fix      # Run fix cycle
+bash scripts/ceo.sh report   # Generate report
 ```
 
+## Output Files
+
+- `logs/test-agent.log` - Test results
+- `logs/fix-agent.log` - Fix operations
+- `logs/report-agent.log` - Report logs
+- `logs/progress-summary.md` - **Progress report (updated every 30 min)**
+
 ## Current Status
-- Test Agent: [NOT RUNNING]
-- Fix Agent: [NOT RUNNING]
-- Ralph Loop: [ACTIVE]
-
-## Issues Found
-1. ⚠️ GitHub Pages returning 404
-   - Cause: Pages not configured
-   - Priority: HIGH
-   - Fix: Enable Pages in repo settings
-
-2. ⚠️ Images not loading
-   - Cause: Site not accessible
-   - Priority: HIGH
-   - Fix: Enable Pages first
+- Test Agent: [Waiting to start]
+- Fix Agent: [Waiting to start]
+- Report Agent: [Waiting to start]
