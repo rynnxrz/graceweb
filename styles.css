@@ -367,54 +367,26 @@ body {
   transform: translate(-50%, -50%) scale(1.5);
 }
 
-/* Project nodes */
+/* Project nodes - 5 real projects */
 .project-node:nth-child(4) {
-  top: 8%;
-  left: 35%;
+  top: 10%;
+  left: 20%;
 }
 .project-node:nth-child(5) {
-  top: 45%;
-  left: 5%;
+  top: 35%;
+  right: 10%;
 }
 .project-node:nth-child(6) {
-  top: 8%;
-  right: 35%;
+  top: 60%;
+  left: 15%;
 }
 .project-node:nth-child(7) {
   top: 75%;
-  left: 8%;
+  right: 20%;
 }
 .project-node:nth-child(8) {
-  top: 45%;
-  right: 5%;
-}
-.project-node:nth-child(9) {
-  top: 25%;
-  left: 25%;
-}
-.project-node:nth-child(10) {
-  top: 35%;
-  right: 25%;
-}
-
-.project-node:nth-child(11) {
-  top: 55%;
-  left: 15%;
-}
-
-.project-node:nth-child(12) {
-  top: 65%;
-  right: 15%;
-}
-
-.project-node:nth-child(13) {
   top: 85%;
-  left: 35%;
-}
-
-.project-node:nth-child(14) {
-  top: 85%;
-  right: 35%;
+  left: 40%;
 }
 
 .project-node .node-content {

@@ -21,90 +21,6 @@ class ConstellationPortfolio {
     this.animationFrame = null
 
     this.projectData = {
-      "smart-building": {
-        title: "Smart Building Interface",
-        description:
-          "An innovative interface design for smart building management systems, combining architectural principles with cutting-edge technology.",
-        details:
-          "This project explores the intersection of physical architecture and digital interfaces, creating intuitive controls for building automation systems. The interface adapts to different building types and user needs, incorporating biometric feedback and environmental sensors.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
-        categories: ["Architecture", "Technology"],
-        year: "2023",
-        collaborators: ["Tech Innovations Lab", "Green Building Council"],
-        awards: ["Digital Architecture Award 2023"],
-      },
-      "bio-sensors": {
-        title: "Bio-Responsive Sensors",
-        description: "Wearable sensors that respond to biological signals and environmental factors.",
-        details:
-          "Combining biological understanding with technological innovation to create responsive design solutions. These sensors monitor physiological responses and adapt environmental conditions in real-time.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
-        categories: ["Biology", "Technology"],
-        year: "2023",
-        collaborators: ["BioTech Research Institute"],
-        awards: ["Innovation in Biotechnology 2023"],
-      },
-      "sustainable-design": {
-        title: "Sustainable Housing",
-        description: "Eco-friendly architectural designs focused on sustainability and environmental harmony.",
-        details:
-          "A comprehensive approach to sustainable architecture, incorporating natural materials, passive energy systems, and biodegradable construction methods.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
-        categories: ["Architecture"],
-        year: "2022",
-        collaborators: ["Sustainable Architecture Collective"],
-        awards: ["Green Design Excellence 2022"],
-      },
-      "ecosystem-viz": {
-        title: "Ecosystem Visualization",
-        description: "Interactive visualizations of complex biological ecosystems and their interconnections.",
-        details:
-          "Data-driven visualizations that help understand the complexity and beauty of natural ecosystems, used for education and conservation efforts.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
-        categories: ["Biology"],
-        year: "2023",
-        collaborators: ["National Geographic", "Conservation Biology Institute"],
-      },
-      "ai-interface": {
-        title: "AI Design Interface",
-        description: "User interface design for AI-powered creative tools and applications.",
-        details:
-          "Exploring how artificial intelligence can enhance the creative design process through intuitive interfaces that learn from user behavior.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
-        categories: ["Technology"],
-        year: "2023",
-        collaborators: ["AI Research Lab", "Creative Technology Institute"],
-      },
-      "biophilic-space": {
-        title: "Biophilic Workspace",
-        description: "Workspace design that integrates natural elements with architectural innovation.",
-        details:
-          "Creating work environments that connect people with nature through thoughtful architectural design, improving productivity and well-being.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
-        categories: ["Architecture", "Biology"],
-        year: "2022",
-        collaborators: ["Workplace Innovation Lab"],
-        awards: ["Biophilic Design Award 2022"],
-      },
-      "integrated-system": {
-        title: "Bio-Tech Architecture",
-        description:
-          "A revolutionary building system that integrates biological processes with technological infrastructure.",
-        details:
-          "This groundbreaking project represents the convergence of all three disciplines, creating living buildings that adapt, grow, and respond to their environment through bio-technological integration.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
-        categories: ["Architecture", "Biology", "Technology"],
-        year: "2023",
-        collaborators: ["Future Cities Institute", "Bio-Architecture Lab", "Smart Systems Corp"],
-        awards: ["Interdisciplinary Innovation Award 2023", "Future Architecture Prize 2023"],
-      },
       "co-silo-ferry": {
         title: "Co-Silo Ferry Station",
         description: "A community-focused ferry station design integrating traditional silo structures with modern public spaces.",
@@ -115,6 +31,17 @@ class ConstellationPortfolio {
         categories: ["Architecture"],
         year: "2023",
         collaborators: ["Urban Design Studio"],
+      },
+      "other-projects": {
+        title: "Other Projects",
+        description: "A collection of architectural and design works including UCL interview portfolio and various design explorations.",
+        details:
+          "This collection showcases diverse design projects ranging from academic work to experimental installations, demonstrating versatility in architectural thinking and design methodology.",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
+        categories: ["Architecture", "Technology"],
+        year: "2023",
+        collaborators: ["UCL", "Various"],
       },
       "ultra-plant": {
         title: "Ultra Plant",
