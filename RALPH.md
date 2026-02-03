@@ -56,8 +56,8 @@ A spec-driven development loop for continuously improving the Grace portfolio we
 4. **SEO Friendly**: Individual URLs for each project
 
 ### Next Actions
-- [ ] Copy actual project images to public/images/projects/
-- [ ] Add actual cover images from project folders
-- [ ] Update gallery with real project screenshots
+- [x] Copy actual project images to public/images/projects/
+- [x] Update detail pages with real image paths
+- [x] Update main page nodes with real thumbnails
 - [ ] Add loading animations for images
-- [ ] Consider adding project filtering/sorting
+- [ ] Consider adding image compression
