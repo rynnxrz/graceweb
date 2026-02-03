@@ -223,6 +223,14 @@ class ConstellationPortfolio {
 
     projectNodes.forEach((node) => {
       const projectCategories = node.dataset.categories.split(",")
+      
+      // Show ALL projects when no categories selected (default state)
+      if (this.selectedCategories.size === 0) {
+        node.classList.remove("hidden")
+        node.classList.add("show")
+        visibleProjects.push(node)
+        return
+      }
 
       // Show projects that contain ANY of the selected categories
       const hasAnyCategory = selectedArray.some((cat) => projectCategories.includes(cat))
@@ -549,17 +557,25 @@ class ConstellationPortfolio {
   }
 
   startAnimations() {
-    // Stagger node animations on load (exclude central node and project nodes)
+    // Stagger ALL node animations on load (exclude only central node)
     this.nodes.forEach((node, index) => {
-      if (!node.classList.contains("project-node") && !node.classList.contains("central-node")) {
-        node.style.opacity = "0"
-        node.style.transform += " translateY(20px)"
+      if (!node.classList.contains("central-node")) {
+        // Project nodes should be visible immediately
+        if (node.classList.contains("project-node")) {
+          // Ensure project nodes are shown
+          node.classList.remove("hidden")
+          node.classList.add("show")
+        } else {
+          // Other nodes get entrance animation
+          node.style.opacity = "0"
+          node.style.transform += " translateY(20px)"
 
-        setTimeout(() => {
-          node.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
-          node.style.opacity = "1"
-          node.style.transform = node.style.transform.replace(" translateY(20px)", "")
-        }, index * 100)
+          setTimeout(() => {
+            node.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
+            node.style.opacity = "1"
+            node.style.transform = node.style.transform.replace(" translateY(20px)", "")
+          }, index * 100)
+        }
       }
     })
 
