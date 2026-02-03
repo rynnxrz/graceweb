@@ -4,6 +4,26 @@
   box-sizing: border-box;
 }
 
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: #ffffff;
+  color: #111111;
+  padding: 12px 24px;
+  z-index: 1000;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   background: #111111;
@@ -171,6 +191,21 @@ body {
   background: rgba(45, 45, 45, 0.9);
   border-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* Focus styles for accessibility */
+.node:focus {
+  outline: none;
+}
+
+.node:focus .node-content {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.node:focus .node-glow {
+  opacity: 0.8;
+  transform: translate(-50%, -50%) scale(1.4);
 }
 
 /* Central node - 强制居中定位 */
@@ -479,6 +514,18 @@ body {
 .tab-label {
   font-size: 10px;
   letter-spacing: 0.2px;
+}
+
+/* Focus styles for accessibility */
+.orbital-tab:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.orbital-tab:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
 }
 
 /* Project Detail Node */
