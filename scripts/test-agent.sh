@@ -16,16 +16,28 @@ test_site() {
     if echo "$status" | grep -q "HTTP/2 200"; then
         log "✓ Site is UP (HTTP 200)"
         
-        # Test images
-        log "Testing images..."
-        for img in co-silo-ferry-1.png other-projects-cover.png ultra-plant-1.png shadow-of-dream-1.png whare-piwakawaka-1.png; do
+        # Test ALL images in the projects folder
+        log "Testing ALL project images..."
+        local all_ok=true
+        for img in co-silo-ferry-cover.png co-silo-ferry-1.png co-silo-ferry-2.png co-silo-ferry-3.png \
+                   other-projects-cover.png \
+                   ultra-plant-cover.png ultra-plant-1.png ultra-plant-2.png ultra-plant-3.png \
+                   shadow-of-dream-cover.png shadow-of-dream-1.png shadow-of-dream-2.png shadow-of-dream-3.png \
+                   whare-piwakawaka-cover.png whare-piwakawaka-1.png whare-piwakawaka-2.png whare-piwakawaka-3.png; do
             img_status=$(curl -sI "$SITE_URL/public/images/projects/$img" | head -1)
             if echo "$img_status" | grep -q "HTTP/2 200"; then
                 log "  ✓ $img"
             else
                 log "  ✗ $img - $img_status"
+                all_ok=false
             fi
         done
+        
+        if [ "$all_ok" = true ]; then
+            log "All 17 images loaded successfully!"
+        else
+            log "⚠ Some images are missing - Fix needed!"
+        fi
         
         # Test project pages
         log "Testing project detail pages..."
