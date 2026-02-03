@@ -192,8 +192,16 @@ class ConstellationPortfolio {
       if (e.target === this.projectDetailNode) this.closeProjectDetail()
     })
 
-    // Window resize
-    window.addEventListener("resize", () => this.updateAllConnections())
+    // Window resize with passive listener and throttling
+    let resizeTimeout
+    window.addEventListener(
+      "resize",
+      () => {
+        clearTimeout(resizeTimeout)
+        resizeTimeout = setTimeout(() => this.updateAllConnections(), 100)
+      },
+      { passive: true }
+    )
   }
 
   handleTabClick(event) {
@@ -594,9 +602,13 @@ class ConstellationPortfolio {
 }
 
 // Initialize the portfolio when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    window.constellationPortfolio = new ConstellationPortfolio()
+  })
+} else {
   window.constellationPortfolio = new ConstellationPortfolio()
-})
+}
 
 // Keyboard shortcuts
 document.addEventListener("keydown", (e) => {

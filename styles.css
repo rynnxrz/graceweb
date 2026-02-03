@@ -10,6 +10,8 @@ body {
   color: #ffffff;
   overflow: hidden;
   height: 100vh;
+  content-visibility: auto;
+  contain: layout style;
 }
 
 /* Camera viewport system for organic movement */
