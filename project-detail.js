@@ -13,12 +13,20 @@ class ProjectDetailPage {
         return params.get('project') || 'co-silo-ferry'
     }
     
+    getImagePath(path) {
+        // Get base path for GitHub Pages
+        const pathname = window.location.pathname
+        const base = pathname.replace(/\/[^\/]*$/, '') + '/graceweb'
+        return base + '/' + path
+    }
+    
     getProjectData() {
+        const getImg = (path) => this.getImagePath(path)
         return {
             "co-silo-ferry": {
                 title: "Co-Silo Ferry Station",
                 tagline: "A bridge between human and nature in Wynyard Point, Auckland",
-                heroImage: "/public/images/projects/co-silo-ferry-cover.png",
+                heroImage: getImg("public/images/co-silo-ferry-cover.png"),
                 location: "Wynyard Point, Auckland, New Zealand",
                 year: "2023",
                 category: "Architecture",
@@ -30,17 +38,17 @@ class ProjectDetailPage {
                     <p>The design incorporates sustainable elements including consideration for rising sea levels, porosity optimization, and marine life preservation. The architectural language balances the robust character of the original industrial structures with the delicate nature of the surrounding marine ecosystem.</p>
                 `,
                 gallery: [
-                    "/public/images/projects/co-silo-ferry-cover.png",
-                    "/public/images/projects/co-silo-ferry-1.png",
-                    "/public/images/projects/co-silo-ferry-2.png",
-                    "/public/images/projects/co-silo-ferry-3.png"
+                    getImg("public/images/co-silo-ferry-cover.png"),
+                    getImg("public/images/co-silo-ferry-1.png"),
+                    getImg("public/images/co-silo-ferry-2.png"),
+                    getImg("public/images/co-silo-ferry-3.png")
                 ],
                 related: ["ultra-plant", "whare-piwakawaka", "shadow-of-dream"]
             },
             "other-projects": {
                 title: "Other Projects",
                 tagline: "A collection of architectural works and design explorations",
-                heroImage: "/public/images/projects/other-projects-cover.png",
+                heroImage: getImg("public/images/other-projects-cover.png"),
                 location: "Various",
                 year: "2023",
                 category: "Architecture + Technology",
@@ -51,14 +59,14 @@ class ProjectDetailPage {
                     <p>Includes the UCL interview portfolio and various undergraduate design projects that explore the intersection of traditional architectural principles with contemporary digital tools and technologies.</p>
                 `,
                 gallery: [
-                    "/public/images/projects/other-projects-cover.png"
+                    getImg("public/images/other-projects-cover.png")
                 ],
                 related: ["co-silo-ferry", "shadow-of-dream", "ultra-plant"]
             },
             "ultra-plant": {
                 title: "Ultra Plant",
                 tagline: "Post-nuclear eco-recovery through plant-based architecture",
-                heroImage: "/public/images/projects/ultra-plant-cover.png",
+                heroImage: getImg("public/images/ultra-plant-cover.png"),
                 location: "Sydney, Australia",
                 year: "2312 (fictional)",
                 category: "Biology + Architecture",
@@ -70,17 +78,17 @@ class ProjectDetailPage {
                     <p>Through a funding system connecting users with the meta-verse through technology, the project explores new relationships between human existence and natural systems. The architectural language combines organic growth patterns with structural integrity requirements of a resilient community.</p>
                 `,
                 gallery: [
-                    "/public/images/projects/ultra-plant-cover.png",
-                    "/public/images/projects/ultra-plant-1.png",
-                    "/public/images/projects/ultra-plant-2.png",
-                    "/public/images/projects/ultra-plant-3.png"
+                    getImg("public/images/ultra-plant-cover.png"),
+                    getImg("public/images/ultra-plant-1.png"),
+                    getImg("public/images/ultra-plant-2.png"),
+                    getImg("public/images/ultra-plant-3.png")
                 ],
                 related: ["shadow-of-dream", "co-silo-ferry", "whare-piwakawaka"]
             },
             "shadow-of-dream": {
                 title: "Shadow of Dream",
                 tagline: "A billboard tower exploring the subconscious mind in Kyoto",
-                heroImage: "/public/images/projects/shadow-of-dream-cover.png",
+                heroImage: getImg("public/images/shadow-of-dream-cover.png"),
                 location: "Kyoto, Japan",
                 year: "2023",
                 category: "Biology + Technology",
@@ -92,17 +100,17 @@ class ProjectDetailPage {
                     <p>The tower creates a "gray space" between reality and complete unconsciousness, where visitors enter different areas guided by their brain waves. The architectural form reflects the chaotic yet structured nature of dreams, with some spaces having clear functions while others follow no conventional rules.</p>
                 `,
                 gallery: [
-                    "/public/images/projects/shadow-of-dream-cover.png",
-                    "/public/images/projects/shadow-of-dream-1.png",
-                    "/public/images/projects/shadow-of-dream-2.png",
-                    "/public/images/projects/shadow-of-dream-3.png"
+                    getImg("public/images/shadow-of-dream-cover.png"),
+                    getImg("public/images/shadow-of-dream-1.png"),
+                    getImg("public/images/shadow-of-dream-2.png"),
+                    getImg("public/images/shadow-of-dream-3.png")
                 ],
                 related: ["ultra-plant", "whare-piwakawaka", "co-silo-ferry"]
             },
             "whare-piwakawaka": {
                 title: "Whare Piwakawaka",
                 tagline: "A wildlife sanctuary celebrating Maori heritage and bird life",
-                heroImage: "/public/images/projects/whare-piwakawaka-cover.png",
+                heroImage: getImg("public/images/whare-piwakawaka-cover.png"),
                 location: "Urupukapuka Island, Bay of Islands, New Zealand",
                 year: "2022",
                 category: "Architecture + Biology",
@@ -114,10 +122,10 @@ class ProjectDetailPage {
                     <p>Part of the larger Project Island Song wildlife sanctuary initiative, the architecture serves both human visitors and native wildlife, creating zones that respond to different bird behaviors and soundscapes.</p>
                 `,
                 gallery: [
-                    "/public/images/projects/whare-piwakawaka-cover.png",
-                    "/public/images/projects/whare-piwakawaka-1.png",
-                    "/public/images/projects/whare-piwakawaka-2.png",
-                    "/public/images/projects/whare-piwakawaka-3.png"
+                    getImg("public/images/whare-piwakawaka-cover.png"),
+                    getImg("public/images/whare-piwakawaka-1.png"),
+                    getImg("public/images/whare-piwakawaka-2.png"),
+                    getImg("public/images/whare-piwakawaka-3.png")
                 ],
                 related: ["co-silo-ferry", "ultra-plant", "shadow-of-dream"]
             }

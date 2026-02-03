@@ -52,3 +52,17 @@
 [2026-02-03 21:51:46]   ✓ whare-piwakawaka
 [2026-02-03 21:51:46]   ✓ other-projects
 [2026-02-03 21:51:46] Next test in 1800 seconds...
+[2026-02-03 22:11:32] ✓ Site is UP (HTTP 200)
+[2026-02-03 22:11:32] Testing images...
+[2026-02-03 22:11:32]   ✗ co-silo-ferry-1.png - HTTP/2 404 
+[2026-02-03 22:11:33]   ✗ other-projects-cover.png - HTTP/2 404 
+[2026-02-03 22:11:33]   ✗ ultra-plant-1.png - HTTP/2 404 
+[2026-02-03 22:11:33]   ✗ shadow-of-dream-1.png - HTTP/2 404 
+[2026-02-03 22:11:33]   ✗ whare-piwakawaka-1.png - HTTP/2 404 
+[2026-02-03 22:11:33] Testing project detail pages...
+[2026-02-03 22:11:34]   ✓ co-silo-ferry
+[2026-02-03 22:11:34]   ✓ ultra-plant
+[2026-02-03 22:11:34]   ✓ shadow-of-dream
+[2026-02-03 22:11:34]   ✓ whare-piwakawaka
+[2026-02-03 22:11:34]   ✓ other-projects
+[2026-02-03 22:11:34] Next test in 1800 seconds...
