@@ -767,66 +767,275 @@ body {
 
 /* Responsive design */
 @media (max-width: 768px) {
+  /* Reduce animations on mobile for better performance */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.5s !important;
+    animation-timing-function: ease-out !important;
+  }
+
+  /* Disable grid animation on mobile */
+  .background-grid {
+    animation: none;
+  }
+
   .profile-layout {
-    width: 180px;
-    height: 140px;
+    width: 160px;
+    height: 120px;
   }
 
   .profile-image {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
 
   .profile-name {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .profile-description {
-    font-size: 11px;
-    max-width: 100px;
+    font-size: 10px;
+    max-width: 90px;
   }
 
   .nav-orbit {
-    width: 300px; /* Smaller orbit for mobile */
-    height: 300px;
+    width: 280px;
+    height: 280px;
   }
 
   .orbital-tab {
-    width: 70px;
-    height: 70px;
-    font-size: 10px;
+    width: 64px;
+    height: 64px;
+    font-size: 9px;
+    min-height: 44px;
+    min-width: 44px;
   }
 
-  /* Position on smaller 300px orbit */
+  /* Position on smaller 280px orbit */
   .orbital-tab[data-angle="0"] {
-    transform: translate(-50%, -50%) translateY(-150px);
+    transform: translate(-50%, -50%) translateY(-140px);
   }
 
   .orbital-tab[data-angle="120"] {
-    transform: translate(-50%, -50%) translateX(-130px) translateY(75px);
+    transform: translate(-50%, -50%) translateX(-121px) translateY(70px);
   }
 
   .orbital-tab[data-angle="240"] {
-    transform: translate(-50%, -50%) translateX(130px) translateY(75px);
+    transform: translate(-50%, -50%) translateX(121px) translateY(70px);
   }
 
-  .orbital-tab:hover {
-    transform: translate(-50%, -50%) translateY(-150px) scale(1.1);
+  .orbital-tab:hover,
+  .orbital-tab:focus {
+    transform: translate(-50%, -50%) translateY(-140px) scale(1.05);
   }
 
-  .orbital-tab[data-angle="120"]:hover {
-    transform: translate(-50%, -50%) translateX(-130px) translateY(75px) scale(1.1);
+  .orbital-tab[data-angle="120"]:hover,
+  .orbital-tab[data-angle="120"]:focus {
+    transform: translate(-50%, -50%) translateX(-121px) translateY(70px) scale(1.05);
   }
 
-  .orbital-tab[data-angle="240"]:hover {
-    transform: translate(-50%, -50%) translateX(130px) translateY(75px) scale(1.1);
+  .orbital-tab[data-angle="240"]:hover,
+  .orbital-tab[data-angle="240"]:focus {
+    transform: translate(-50%, -50%) translateX(121px) translateY(70px) scale(1.05);
   }
 
   .tab-icon {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .tab-label {
+    font-size: 8px;
+  }
+
+  /* Reduce camera shift effects on mobile */
+  .camera-viewport {
+    transition: transform 0.8s ease-out;
+  }
+
+  .camera-viewport.shift-architecture,
+  .camera-viewport.shift-biology,
+  .camera-viewport.shift-technology {
+    transform: scale(0.95);
+  }
+
+  .camera-viewport.shift-project-detail {
+    transform: translate(-20px, 0) scale(0.9);
+  }
+
+  /* Adjust project nodes for mobile */
+  .project-node .node-content {
+    width: 100px;
+    padding: 12px;
+  }
+
+  .project-image img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .project-node h4 {
+    font-size: 11px;
+  }
+
+  .tag {
+    font-size: 8px;
+    padding: 2px 4px;
+  }
+
+  /* Make touch targets larger */
+  .project-detail-node {
+    top: 10%;
+    right: 5%;
+    left: 5%;
+    width: auto;
+    max-height: 80vh;
+    padding: 20px;
+  }
+
+  .project-detail-close {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .project-detail-title {
+    font-size: 20px;
+  }
+
+  .project-detail-image {
+    height: 150px;
+  }
+
+  /* Reduce connection line effects */
+  .connection-line {
+    stroke-width: 1;
+  }
+
+  .connection-line.active {
+    stroke-width: 1.5;
+  }
+
+  /* Hide geometric guides on mobile */
+  .constellation-container::before,
+  .constellation-container::after {
+    display: none;
+  }
+
+  /* Improve scroll behavior */
+  .project-detail-node {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .profile-layout {
+    width: 140px;
+    height: 100px;
+  }
+
+  .profile-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .profile-name {
+    font-size: 12px;
+  }
+
+  .profile-description {
     font-size: 9px;
+    max-width: 80px;
+  }
+
+  .nav-orbit {
+    width: 240px;
+    height: 240px;
+  }
+
+  .orbital-tab {
+    width: 56px;
+    height: 56px;
+    font-size: 8px;
+  }
+
+  .orbital-tab[data-angle="0"] {
+    transform: translate(-50%, -50%) translateY(-120px);
+  }
+
+  .orbital-tab[data-angle="120"] {
+    transform: translate(-50%, -50%) translateX(-104px) translateY(60px);
+  }
+
+  .orbital-tab[data-angle="240"] {
+    transform: translate(-50%, -50%) translateX(104px) translateY(60px);
+  }
+
+  .tab-icon {
+    font-size: 12px;
+  }
+
+  .tab-label {
+    font-size: 7px;
+  }
+
+  /* Further reduce node sizes */
+  .project-node .node-content {
+    width: 90px;
+    padding: 10px;
+  }
+
+  .project-image img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .project-node h4 {
+    font-size: 10px;
+  }
+
+  .project-detail-node {
+    top: 5%;
+    padding: 16px;
+  }
+
+  .project-detail-title {
+    font-size: 18px;
+  }
+
+  .project-detail-image {
+    height: 120px;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .profile-layout {
+    width: 120px;
+    height: 80px;
+  }
+
+  .profile-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .nav-orbit {
+    width: 200px;
+    height: 200px;
+  }
+
+  .orbital-tab[data-angle="0"] {
+    transform: translate(-50%, -50%) translateY(-100px);
+  }
+
+  .orbital-tab[data-angle="120"] {
+    transform: translate(-50%, -50%) translateX(-87px) translateY(50px);
+  }
+
+  .orbital-tab[data-angle="240"] {
+    transform: translate(-50%, -50%) translateX(87px) translateY(50px);
   }
 }
