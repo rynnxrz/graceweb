@@ -23,9 +23,9 @@ class ConstellationPortfolio {
     this.projectData = {
       "co-silo-ferry": {
         title: "Co-Silo Ferry Station",
-        description: "A community-focused ferry station design integrating traditional silo structures with modern public spaces.",
+        description: "A community-focused ferry station design located in Wynyard Point, Auckland, surrounded by Pacific coral reefs.",
         details:
-          "This project reimagines industrial heritage structures as vibrant community hubs, combining maritime functionality with social gathering spaces.",
+          "Co-Silo Ferry Station is located in Wynyard Point, Auckland, New Zealand, surrounded by pacific coral reefs and oceanic sea creatures. The site was a reclaimed land where used to storage fuels. The design inspiration of the ferry station was to create a bridge between human and nature. The project started with researches around CO2 emission impact on ocean ecologies, showing how high CO2 levels cause ocean acidification and stop coral growth. The design incorporates sustainable elements and preserves the industrial heritage of the site.",
         image: "/images/projects/placeholder.svg",
         thumbnail: "/images/projects/placeholder.svg",
         categories: ["Architecture"],
@@ -34,9 +34,9 @@ class ConstellationPortfolio {
       },
       "other-projects": {
         title: "Other Projects",
-        description: "A collection of architectural and design works including UCL interview portfolio and various design explorations.",
+        description: "A collection of architectural and design works including UCL interview portfolio and undergraduate project collections.",
         details:
-          "This collection showcases diverse design projects ranging from academic work to experimental installations, demonstrating versatility in architectural thinking and design methodology.",
+          "This collection showcases diverse design projects ranging from academic work to experimental installations, demonstrating versatility in architectural thinking and design methodology. Includes UCL interview portfolio and various undergraduate design projects.",
         image: "/images/projects/placeholder.svg",
         thumbnail: "/images/projects/placeholder.svg",
         categories: ["Architecture", "Technology"],
@@ -45,20 +45,20 @@ class ConstellationPortfolio {
       },
       "ultra-plant": {
         title: "Ultra Plant",
-        description: "Exploration of extreme plant adaptations in urban environments and vertical farming systems.",
+        description: "A post-nuclear eco-recovery project in Sydney, exploring sustainable living through plant-based architecture and meta-verse integration.",
         details:
-          "Research into plant species capable of thriving in harsh urban conditions, featuring innovative vertical garden systems and hydroponic technologies.",
+          "Project Ultra-Plant took place to set the goal of recovering the eco-system of our planet by collecting and experimenting with the survived plants, aiming to save as many plant genes as possible and redevelop its potential for eco-recovery of the new era. Set in Year 2312, Sydney, Australia, 3 months after WW3, the project addresses global nuclear outbreak. It features living pods where residents are connected to meta-verse while their physical bodies are kept safe. The design includes mycelium experiments for sustainable delivery systems and a funding system connecting users with meta-verse through technology.",
         image: "/images/projects/placeholder.svg",
         thumbnail: "/images/projects/placeholder.svg",
         categories: ["Biology", "Architecture"],
         year: "2023",
-        collaborators: ["Botanical Research Institute"],
+        collaborators: ["Botanical Research Institute", "DSC"],
       },
       "shadow-of-dream": {
         title: "Shadow of Dream",
-        description: "An immersive installation exploring the relationship between light, shadow, and subconscious perception.",
+        description: "A conceptual billboard tower in Kyoto, exploring the subconscious mind and cultural significance in high-tech urban cities.",
         details:
-          "An experimental art installation that creates dreamlike environments through carefully orchestrated lighting and spatial design.",
+          "'Shadow of Dream' is a conceptual design based on human subconscious mind. Inspired by futuristic projects like Cyberpunk 2077, the project is set in a future scenario of an over-populated, high-technology society. Located in Kyoto, Japan, the tower creates a space of golden time for elderly people left behind by rapid technological advancement. The design explores brain waves and dream states as spatial organization principles, creating a gray space between reality and complete unconsciousness. Through site investigation of Shinto influences and modern urban development, the project imagines a fantasy of future city life in architectural form.",
         image: "/images/projects/placeholder.svg",
         thumbnail: "/images/projects/placeholder.svg",
         categories: ["Biology", "Technology"],
@@ -67,14 +67,14 @@ class ConstellationPortfolio {
       },
       "whare-piwakawaka": {
         title: "Whare Piwakawaka",
-        description: "A Maori-inspired community center celebrating the fantail bird and local cultural heritage.",
+        description: "A wildlife viewing platform on Urupukapuka Island, using sound to reconnect humans with nature and Maori heritage.",
         details:
-          "A culturally significant architectural project that honors Maori traditions while providing modern community facilities, featuring organic forms inspired by native wildlife.",
+          "Whare Piwakawaka is a view and touring platform for travelers on Urupukapuka Island, Bay of Islands, New Zealand. The project uses sound as media to connect human and species on the island to recreate early Maori beliefs around nature and human relationship. Part of Project Island Song wildlife sanctuary initiative, the design is built within Kanuka forest, changing with time and emerging into the landscape. Inspired by bird nest construction and Maori architectural traditions of temporary, reusable structures, the project questions how human architecture can learn from birds to integrate into the landscape. Named after the Piwakawaka (Fantail) bird, it celebrates the connection between human and native wildlife.",
         image: "/images/projects/placeholder.svg",
         thumbnail: "/images/projects/placeholder.svg",
         categories: ["Architecture", "Biology"],
         year: "2022",
-        collaborators: ["Maori Cultural Trust", "Community Development Alliance"],
+        collaborators: ["Maori Cultural Trust", "Community Development Alliance", "Project Island Song"],
         awards: ["Cultural Architecture Award 2022"],
       },
     }
