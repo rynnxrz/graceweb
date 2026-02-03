@@ -66,3 +66,59 @@
 [2026-02-03 22:11:34]   ✓ whare-piwakawaka
 [2026-02-03 22:11:34]   ✓ other-projects
 [2026-02-03 22:11:34] Next test in 1800 seconds...
+[2026-02-03 22:18:23] ✓ Site is UP (HTTP 200)
+[2026-02-03 22:18:23] Testing images...
+[2026-02-03 22:18:23] ✓ Site is UP (HTTP 200)
+[2026-02-03 22:18:23] Testing images...
+[2026-02-03 22:18:23]   ✗ co-silo-ferry-1.png - HTTP/2 404 
+[2026-02-03 22:18:23]   ✗ other-projects-cover.png - HTTP/2 404 
+[2026-02-03 22:18:23]   ✓ co-silo-ferry-1.png
+[2026-02-03 22:18:24]   ✗ ultra-plant-1.png - HTTP/2 404 
+[2026-02-03 22:18:24]   ✗ shadow-of-dream-1.png - HTTP/2 404 
+[2026-02-03 22:18:24]   ✓ other-projects-cover.png
+[2026-02-03 22:18:24]   ✗ whare-piwakawaka-1.png - HTTP/2 404 
+[2026-02-03 22:18:24] Testing project detail pages...
+[2026-02-03 22:18:24]   ✓ co-silo-ferry
+[2026-02-03 22:18:24]   ✓ ultra-plant
+[2026-02-03 22:18:24]   ✓ ultra-plant-1.png
+[2026-02-03 22:18:25]   ✓ shadow-of-dream
+[2026-02-03 22:18:25]   ✓ whare-piwakawaka
+[2026-02-03 22:18:25]   ✓ other-projects
+[2026-02-03 22:18:25]   ✓ shadow-of-dream-1.png
+[2026-02-03 22:18:25] Next test in 1800 seconds...
+[2026-02-03 22:18:26]   ✓ whare-piwakawaka-1.png
+[2026-02-03 22:18:26] Testing project detail pages...
+[2026-02-03 22:18:26]   ✓ co-silo-ferry
+[2026-02-03 22:18:26]   ✓ ultra-plant
+[2026-02-03 22:18:26]   ✓ shadow-of-dream
+[2026-02-03 22:18:26]   ✓ whare-piwakawaka
+[2026-02-03 22:18:26]   ✓ other-projects
+[2026-02-03 22:18:26] Next test in 1800 seconds...
+[2026-02-03 22:48:25] ✓ Site is UP (HTTP 200)
+[2026-02-03 22:48:25] Testing images...
+[2026-02-03 22:48:25]   ✗ co-silo-ferry-1.png - HTTP/2 404 
+[2026-02-03 22:48:26]   ✗ other-projects-cover.png - HTTP/2 404 
+[2026-02-03 22:48:26]   ✗ ultra-plant-1.png - HTTP/2 404 
+[2026-02-03 22:48:26]   ✗ shadow-of-dream-1.png - HTTP/2 404 
+[2026-02-03 22:48:26] ✓ Site is UP (HTTP 200)
+[2026-02-03 22:48:26] Testing images...
+[2026-02-03 22:48:26]   ✗ whare-piwakawaka-1.png - HTTP/2 404 
+[2026-02-03 22:48:26] Testing project detail pages...
+[2026-02-03 22:48:27]   ✓ co-silo-ferry-1.png
+[2026-02-03 22:48:27]   ✓ co-silo-ferry
+[2026-02-03 22:48:27]   ✓ ultra-plant
+[2026-02-03 22:48:27]   ✓ shadow-of-dream
+[2026-02-03 22:48:27]   ✓ other-projects-cover.png
+[2026-02-03 22:48:27]   ✓ whare-piwakawaka
+[2026-02-03 22:48:27]   ✓ other-projects
+[2026-02-03 22:48:27] Next test in 1800 seconds...
+[2026-02-03 22:48:28]   ✓ ultra-plant-1.png
+[2026-02-03 22:48:29]   ✓ shadow-of-dream-1.png
+[2026-02-03 22:48:29]   ✓ whare-piwakawaka-1.png
+[2026-02-03 22:48:29] Testing project detail pages...
+[2026-02-03 22:48:30]   ✓ co-silo-ferry
+[2026-02-03 22:48:30]   ✓ ultra-plant
+[2026-02-03 22:48:30]   ✓ shadow-of-dream
+[2026-02-03 22:48:30]   ✓ whare-piwakawaka
+[2026-02-03 22:48:30]   ✓ other-projects
+[2026-02-03 22:48:30] Next test in 1800 seconds...

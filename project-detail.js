@@ -16,7 +16,7 @@ class ProjectDetailPage {
     getImagePath(path) {
         // Get base path for GitHub Pages
         const pathname = window.location.pathname
-        const base = pathname.replace(/\/[^\/]*$/, '') + '/graceweb'
+        const base = pathname.replace(/\/[^\/]*$/, '')  // Remove filename, keep path
         return base + '/' + path
     }
     
