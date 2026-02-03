@@ -373,7 +373,8 @@ class ConstellationPortfolio {
 
     if (nodeType === "project") {
       const projectId = node.dataset.project
-      this.showProjectDetail(projectId)
+      // Navigate to project detail page
+      window.location.href = `project-detail.html?project=${projectId}`
     } else if (nodeType === "grace") {
       this.showAboutDetail()
     }
