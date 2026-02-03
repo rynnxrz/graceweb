@@ -27,7 +27,8 @@ class ConstellationPortfolio {
           "An innovative interface design for smart building management systems, combining architectural principles with cutting-edge technology.",
         details:
           "This project explores the intersection of physical architecture and digital interfaces, creating intuitive controls for building automation systems. The interface adapts to different building types and user needs, incorporating biometric feedback and environmental sensors.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Architecture", "Technology"],
         year: "2023",
         collaborators: ["Tech Innovations Lab", "Green Building Council"],
@@ -38,7 +39,8 @@ class ConstellationPortfolio {
         description: "Wearable sensors that respond to biological signals and environmental factors.",
         details:
           "Combining biological understanding with technological innovation to create responsive design solutions. These sensors monitor physiological responses and adapt environmental conditions in real-time.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Biology", "Technology"],
         year: "2023",
         collaborators: ["BioTech Research Institute"],
@@ -49,7 +51,8 @@ class ConstellationPortfolio {
         description: "Eco-friendly architectural designs focused on sustainability and environmental harmony.",
         details:
           "A comprehensive approach to sustainable architecture, incorporating natural materials, passive energy systems, and biodegradable construction methods.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Architecture"],
         year: "2022",
         collaborators: ["Sustainable Architecture Collective"],
@@ -60,7 +63,8 @@ class ConstellationPortfolio {
         description: "Interactive visualizations of complex biological ecosystems and their interconnections.",
         details:
           "Data-driven visualizations that help understand the complexity and beauty of natural ecosystems, used for education and conservation efforts.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Biology"],
         year: "2023",
         collaborators: ["National Geographic", "Conservation Biology Institute"],
@@ -70,7 +74,8 @@ class ConstellationPortfolio {
         description: "User interface design for AI-powered creative tools and applications.",
         details:
           "Exploring how artificial intelligence can enhance the creative design process through intuitive interfaces that learn from user behavior.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Technology"],
         year: "2023",
         collaborators: ["AI Research Lab", "Creative Technology Institute"],
@@ -80,7 +85,8 @@ class ConstellationPortfolio {
         description: "Workspace design that integrates natural elements with architectural innovation.",
         details:
           "Creating work environments that connect people with nature through thoughtful architectural design, improving productivity and well-being.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Architecture", "Biology"],
         year: "2022",
         collaborators: ["Workplace Innovation Lab"],
@@ -92,7 +98,8 @@ class ConstellationPortfolio {
           "A revolutionary building system that integrates biological processes with technological infrastructure.",
         details:
           "This groundbreaking project represents the convergence of all three disciplines, creating living buildings that adapt, grow, and respond to their environment through bio-technological integration.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Architecture", "Biology", "Technology"],
         year: "2023",
         collaborators: ["Future Cities Institute", "Bio-Architecture Lab", "Smart Systems Corp"],
@@ -103,7 +110,8 @@ class ConstellationPortfolio {
         description: "A community-focused ferry station design integrating traditional silo structures with modern public spaces.",
         details:
           "This project reimagines industrial heritage structures as vibrant community hubs, combining maritime functionality with social gathering spaces.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Architecture"],
         year: "2023",
         collaborators: ["Urban Design Studio"],
@@ -113,7 +121,8 @@ class ConstellationPortfolio {
         description: "Exploration of extreme plant adaptations in urban environments and vertical farming systems.",
         details:
           "Research into plant species capable of thriving in harsh urban conditions, featuring innovative vertical garden systems and hydroponic technologies.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Biology", "Architecture"],
         year: "2023",
         collaborators: ["Botanical Research Institute"],
@@ -123,7 +132,8 @@ class ConstellationPortfolio {
         description: "An immersive installation exploring the relationship between light, shadow, and subconscious perception.",
         details:
           "An experimental art installation that creates dreamlike environments through carefully orchestrated lighting and spatial design.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Biology", "Technology"],
         year: "2023",
         collaborators: ["Light Art Collective"],
@@ -133,7 +143,8 @@ class ConstellationPortfolio {
         description: "A Maori-inspired community center celebrating the fantail bird and local cultural heritage.",
         details:
           "A culturally significant architectural project that honors Maori traditions while providing modern community facilities, featuring organic forms inspired by native wildlife.",
-        image: "/placeholder.svg?height=400&width=600",
+        image: "/images/projects/placeholder.svg",
+        thumbnail: "/images/projects/placeholder.svg",
         categories: ["Architecture", "Biology"],
         year: "2022",
         collaborators: ["Maori Cultural Trust", "Community Development Alliance"],
