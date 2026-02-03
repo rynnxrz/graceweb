@@ -4,81 +4,56 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                         CEO (Main - Bob)                          │
-│              Coordinates all agents, continuous improvement      │
+│                    CEO (Main - Bob)                              │
+│               Coordinates ALL agents                              │
 └─────────────────────────────────────────────────────────────────┘
                                     │
          ┌────────────────────────────┼────────────────────────────┐
          ▼                            ▼                            ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Test Agent   │    │   Fix Agent    │    │  Report Agent   │
-│  (audit-web)   │    │  (Ralph)      │    │  (Progress)    │
+│RALPH WIGGUM ⚡💪│    │   Test Agent   │    │   Fix Agent    │
+│ CONTINUOUS!    │    │  (audit-web)   │    │  (Ralph)      │
 ├─────────────────┤    ├─────────────────┤    ├─────────────────┤
-│ Every 30 min   │    │ Every 5 min    │    │ Every 30 min    │
-│ • Site uptime   │    │ • Find issues  │    │ • Summarize     │
-│ • Images load   │    │ • Create spec │    │ • Report to     │
-│ • Pages work    │    │ • Fix issues  │    │   human         │
-│ • SEO health    │    │ • Commit fix  │    │ • Track progress │
+│ Every 1 min    │    │ Every 30 min   │    │ Every 5 min     │
+│ • Pick specs    │    │ • Site uptime   │    │ • Find issues   │
+│ • Output DONE   │    │ • Images load   │    │ • Create spec  │
+│ • NEVER STOP   │    │ • Pages work    │    │ • Fix issues   │
+│                │    │ • SEO health    │    │ • Commit       │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                            │                            │
          └────────────────────────────┼────────────────────────────┘
-                                      ▼
-                         ┌─────────────────────┐
-                         │   GitHub (main)      │
-                         │   Continuous Deploy  │
-                         └─────────────────────┘
+                                           │
+                                           ▼
+                         ┌─────────────────────────────────┐
+                         │      Report Agent ⭐ NEW         │
+                         │  Every 30 min - summarizes     │
+                         │  progress for human review    │
+                         └─────────────────────────────────┘
 ```
 
-## Agents
+## Ralph Wiggum - NEVER STOPS! ⚡💪
 
-### Test Agent
-**Skill:** audit-website  
-**Frequency:** Every 30 minutes  
-**Monitors:**
-- Website availability
-- Image loading
-- Project detail pages
-- SEO issues
-- Performance
+**Ralph 是最勤奋的 Agent，永远不停歇！**
 
-### Fix Agent  
-**Skill:** ralph-wiggum  
-**Frequency:** Every 5 minutes  
-**Responsibilities:**
-- Check for pending specs
-- Run Ralph loop
-- Fix issues found
-- Commit and push
+- Philosophy: Fresh context each loop
+- 每分钟检查一次 spec
+- 发现未完成的 spec 就 pick
+- 只有 100% 完成才输出 `<promise>DONE>`
+- 持续运行直到所有 specs 完成
 
-### Report Agent ⭐ NEW
-**Frequency:** Every 30 minutes  
-**Responsibilities:**
-- Generate progress summary
-- Report to human
-- Track completed work
-- Highlight pending tasks
+## 4 Agents
 
-## Workflow
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     CONTINUOUS CYCLE                             │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  Test → Report → CEO Decides → Fix (Ralph) → Test → ...       │
-│    ↑                                                          │
-│    └──────────────────────────────────────────────────────     │
-│                                                                 │
-│  Report Agent generates summary every 30 min                    │
-│  Human reviews → CEO coordinates fixes                          │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
+| Agent | 职责 | 频率 | 状态 |
+|-------|------|------|------|
+| 🤖 **Ralph Wiggum** | 持续挑选 spec | 每1分钟 | ⚡ RUNNING |
+| 🔍 Test Agent | 监控网站健康 | 每30分钟 | RUNNING |
+| 🔧 Fix Agent | 修复问题 | 每5分钟 | RUNNING |
+| 📊 Report Agent | 汇报进展 | 每30分钟 | RUNNING |
 
 ## Commands
 
 ```bash
-# Start all agents
+# Start all 4 agents
 bash scripts/ceo.sh start
 
 # Check status
@@ -86,21 +61,17 @@ bash scripts/ceo.sh status
 
 # Stop all
 bash scripts/ceo.sh stop
-
-# Manual operations
-bash scripts/ceo.sh test     # Run test
-bash scripts/ceo.sh fix      # Run fix cycle
-bash scripts/ceo.sh report   # Generate report
 ```
 
-## Output Files
-
-- `logs/test-agent.log` - Test results
-- `logs/fix-agent.log` - Fix operations
-- `logs/report-agent.log` - Report logs
-- `logs/progress-summary.md` - **Progress report (updated every 30 min)**
-
 ## Current Status
-- Test Agent: [Waiting to start]
-- Fix Agent: [Waiting to start]
-- Report Agent: [Waiting to start]
+
+```bash
+$ bash scripts/ceo.sh status
+========================================
+   GRACEWEB AGENT STATUS
+========================================
+✓ Ralph WIGGUM: RUNNING ⚡💪
+✓ Test Agent:   RUNNING
+✓ Fix Agent:    RUNNING
+✓ Report Agent: RUNNING
+```
