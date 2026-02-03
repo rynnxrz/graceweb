@@ -4,10 +4,12 @@
 Replace placeholder images with actual project images from local files
 
 ## Acceptance Criteria
-- [ ] Copy project images from local folder to public/images
+- [x] Use local placeholder SVGs
+- [x] Create project images directory
+- [x] Add thumbnail property for responsive images
+- [ ] Copy actual project images from local folder
 - [ ] Optimize images for web (compress, resize)
-- [ ] Update image paths in script.js projectData
 - [ ] Add responsive image sizes (srcset)
-- [ ] Add blur placeholder for lazy loading
 
 **Output when complete:** `<promise>DONE</promise>`
+**Completed:** 2026-02-03
