@@ -98,6 +98,47 @@ class ConstellationPortfolio {
         collaborators: ["Future Cities Institute", "Bio-Architecture Lab", "Smart Systems Corp"],
         awards: ["Interdisciplinary Innovation Award 2023", "Future Architecture Prize 2023"],
       },
+      "co-silo-ferry": {
+        title: "Co-Silo Ferry Station",
+        description: "A community-focused ferry station design integrating traditional silo structures with modern public spaces.",
+        details:
+          "This project reimagines industrial heritage structures as vibrant community hubs, combining maritime functionality with social gathering spaces.",
+        image: "/placeholder.svg?height=400&width=600",
+        categories: ["Architecture"],
+        year: "2023",
+        collaborators: ["Urban Design Studio"],
+      },
+      "ultra-plant": {
+        title: "Ultra Plant",
+        description: "Exploration of extreme plant adaptations in urban environments and vertical farming systems.",
+        details:
+          "Research into plant species capable of thriving in harsh urban conditions, featuring innovative vertical garden systems and hydroponic technologies.",
+        image: "/placeholder.svg?height=400&width=600",
+        categories: ["Biology", "Architecture"],
+        year: "2023",
+        collaborators: ["Botanical Research Institute"],
+      },
+      "shadow-of-dream": {
+        title: "Shadow of Dream",
+        description: "An immersive installation exploring the relationship between light, shadow, and subconscious perception.",
+        details:
+          "An experimental art installation that creates dreamlike environments through carefully orchestrated lighting and spatial design.",
+        image: "/placeholder.svg?height=400&width=600",
+        categories: ["Biology", "Technology"],
+        year: "2023",
+        collaborators: ["Light Art Collective"],
+      },
+      "whare-piwakawaka": {
+        title: "Whare Piwakawaka",
+        description: "A Maori-inspired community center celebrating the fantail bird and local cultural heritage.",
+        details:
+          "A culturally significant architectural project that honors Maori traditions while providing modern community facilities, featuring organic forms inspired by native wildlife.",
+        image: "/placeholder.svg?height=400&width=600",
+        categories: ["Architecture", "Biology"],
+        year: "2022",
+        collaborators: ["Maori Cultural Trust", "Community Development Alliance"],
+        awards: ["Cultural Architecture Award 2022"],
+      },
     }
 
     this.init()
