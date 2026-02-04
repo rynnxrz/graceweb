@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rynnxrz.github.io/graceweb/</loc>
-    <lastmod>2026-02-03</lastmod>
+    <loc>https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/</loc>
+    <lastmod>2026-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/#co-silo-ferry</loc>
+    <lastmod>2026-02-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/#ultra-plant</loc>
+    <lastmod>2026-02-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/#shadow-of-dream</loc>
+    <lastmod>2026-02-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/#whare-piwakawaka</loc>
+    <lastmod>2026-02-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

@@ -3,6 +3,7 @@
 <head>
     <base href="/graceweb/">
     <meta charset="UTF-8">
+    <meta name="theme-color" content="#111111">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Grace - Multidisciplinary Designer Portfolio. Architecture, Biology, and Technology projects showcase.">
     <meta name="author" content="Grace">
@@ -10,7 +11,7 @@
     
     <!-- Open Graph / Social Sharing -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://rynnxrz.github.io/graceweb/">
+    <meta property="og:url" content="https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/">
     <meta property="og:title" content="Grace - Multidisciplinary Designer">
     <meta property="og:description" content="Portfolio showcasing interdisciplinary design work in Architecture, Biology, and Technology.">
     <meta property="og:image" content="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
@@ -26,7 +27,7 @@
     <link rel="apple-touch-icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://rynnxrz.github.io/graceweb/">
+    <link rel="canonical" href="https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/">
     
     <link rel="preconnect" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,14 +41,14 @@
       "@type": "Person",
       "name": "Grace",
       "jobTitle": "Multidisciplinary Designer",
-      "url": "https://rynnxrz.github.io/graceweb/",
+      "url": "https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/",
       "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg",
       "description": "Designer bridging Architecture, Biology, and Technology"
     }
     </script>
 </head>
 <body>
-    <div class="camera-viewport" id="camera-viewport">
+    <div class="camera-viewport" id="camera-viewport" role="main" aria-label="Portfolio main content">
         <div class="constellation-container">
             <!-- Background grid for visual depth -->
             <div class="background-grid"></div>
@@ -85,7 +86,7 @@
                 <div class="node-glow"></div>
             </div>
             
-            <div class="node project-node" data-node="project" data-categories="architecture,technology" data-project="other-projects" tabindex="0" role="button" aria-label="Other Projects - UCL Interview Portfolio" aria-label="Other Projects - UCL Interview Portfolio">
+            <div class="node project-node" data-node="project" data-categories="architecture,technology" data-project="other-projects" tabindex="0" role="button" aria-label="Other Projects">
                 <div class="node-content">
                     <div class="project-image">
                         <img src="/public/images/projects/other-projects-cover.png" alt="Other Projects" loading="lazy" />
@@ -146,7 +147,7 @@
         </div>
         
         <!-- Orbital Navigation -->
-        <div class="orbital-nav">
+        <div class="orbital-nav" role="navigation" aria-label="Category filter navigation">
             <div class="nav-orbit">
                 <button class="orbital-tab" data-category="architecture" data-angle="0" aria-label="Filter by Architecture category" aria-pressed="false">
                     <span class="tab-icon">🏗️</span>
@@ -165,7 +166,7 @@
     </div>
     
     <!-- Project Detail Node -->
-    <div class="project-detail-node" id="project-detail-node" role="dialog" aria-modal="true" hidden>
+    <div class="project-detail-node" id="project-detail-node" role="dialog" aria-modal="true" aria-labelledby="project-detail-title" hidden>
         <button class="project-detail-close" id="project-detail-close" aria-label="Close project detail">&times;</button>
         <div class="project-detail-body" id="project-detail-body">
                 <!-- Content will be dynamically populated -->

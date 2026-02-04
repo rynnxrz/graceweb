@@ -414,6 +414,7 @@ class ConstellationPortfolio {
     fragment.appendChild(img)
 
     const title = document.createElement('h2')
+    title.id = 'project-detail-title'
     title.className = 'project-detail-title'
     title.textContent = project.title
     fragment.appendChild(title)
@@ -502,6 +503,7 @@ class ConstellationPortfolio {
 
     // Create title
     const title = document.createElement('h2')
+    title.id = 'project-detail-title'
     title.className = 'project-detail-title'
     title.textContent = 'Grace'
     fragment.appendChild(title)
@@ -585,14 +587,36 @@ class ConstellationPortfolio {
 
   startConnectionUpdates() {
     let lastUpdate = 0
+    let isRunning = true
+    
     const updateConnections = (timestamp) => {
+      // Stop when page is not visible
+      if (!isRunning || document.hidden) {
+        return
+      }
+      
       // Throttle updates to 30fps instead of 10fps for better performance
       if (timestamp - lastUpdate >= 33) {
         this.updateAllConnections()
         lastUpdate = timestamp
       }
-      requestAnimationFrame(updateConnections)
+      
+      if (isRunning && !document.hidden) {
+        requestAnimationFrame(updateConnections)
+      }
     }
+    
+    // Handle visibility change
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        isRunning = false
+      } else {
+        isRunning = true
+        lastUpdate = 0
+        requestAnimationFrame(updateConnections)
+      }
+    })
+    
     requestAnimationFrame(updateConnections)
   }
 }
