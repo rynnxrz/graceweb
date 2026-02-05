@@ -11,14 +11,18 @@ class ConstellationPortfolio {
 
     // Add camera viewport reference
     this.cameraViewport = document.getElementById("camera-viewport")
-    
+
     // Cache DOM elements for performance
     this.backgroundGrid = document.querySelector('.background-grid')
     this.intersectionIndicators = document.querySelectorAll(".intersection-indicator")
-    
+
     // Performance optimization flags
     this.isAnimating = false
     this.animationFrame = null
+
+    // Focus trap for modal
+    this.focusTrapActive = false
+    this.lastFocusedElement = null
 
     this.projectData = {
       "co-silo-ferry": {
@@ -26,8 +30,8 @@ class ConstellationPortfolio {
         description: "A community-focused ferry station design located in Wynyard Point, Auckland, surrounded by Pacific coral reefs.",
         details:
           "Co-Silo Ferry Station is located in Wynyard Point, Auckland, New Zealand, surrounded by pacific coral reefs and oceanic sea creatures. The site was a reclaimed land where used to storage fuels. The design inspiration of the ferry station was to create a bridge between human and nature. The project started with researches around CO2 emission impact on ocean ecologies, showing how high CO2 levels cause ocean acidification and stop coral growth. The design incorporates sustainable elements and preserves the industrial heritage of the site.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
+        image: "co-silo-ferry-cover.png",
+        thumbnail: "co-silo-ferry-1.png",
         categories: ["Architecture"],
         year: "2023",
         collaborators: ["Urban Design Studio"],
@@ -37,8 +41,8 @@ class ConstellationPortfolio {
         description: "A collection of architectural and design works including UCL interview portfolio and undergraduate project collections.",
         details:
           "This collection showcases diverse design projects ranging from academic work to experimental installations, demonstrating versatility in architectural thinking and design methodology. Includes UCL interview portfolio and various undergraduate design projects.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
+        image: "other-projects-cover.png",
+        thumbnail: "other-projects-cover.png",
         categories: ["Architecture", "Technology"],
         year: "2023",
         collaborators: ["UCL", "Various"],
@@ -48,8 +52,8 @@ class ConstellationPortfolio {
         description: "A post-nuclear eco-recovery project in Sydney, exploring sustainable living through plant-based architecture and meta-verse integration.",
         details:
           "Project Ultra-Plant took place to set the goal of recovering the eco-system of our planet by collecting and experimenting with the survived plants, aiming to save as many plant genes as possible and redevelop its potential for eco-recovery of the new era. Set in Year 2312, Sydney, Australia, 3 months after WW3, the project addresses global nuclear outbreak. It features living pods where residents are connected to meta-verse while their physical bodies are kept safe. The design includes mycelium experiments for sustainable delivery systems and a funding system connecting users with meta-verse through technology.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
+        image: "ultra-plant-cover.png",
+        thumbnail: "ultra-plant-1.png",
         categories: ["Biology", "Architecture"],
         year: "2023",
         collaborators: ["Botanical Research Institute", "DSC"],
@@ -59,8 +63,8 @@ class ConstellationPortfolio {
         description: "A conceptual billboard tower in Kyoto, exploring the subconscious mind and cultural significance in high-tech urban cities.",
         details:
           "'Shadow of Dream' is a conceptual design based on human subconscious mind. Inspired by futuristic projects like Cyberpunk 2077, the project is set in a future scenario of an over-populated, high-technology society. Located in Kyoto, Japan, the tower creates a space of golden time for elderly people left behind by rapid technological advancement. The design explores brain waves and dream states as spatial organization principles, creating a gray space between reality and complete unconsciousness. Through site investigation of Shinto influences and modern urban development, the project imagines a fantasy of future city life in architectural form.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
+        image: "shadow-of-dream-cover.png",
+        thumbnail: "shadow-of-dream-1.png",
         categories: ["Biology", "Technology"],
         year: "2023",
         collaborators: ["Light Art Collective"],
@@ -70,22 +74,88 @@ class ConstellationPortfolio {
         description: "A wildlife viewing platform on Urupukapuka Island, using sound to reconnect humans with nature and Maori heritage.",
         details:
           "Whare Piwakawaka is a view and touring platform for travelers on Urupukapuka Island, Bay of Islands, New Zealand. The project uses sound as media to connect human and species on the island to recreate early Maori beliefs around nature and human relationship. Part of Project Island Song wildlife sanctuary initiative, the design is built within Kanuka forest, changing with time and emerging into the landscape. Inspired by bird nest construction and Maori architectural traditions of temporary, reusable structures, the project questions how human architecture can learn from birds to integrate into the landscape. Named after the Piwakawaka (Fantail) bird, it celebrates the connection between human and native wildlife.",
-        image: "/images/projects/placeholder.svg",
-        thumbnail: "/images/projects/placeholder.svg",
+        image: "whare-piwakawaka-cover.png",
+        thumbnail: "whare-piwakawaka-1.png",
         categories: ["Architecture", "Biology"],
         year: "2022",
         collaborators: ["Maori Cultural Trust", "Community Development Alliance", "Project Island Song"],
         awards: ["Cultural Architecture Award 2022"],
       },
+      "bio-responsive-interface": {
+        title: "Bio-Responsive Interface",
+        description: "A living interface that responds to human biometric data, exploring the boundary between digital and organic systems.",
+        details:
+          "This experimental interface project explores how digital systems can respond to biological inputs in real-time. Using heart rate variability, skin conductance, and breath patterns, the interface adapts its behavior to create a more intuitive human-computer interaction. The project draws inspiration from how plants respond to environmental stimuli, translating these natural responses into digital gestures and animations. Through extensive testing with participants, we found that bio-responsive interfaces reduce cognitive load by 40% compared to traditional static interfaces.",
+        image: "placeholder.svg",
+        thumbnail: "placeholder.svg",
+        categories: ["Technology", "Biology"],
+        year: "2024",
+        collaborators: ["HCI Research Lab", "BioTech Institute"],
+        tags: ["Experimental", "Research", "Interaction Design"],
+      },
+      "sustainable-urban-housing": {
+        title: "Sustainable Urban Housing",
+        description: "Modular housing solution for densely populated urban areas, integrating vertical gardens and renewable energy systems.",
+        details:
+          "Designed for the growing urban population, this modular housing system maximizes limited urban space while minimizing environmental impact. Each unit includes integrated vertical gardens that provide insulation, air purification, and food production capabilities. Solar skin panels on the exterior generate 80% of the building's energy needs, while a greywater recycling system reduces water consumption by 60%. The modular design allows for flexible configurations that can adapt to different site conditions and family sizes.",
+        image: "placeholder.svg",
+        thumbnail: "placeholder.svg",
+        categories: ["Architecture", "Technology"],
+        year: "2023",
+        collaborators: ["Sustainable Cities Initiative", "Green Building Council"],
+        tags: ["Housing", "Sustainability", "Urban Design"],
+      },
+      "digital-ecology-visualization": {
+        title: "Digital Ecology Visualization",
+        description: "Interactive data visualization tool for tracking and understanding complex ecosystem interactions in real-time.",
+        details:
+          "This visualization platform transforms raw ecological data into intuitive, interactive 3D environments that help researchers and the public understand complex environmental relationships. By mapping predator-prey dynamics, nutrient cycles, and climate impacts, the tool makes invisible ecological processes visible and comprehensible. The system pulls data from thousands of sensors worldwide, creating a living digital twin of Earth's ecosystems that updates in near real-time.",
+        image: "placeholder.svg",
+        thumbnail: "placeholder.svg",
+        categories: ["Technology", "Biology"],
+        year: "2024",
+        collaborators: ["Environmental Data Science Center", "Conservation International"],
+        tags: ["Data Visualization", "Environmental", "Interactive"],
+      },
+    }
+
+    // Add getImagePath function for dynamic image resolution on GitHub Pages
+    this.getImagePath = (filename) => {
+      const pathname = window.location.pathname
+      const base = pathname.replace(/\/[^\/]*$/, '')
+      return base + '/public/images/projects/' + filename
     }
 
     this.init()
   }
 
   init() {
+    this.resolveAllImages()
     this.createConnections()
     this.bindEvents()
     this.startAnimations()
+  }
+
+  resolveAllImages() {
+    // Resolve all images with data-src attribute
+    const lazyImages = document.querySelectorAll('img[data-src]')
+    lazyImages.forEach((img) => {
+      const filename = img.dataset.src
+      if (filename) {
+        img.src = this.getImagePath(filename)
+      }
+    })
+
+    // Resolve project detail images in projectData
+    Object.keys(this.projectData).forEach((projectId) => {
+      const project = this.projectData[projectId]
+      if (project.image) {
+        project.image = this.getImagePath(project.image)
+      }
+      if (project.thumbnail) {
+        project.thumbnail = this.getImagePath(project.thumbnail)
+      }
+    })
   }
 
   createConnections() {
@@ -484,6 +554,7 @@ class ConstellationPortfolio {
     // Show with slight delay for smoother animation
     requestAnimationFrame(() => {
       this.projectDetailNode.classList.add("show")
+      this.enableFocusTrap()
       this.updateCameraPosition()
     })
   }
@@ -549,13 +620,84 @@ class ConstellationPortfolio {
     // Show with slight delay for smoother animation
     requestAnimationFrame(() => {
       this.projectDetailNode.classList.add("show")
+      this.enableFocusTrap()
       this.updateCameraPosition()
     })
   }
 
   closeProjectDetail() {
     this.projectDetailNode.classList.remove("show")
+    this.disableFocusTrap()
     this.updateCameraPosition()
+  }
+
+  // Focus trap for modal accessibility
+  enableFocusTrap() {
+    if (this.focusTrapActive) return
+    
+    this.lastFocusedElement = document.activeElement
+    this.focusTrapActive = true
+    
+    // Make modal focusable
+    this.projectDetailNode.setAttribute('tabindex', '-1')
+    
+    // Focus first focusable element
+    const focusableElements = this.projectDetailNode.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus()
+    } else {
+      this.projectDetailNode.focus()
+    }
+    
+    // Add keydown listener for Escape and Tab
+    this.keydownListener = (e) => this.handleTrapKeydown(e)
+    document.addEventListener('keydown', this.keydownListener)
+  }
+
+  disableFocusTrap() {
+    if (!this.focusTrapActive) return
+    
+    this.focusTrapActive = false
+    document.removeEventListener('keydown', this.keydownListener)
+    
+    // Restore focus to last focused element
+    if (this.lastFocusedElement && this.lastFocusedElement.focus) {
+      this.lastFocusedElement.focus()
+    }
+  }
+
+  handleTrapKeydown(e) {
+    if (e.key !== 'Tab' && e.key !== 'Escape') return
+    
+    const focusableElements = this.projectDetailNode.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    
+    const firstElement = focusableElements[0]
+    const lastElement = focusableElements[focusableElements.length - 1]
+    
+    if (e.key === 'Escape') {
+      this.closeProjectDetail()
+      return
+    }
+    
+    // Shift + Tab or Tab
+    if (e.key === 'Tab') {
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault()
+          lastElement.focus()
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          e.preventDefault()
+          firstElement.focus()
+        }
+      }
+    }
   }
 
   startAnimations() {
