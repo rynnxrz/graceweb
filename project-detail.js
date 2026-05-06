@@ -1,257 +1,269 @@
-// Project Detail Page JavaScript
+/* =========================================================================
+   project-detail.js
+   Renders a specimen dossier — vertical plate sequence built from the
+   PDF source-page renders. Adjacent-specimen nav at the foot.
+   ========================================================================= */
 
-class ProjectDetailPage {
-    constructor() {
-        this.projectId = this.getProjectId()
-        this.projectData = this.getProjectData()
-        
-        this.init()
-    }
-    
-    getProjectId() {
-        const params = new URLSearchParams(window.location.search)
-        return params.get('project') || 'co-silo-ferry'
-    }
-    
-    getImagePath(path) {
-        // Get base path for GitHub Pages
-        const pathname = window.location.pathname
-        const base = pathname.replace(/\/[^\/]*$/, '')  // Remove filename, keep path
-        return base + '/public/images/projects/' + path
-    }
-    
-    getProjectData() {
-        const getImg = (path) => this.getImagePath(path)
-        return {
-            "co-silo-ferry": {
-                title: "Co-Silo Ferry Station",
-                tagline: "A bridge between human and nature in Wynyard Point, Auckland",
-                heroImage: getImg("co-silo-ferry-cover.png"),
-                location: "Wynyard Point, Auckland, New Zealand",
-                year: "2023",
-                category: "Architecture",
-                client: "Urban Design Studio",
-                area: "2,500 m²",
-                description: `
-                    <p>Co-Silo Ferry Station is located in Wynyard Point, Auckland, New Zealand, surrounded by Pacific coral reefs and oceanic sea creatures. The site was a reclaimed land where fuel was once stored.</p>
-                    <p>The design inspiration of the ferry station was to create a bridge between human and nature while preserving the industrial heritage of the site. The project began with research around CO2 emission impact on ocean ecologies, showing how high CO2 levels cause ocean acidification and stop coral growth.</p>
-                    <p>The design incorporates sustainable elements including consideration for rising sea levels, porosity optimization, and marine life preservation. The architectural language balances the robust character of the original industrial structures with the delicate nature of the surrounding marine ecosystem.</p>
-                `,
-                gallery: [
-                    getImg("co-silo-ferry-cover.png"),
-                    getImg("co-silo-ferry-1.png"),
-                    getImg("co-silo-ferry-2.png"),
-                    getImg("co-silo-ferry-3.png")
-                ],
-                related: ["ultra-plant", "whare-piwakawaka", "shadow-of-dream"]
-            },
-            "other-projects": {
-                title: "Other Projects",
-                tagline: "A collection of architectural works and design explorations",
-                heroImage: getImg("other-projects-cover.png"),
-                location: "Various",
-                year: "2023",
-                category: "Architecture + Technology",
-                client: "UCL & Various",
-                area: "Various",
-                description: `
-                    <p>This collection showcases diverse design projects ranging from academic work to experimental installations, demonstrating versatility in architectural thinking and design methodology.</p>
-                    <p>Includes the UCL interview portfolio and various undergraduate design projects that explore the intersection of traditional architectural principles with contemporary digital tools and technologies.</p>
-                `,
-                gallery: [
-                    getImg("other-projects-cover.png")
-                ],
-                related: ["co-silo-ferry", "shadow-of-dream", "ultra-plant"]
-            },
-            "ultra-plant": {
-                title: "Ultra Plant",
-                tagline: "Post-nuclear eco-recovery through plant-based architecture",
-                heroImage: getImg("ultra-plant-cover.png"),
-                location: "Sydney, Australia",
-                year: "2312 (fictional)",
-                category: "Biology + Architecture",
-                client: "DSC - Disarmament & Security Centre",
-                area: "150,000 m²",
-                description: `
-                    <p>Set in Year 2312, Sydney, Australia, three months after a global nuclear outbreak, Ultra Plant addresses the challenge of ecological recovery in a post-apocalyptic world.</p>
-                    <p>The project features an innovative living pod system where residents are connected to a meta-verse while their physical bodies are kept safe in sustainable habitats. The design includes groundbreaking mycelium experiments for creating sustainable delivery systems that connect individual living units.</p>
-                    <p>Through a funding system connecting users with the meta-verse through technology, the project explores new relationships between human existence and natural systems. The architectural language combines organic growth patterns with structural integrity requirements of a resilient community.</p>
-                `,
-                gallery: [
-                    getImg("ultra-plant-cover.png"),
-                    getImg("ultra-plant-1.png"),
-                    getImg("ultra-plant-2.png"),
-                    getImg("ultra-plant-3.png")
-                ],
-                related: ["shadow-of-dream", "co-silo-ferry", "whare-piwakawaka"]
-            },
-            "shadow-of-dream": {
-                title: "Shadow of Dream",
-                tagline: "A billboard tower exploring the subconscious mind in Kyoto",
-                heroImage: getImg("shadow-of-dream-cover.png"),
-                location: "Kyoto, Japan",
-                year: "2023",
-                category: "Biology + Technology",
-                client: "Light Art Collective",
-                area: "8,500 m²",
-                description: `
-                    <p>Shadow of Dream is a conceptual billboard tower located in Kyoto, Japan, exploring the relationship between architecture and the human subconscious mind.</p>
-                    <p>Inspired by futuristic visions and the spiritual traditions of Japanese culture, the tower creates a space for elderly people who have been left behind by the rapid advancement of technology. The design uses brain wave frequencies and dream states as principles for spatial organization.</p>
-                    <p>The tower creates a "gray space" between reality and complete unconsciousness, where visitors enter different areas guided by their brain waves. The architectural form reflects the chaotic yet structured nature of dreams, with some spaces having clear functions while others follow no conventional rules.</p>
-                `,
-                gallery: [
-                    getImg("shadow-of-dream-cover.png"),
-                    getImg("shadow-of-dream-1.png"),
-                    getImg("shadow-of-dream-2.png"),
-                    getImg("shadow-of-dream-3.png")
-                ],
-                related: ["ultra-plant", "whare-piwakawaka", "co-silo-ferry"]
-            },
-            "whare-piwakawaka": {
-                title: "Whare Piwakawaka",
-                tagline: "A wildlife sanctuary celebrating Maori heritage and bird life",
-                heroImage: getImg("whare-piwakawaka-cover.png"),
-                location: "Urupukapuka Island, Bay of Islands, New Zealand",
-                year: "2022",
-                category: "Architecture + Biology",
-                client: "Maori Cultural Trust / Project Island Song",
-                area: "320 m²",
-                description: `
-                    <p>Whare Piwakawaka is a view and touring platform on Urupukapuka Island, Bay of Islands, New Zealand. Named after the Piwakawaka (Fantail) bird, the project uses sound as a medium to reconnect humans with nature and recreate early Maori beliefs about the relationship between people and the environment.</p>
-                    <p>The design is built within a Kanuka forest, allowing the architecture to change with time and emerge into the landscape. Inspired by both bird nest construction and traditional Maori architectural practices of temporary, reusable structures, the project questions how human architecture can learn from nature to become truly integrated with its environment.</p>
-                    <p>Part of the larger Project Island Song wildlife sanctuary initiative, the architecture serves both human visitors and native wildlife, creating zones that respond to different bird behaviors and soundscapes.</p>
-                `,
-                gallery: [
-                    getImg("whare-piwakawaka-cover.png"),
-                    getImg("whare-piwakawaka-1.png"),
-                    getImg("whare-piwakawaka-2.png"),
-                    getImg("whare-piwakawaka-3.png")
-                ],
-                related: ["co-silo-ferry", "ultra-plant", "shadow-of-dream"]
-            }
-        }
-    }
-    
-    init() {
-        const project = this.projectData[this.projectId]
-        
-        if (!project) {
-            this.showError()
-            return
-        }
-        
-        this.renderProject(project)
-        this.renderGallery(project)
-        this.renderRelated(project)
-        this.setupNavigation()
-    }
-    
-    renderProject(project) {
-        // Update page title
-        document.title = `${project.title} - Grace Portfolio`
-        
-        // Hero
-        document.getElementById('hero-image').src = project.heroImage
-        document.getElementById('hero-image').alt = project.title
-        document.getElementById('project-title').textContent = project.title
-        document.getElementById('project-tagline').textContent = project.tagline
-        document.getElementById('nav-title').textContent = project.title
-        
-        // Details
-        const detailsHtml = `
-            <div class="detail-item">
-                <div class="detail-label">Location</div>
-                <div class="detail-value">${project.location}</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Year</div>
-                <div class="detail-value">${project.year}</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Category</div>
-                <div class="detail-value">${project.category}</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Client</div>
-                <div class="detail-value">${project.client}</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Area</div>
-                <div class="detail-value">${project.area}</div>
-            </div>
-        `
-        document.getElementById('project-details').innerHTML = detailsHtml
-        
-        // Description
-        document.getElementById('project-description').innerHTML = project.description
-    }
-    
-    renderGallery(project) {
-        const gallery = document.getElementById('gallery-grid')
-        gallery.innerHTML = project.gallery.map((src, index) => `
-            <div class="gallery-item">
-                <img src="${src}" alt="${project.title} - Image ${index + 1}" loading="lazy">
-            </div>
-        `).join('')
-    }
-    
-    renderRelated(project) {
-        const related = document.getElementById('related-projects')
-        related.innerHTML = project.related.map(id => {
-            const p = this.projectData[id]
-            if (!p) return ''
-            return `
-                <a href="project-detail.html?project=${id}" class="related-item">
-                    <img src="${p.heroImage}" alt="${p.title}">
-                    <div class="related-item-content">
-                        <h3 class="related-item-title">${p.title}</h3>
-                        <span class="related-item-category">${p.category}</span>
-                    </div>
-                </a>
-            `
-        }).join('')
-    }
-    
-    setupNavigation() {
-        // Show nav title on scroll
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.project-nav')
-            const title = document.getElementById('nav-title')
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(0,0,0,0.95)'
-                title.style.opacity = '1'
-            } else {
-                nav.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)'
-                title.style.opacity = '0'
-            }
-        })
-        
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault()
-                const target = document.querySelector(this.getAttribute('href'))
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' })
-                }
-            })
-        })
-    }
-    
-    showError() {
-        document.body.innerHTML = `
-            <div style="display:flex;align-items:center;justify-content:center;height:100vh;text-align:center;padding:24px;">
-                <div>
-                    <h1>Project Not Found</h1>
-                    <p style="color:#888;margin-top:16px;">The project you're looking for doesn't exist.</p>
-                    <a href="index.html" style="display:inline-block;margin-top:24px;color:#fff;text-decoration:none;border:1px solid #333;padding:12px 24px;">Back to Portfolio</a>
-                </div>
-            </div>
-        `
-    }
-}
+(() => {
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    new ProjectDetailPage()
-})
+  const BASE = 'public/images/projects/extracted-portfolio/';
+
+  /* --- Project dossiers -------------------------------------------- */
+
+  // Each project's source-pages were dumped as p##.webp. Marginalia is
+  // hand-curated to read like field notes.
+  const DOSSIERS = {
+
+    'heishui-river-resort': {
+      no: 'spec.001 / 2023',
+      name: 'Heishui River Resort',
+      binomial: 'Aquaria nigra',
+      kind: 'Hospitality · Practice — Concept stage, design team',
+      meta: 'Guangxi, China · 03–08 / 2023 · ≈100 rooms, 50 homestays',
+      abstract:
+        "Hospitality grafted to the Blackwater River. The architecture retreats into its environment — dark tones, mountain-inspired forms, native vegetation. As part of the design team I worked the early stage: site planning, room typology, and the massing strategy that responded to topography and river orientation. The masterplan won its competition and is now under construction.",
+      folder: 'heishui-river-resort',
+      pages: [
+        { p: 'p04', note: 'Project leaf — Blackwater River, brief' },
+        { p: 'p05', note: 'Massing studies & site master plan' },
+        { p: 'p06', note: 'Detail drawing — stone, vegetation, water' },
+        { p: 'p07', note: 'Plans & renders — concept and room typology' },
+      ],
+    },
+
+    'les-chardonneuses': {
+      no: 'spec.002 / 2026',
+      name: 'Les-Chardonneuses',
+      binomial: 'Cardus couture',
+      kind: 'Couture · Collaboration — Germanier Paris, Haute Couture SS26',
+      meta: 'Paris, France · 12 / 2025 – 01 / 2026 · headpiece × 3',
+      abstract:
+        "A wearable micro-structure for Germanier’s SS26 — the lifecycle of a flower (growth, collapse, decay) translated into a runway-ready couture headpiece. At Ivy J Studio I supported design through fast 3D iteration and parametric exploration: lace-like digital textures, controlled deformations, internal frameworks resolved through repeated 3D-print prototyping.",
+      folder: 'les-chardonneuses',
+      pages: [
+        { p: 'p08', note: 'Backstage — three headpieces, detail' },
+        { p: 'p09', note: 'Digital design, 3D-print details, runway' },
+      ],
+    },
+
+    'seeds-of-change': {
+      no: 'spec.003 / 2025',
+      name: 'Seeds of Change',
+      binomial: 'Semina mutabilis',
+      kind: 'Spatial · Exhibition design — Curation team',
+      meta: 'London, UK · 10 / 2025',
+      abstract:
+        "Spatial and material setup for an immersive exhibition on the transformative power of nature. I worked the physical build — wall display layouts, mounting techniques, organic-aligned material sourcing — and oversaw graphic production: posters, stickers, postcards, flyers. On-site coordination during the show.",
+      folder: 'seeds-of-change',
+      pages: [
+        { p: 'p10', note: 'Opening night, wearables, table display' },
+        { p: 'p11', note: 'Wall display details, peripheral products' },
+      ],
+    },
+
+    'tide-rewoven': {
+      no: 'spec.004 / 2025',
+      name: 'Tide-ReWoven',
+      binomial: 'Marina contexta',
+      kind: 'Bio-integrated · YR 2 Master · Group research project',
+      meta: 'Aberdeen Harbour, Hong Kong · 10 / 2024 – 06 / 2025',
+      abstract:
+        "Aberdeen waterfront re-imagined as a floating, adaptive market that responds to tides, light, and ecological pressure. Roof structures and membranes — fishnet-chitosan composites — shift in porosity and density across the day, indexed to Micrasterias morphology and trained against algal photo-tropism via a GAN. A circular spatial system that grows with environmental rhythm.",
+      folder: 'tide-rewoven',
+      pages: [
+        { p: 'p12', note: 'Project leaf — bird-eye render' },
+        { p: 'p13', note: 'Early site analysis — Aberdeen waterfront' },
+        { p: 'p14', note: 'Fish-market design overview, material life-cycle' },
+        { p: 'p15', note: 'Dynamic design — tidal section & purification pods' },
+        { p: 'p16', note: 'ML with algae morphology — lab data, GAN output' },
+        { p: 'p17', note: 'Roof tile system — algae-driven parametric design' },
+      ],
+    },
+
+    'mycoterra': {
+      no: 'spec.005 / 2024',
+      name: 'MycoTerra',
+      binomial: 'Mycelium aedificans',
+      kind: 'Bio-integrated · YR 1 Master · Group research project',
+      meta: 'London, UK · 02–08 / 2024 · with Yingying Yan & Yining Loh',
+      abstract:
+        "Architecture as participant rather than shelter. MycoTerra integrates mycelium fabrication with earth construction, embracing growth, decay, and renewal. Computationally tuned through Grasshopper / Galapagos against CFD simulations for airflow, humidity, and temperature, then prototyped and tested for structural and biological viability.",
+      folder: 'mycoterra',
+      pages: [
+        { p: 'p18', note: 'Section — material / crystallisation zone' },
+        { p: 'p19', note: 'Project leaf — entrance perspective' },
+        { p: 'p20', note: 'Design optimisation, prototype printing' },
+        { p: 'p21', note: 'Module fabrication, geometric variation' },
+        { p: 'p22', note: 'Programme & spatial typology' },
+        { p: 'p23', note: 'Biological growth, mycelial expression' },
+        { p: 'p24', note: 'Final assembly, inhabitation' },
+      ],
+    },
+
+    'co-silo-ferry-station': {
+      no: 'spec.006 / 2022',
+      name: 'Co-Silo Ferry Station',
+      binomial: 'Silo coralinus',
+      kind: 'Civic · YR 3 Undergraduate design project',
+      meta: 'Wynyard Point, Auckland, New Zealand · 07–10 / 2022',
+      abstract:
+        'Six existing fuel silos on reclaimed land, reversed: rather than producing CO₂, they capture it. The ferry station becomes a threshold between human and reef — passengers asked to read the decay of coral as the architecture itself slowly opens, calcifies, and re-attaches to the bay.',
+      folder: 'co-silo-ferry-station',
+      pages: [
+        { p: 'p25', note: 'Project leaf — underwater perspective' },
+        { p: 'p26', note: 'CO₂ research — coral acidification & symbiosis' },
+        { p: 'p27', note: 'Site & silo programme' },
+        { p: 'p28', note: 'Plan, section, architectural strategy' },
+        { p: 'p29', note: 'Material study, façade detail' },
+        { p: 'p30', note: 'Interior atmospheres' },
+        { p: 'p31', note: 'Reef–quay interface, final renders' },
+      ],
+    },
+
+    'project-ecoflow': {
+      no: 'spec.007 / 2023',
+      name: 'Project EcoFlow',
+      binomial: 'Bryophyta aedicula',
+      kind: 'Bio-integrated · YR 1 Master · Individual research project',
+      meta: 'Oxford St, London, UK · 09 / 2023 – 01 / 2024',
+      abstract:
+        'A water-retaining moss façade for dense urban skin — tested against the heat-island of Oxford Street. Surface area, not floor area, becomes the unit. Architecture as metabolic system: existing buildings re-skinned to invite an interspecies network into the city.',
+      folder: 'project-ecoflow',
+      pages: [
+        { p: 'p32', note: 'Project leaf — narrative collage' },
+        { p: 'p33', note: 'Façade studies — moss patches, growth pattern' },
+      ],
+    },
+
+    'project-ultra-plant': {
+      no: 'spec.008 / 2022',
+      name: 'Project Ultra-Plant',
+      binomial: 'Symbiosis postnuclearis',
+      kind: 'Speculative · YR 3 Undergraduate design project',
+      meta: 'Auckland CBD, New Zealand (post-WW3) · 03–05 / 2022',
+      abstract:
+        'A modular living system in a post-nuclear Auckland: humans and plants share expandable habitats whose vein networks transfer energy, resources, and slowly restore the surrounding ecology. Residents are linked to a meta-verse layer through biological–digital exchange; design lives in four evolutionary phases.',
+      folder: 'project-ultra-plant',
+      pages: [
+        { p: 'p34', note: 'Project leaf — background, four phases' },
+        { p: 'p35', note: 'Site development, world map of damage' },
+        { p: 'p36', note: 'System diagram, user manual' },
+        { p: 'p37', note: 'Pod-and-vein architecture, final views' },
+      ],
+    },
+
+    'neptunes-dawn': {
+      no: 'spec.009 / 2024',
+      name: "Neptune's Dawn",
+      binomial: 'Neptuni aurora',
+      kind: 'Competition · Group project',
+      meta: 'Shanghai, China · 08–09 / 2024 · with Muze Ouyang & Xinning Yu',
+      abstract:
+        'A Shanghai competition entry — a quieter, marine-rooted dawn for a riverside site. The project shares the studio’s interest in submerged ecologies and shifting waterlines.',
+      folder: 'neptunes-dawn',
+      pages: [
+        { p: 'p38', note: 'Project leaf — concept' },
+        { p: 'p39', note: 'Continued — material and detail' },
+      ],
+    },
+  };
+
+  // Order matters for prev/next navigation (matches index.html ordering)
+  const ORDER = [
+    'heishui-river-resort',
+    'les-chardonneuses',
+    'seeds-of-change',
+    'tide-rewoven',
+    'mycoterra',
+    'co-silo-ferry-station',
+    'project-ecoflow',
+    'project-ultra-plant',
+    'neptunes-dawn',
+  ];
+
+  /* --- Helpers ------------------------------------------------------ */
+
+  function qs(name) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name);
+  }
+
+  /* --- Render ------------------------------------------------------ */
+
+  const id = qs('project') || ORDER[0];
+  const d = DOSSIERS[id];
+
+  if (!d) {
+    document.body.innerHTML =
+      '<div style="padding:120px 40px;font-family:Cormorant Garamond,serif;color:#d6d2c4">' +
+      '<h1 style="font-style:italic;font-weight:300;font-size:48px;margin-bottom:16px">Specimen not found.</h1>' +
+      '<p style="color:#b9b4a2"><a href="index.html" style="color:inherit;border-bottom:1px solid currentColor;text-decoration:none">return to index</a></p>' +
+      '</div>';
+    return;
+  }
+
+  // Title
+  document.title = `${d.name} — Grace`;
+
+  // Header chips
+  const folio = document.getElementById('dossier-folio');
+  const dossierId = document.getElementById('dossier-id');
+  if (folio) folio.textContent = `FOLIO / ${d.name.toUpperCase()}`;
+  if (dossierId) dossierId.textContent = d.no;
+
+  // Hero
+  document.getElementById('dossier-kind').textContent = d.kind;
+  document.getElementById('dossier-name-text').textContent = d.name;
+  document.getElementById('dossier-binomial').textContent = d.binomial;
+  document.getElementById('dossier-meta').textContent = d.meta;
+  document.getElementById('dossier-abstract').textContent = d.abstract;
+
+  // Plates — vertical scroll of source pages
+  const platesEl = document.getElementById('plates');
+  platesEl.innerHTML = d.pages.map((pg) => {
+    const src = `${BASE}${d.folder}/source-pages/webp/${pg.p}.webp`;
+    return `
+      <article class="plate">
+        <div class="plate-marginalia">
+          <span class="pl-no">${pg.p.toUpperCase()}</span>
+          <span class="pl-note">${pg.note}</span>
+        </div>
+        <div class="plate-image">
+          <img src="${src}" alt="${d.name} — ${pg.note}" loading="lazy" decoding="async">
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  // Reveal-on-scroll
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.plate').forEach((el) => io.observe(el));
+  } else {
+    document.querySelectorAll('.plate').forEach((el) => el.classList.add('is-in'));
+  }
+
+  // Prev / next
+  const idx = ORDER.indexOf(id);
+  const prevId = ORDER[(idx - 1 + ORDER.length) % ORDER.length];
+  const nextId = ORDER[(idx + 1) % ORDER.length];
+  const prev = DOSSIERS[prevId];
+  const next = DOSSIERS[nextId];
+  const prevEl = document.getElementById('dossier-prev');
+  const nextEl = document.getElementById('dossier-next');
+  if (prevEl) {
+    prevEl.href = `project-detail.html?project=${prevId}`;
+    document.getElementById('dossier-prev-name').textContent = prev.name;
+  }
+  if (nextEl) {
+    nextEl.href = `project-detail.html?project=${nextId}`;
+    document.getElementById('dossier-next-name').textContent = next.name;
+  }
+})();

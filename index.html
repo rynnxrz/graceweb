@@ -1,222 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <base href="/graceweb/">
-    <meta charset="UTF-8">
-    <meta name="theme-color" content="#111111">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Grace - Multidisciplinary Designer Portfolio. Architecture, Biology, and Technology projects showcase.">
-    <meta name="author" content="Grace">
-    <meta name="keywords" content="designer, architecture, biology, technology, portfolio, webgl, interactive">
-    
-    <!-- Open Graph / Social Sharing -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/">
-    <meta property="og:title" content="Grace - Multidisciplinary Designer">
-    <meta property="og:description" content="Portfolio showcasing interdisciplinary design work in Architecture, Biology, and Technology.">
-    <meta property="og:image" content="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Grace - Multidisciplinary Designer">
-    <meta name="twitter:description" content="Portfolio showcasing interdisciplinary design work.">
-    <meta name="twitter:image" content="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
-    <link rel="apple-touch-icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/">
-    
-    <link rel="preconnect" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Grace",
-      "jobTitle": "Multidisciplinary Designer",
-      "url": "https://v0-webgl-implementation-plan-git-main-rynnxrzs-projects.vercel.app/",
-      "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg",
-      "description": "Designer bridging Architecture, Biology, and Technology"
-    }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0d0a">
+  <meta name="description" content="Grace — A network of speculative biological architectures.">
+  <meta name="author" content="Grace">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Grace — Network">
+  <meta property="og:description" content="A field of nine specimens, connected by kinship of material, site, and era.">
+
+  <title>Grace — Network</title>
+
+  <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="camera-viewport" id="camera-viewport" role="main" aria-label="Portfolio main content">
-        <div class="constellation-container">
-            <!-- Background grid for visual depth -->
-            <div class="background-grid"></div>
-            
-            <!-- SVG for connection lines -->
-            <svg class="connections" width="100%" height="100%">
-                <!-- Lines will be dynamically generated -->
-            </svg>
-            
-            <!-- Central profile node -->
-            <div class="node central-node" id="grace-node" data-node="grace" tabindex="0" role="button" aria-label="About Grace - Multidisciplinary Designer">
-                <div class="profile-layout">
-                    <div class="profile-name">Grace</div>
-                    <div class="profile-image">
-                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg" alt="Grace Profile" fetchpriority="high" />
-                    </div>
-                    <div class="profile-description">Multidisciplinary Designer</div>
-                </div>
-                <div class="node-glow"></div>
-            </div>
-            
-            <!-- Project nodes - initially hidden -->
-            
-            <!-- Real Portfolio Projects -->
-            <div class="node project-node" data-node="project" data-categories="architecture" data-project="co-silo-ferry" tabindex="0" role="button" aria-label="Co-Silo Ferry Station project">
-                <div class="node-content">
-                    <div class="project-image">
-                        <img data-src="co-silo-ferry-1.png" alt="Co-Silo Ferry Station" loading="lazy" />
-                    </div>
-                    <h4>Co-Silo Ferry Station</h4>
-                    <div class="project-tags">
-                        <span class="tag architecture">Architecture</span>
-                    </div>
-                </div>
-                <div class="node-glow"></div>
-            </div>
-            
-            <div class="node project-node" data-node="project" data-categories="architecture,technology" data-project="other-projects" tabindex="0" role="button" aria-label="Other Projects">
-                <div class="node-content">
-                    <div class="project-image">
-                        <img data-src="other-projects-cover.png" alt="Other Projects" loading="lazy" />
-                    </div>
-                    <h4>Other Projects</h4>
-                    <div class="project-tags">
-                        <span class="tag architecture">Architecture</span>
-                        <span class="tag technology">Technology</span>
-                    </div>
-                </div>
-                <div class="node-glow"></div>
-            </div>
-            
-            <div class="node project-node" data-node="project" data-categories="biology,architecture" data-project="ultra-plant" tabindex="0" role="button" aria-label="Ultra Plant project">
-                <div class="node-content">
-                    <div class="project-image">
-                        <img data-src="ultra-plant-1.png" alt="Ultra Plant" loading="lazy" />
-                    </div>
-                    <h4>Ultra Plant</h4>
-                    <div class="project-tags">
-                        <span class="tag biology">Biology</span>
-                        <span class="tag architecture">Architecture</span>
-                    </div>
-                    <div class="intersection-indicator" data-categories="biology,architecture"></div>
-                </div>
-                <div class="node-glow"></div>
-            </div>
-            
-            <div class="node project-node" data-node="project" data-categories="biology,technology" data-project="shadow-of-dream" tabindex="0" role="button" aria-label="Shadow of Dream project">
-                <div class="node-content">
-                    <div class="project-image">
-                        <img data-src="shadow-of-dream-1.png" alt="Shadow of Dream" loading="lazy" />
-                    </div>
-                    <h4>Shadow of Dream</h4>
-                    <div class="project-tags">
-                        <span class="tag biology">Biology</span>
-                        <span class="tag technology">Technology</span>
-                    </div>
-                    <div class="intersection-indicator" data-categories="biology,technology"></div>
-                </div>
-                <div class="node-glow"></div>
-            </div>
-            
-            <div class="node project-node" data-node="project" data-categories="architecture,biology" data-project="whare-piwakawaka" tabindex="0" role="button" aria-label="Whare Piwakawaka project">
-                <div class="node-content">
-                    <div class="project-image">
-                        <img data-src="whare-piwakawaka-1.png" alt="Whare Piwakawaka" loading="lazy" />
-                    </div>
-                    <h4>Whare Piwakawaka</h4>
-                    <div class="project-tags">
-                        <span class="tag architecture">Architecture</span>
-                        <span class="tag biology">Biology</span>
-                    </div>
-                    <div class="intersection-indicator" data-categories="architecture,biology"></div>
-                </div>
-                <div class="node-glow"></div>
-            </div>
+<body class="page-network no-halo">
 
-            <div class="node project-node" data-node="project" data-categories="technology,biology" data-project="bio-responsive-interface" tabindex="0" role="button" aria-label="Bio-Responsive Interface project">
-                <div class="node-content">
-                    <div class="project-image">
-                        <img data-src="placeholder.svg" alt="Bio-Responsive Interface" loading="lazy" />
-                    </div>
-                    <h4>Bio-Responsive Interface</h4>
-                    <div class="project-tags">
-                        <span class="tag technology">Technology</span>
-                        <span class="tag biology">Biology</span>
-                    </div>
-                    <div class="intersection-indicator" data-categories="technology,biology"></div>
-                </div>
-                <div class="node-glow"></div>
-            </div>
-
-            <div class="node project-node" data-node="project" data-categories="architecture,technology" data-project="sustainable-urban-housing" tabindex="0" role="button" aria-label="Sustainable Urban Housing project">
-                <div class="node-content">
-                    <div class="project-image">
-                        <img data-src="placeholder.svg" alt="Sustainable Urban Housing" loading="lazy" />
-                    </div>
-                    <h4>Sustainable Urban Housing</h4>
-                    <div class="project-tags">
-                        <span class="tag architecture">Architecture</span>
-                        <span class="tag technology">Technology</span>
-                    </div>
-                    <div class="intersection-indicator" data-categories="architecture,technology"></div>
-                </div>
-                <div class="node-glow"></div>
-            </div>
-
-            <div class="node project-node" data-node="project" data-categories="technology,biology" data-project="digital-ecology-visualization" tabindex="0" role="button" aria-label="Digital Ecology Visualization project">
-                <div class="node-content">
-                    <div class="project-image">
-                        <img data-src="placeholder.svg" alt="Digital Ecology Visualization" loading="lazy" />
-                    </div>
-                    <h4>Digital Ecology Visualization</h4>
-                    <div class="project-tags">
-                        <span class="tag technology">Technology</span>
-                        <span class="tag biology">Biology</span>
-                    </div>
-                    <div class="intersection-indicator" data-categories="technology,biology"></div>
-                </div>
-                <div class="node-glow"></div>
-            </div>
-        </div>
-        
-        <!-- Orbital Navigation -->
-        <div class="orbital-nav" role="navigation" aria-label="Category filter navigation">
-            <div class="nav-orbit">
-                <button class="orbital-tab" data-category="architecture" data-angle="0" aria-label="Filter by Architecture category" aria-pressed="false">
-                    <span class="tab-icon">🏗️</span>
-                    <span class="tab-label">Architecture</span>
-                </button>
-                <button class="orbital-tab" data-category="biology" data-angle="120" aria-label="Filter by Biology category" aria-pressed="false">
-                    <span class="tab-icon">🧬</span>
-                    <span class="tab-label">Biology</span>
-                </button>
-                <button class="orbital-tab" data-category="technology" data-angle="240" aria-label="Filter by Technology category" aria-pressed="false">
-                    <span class="tab-icon">⚡</span>
-                    <span class="tab-label">Tech</span>
-                </button>
-            </div>
-        </div>
+  <!-- Loading veil — covers the page on first paint with a thin
+       herbarium mark, then lifts. transitions.js runs the lifecycle
+       and finally removes the element. -->
+  <div class="page-veil" data-veil aria-hidden="true">
+    <div class="page-veil-inner">
+      <span class="page-veil-mark">◦</span>
+      <span class="page-veil-line"></span>
+      <span class="page-veil-text">FOLIO</span>
     </div>
-    
-    <!-- Project Detail Node -->
-    <div class="project-detail-node" id="project-detail-node" role="dialog" aria-modal="true" aria-labelledby="project-detail-title" hidden>
-        <button class="project-detail-close" id="project-detail-close" aria-label="Close project detail">&times;</button>
-        <div class="project-detail-body" id="project-detail-body">
-                <!-- Content will be dynamically populated -->
-        </div>
+  </div>
+
+  <!-- Mycelium / curl-noise background — same drift as elsewhere -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Field notebook leaf header -->
+  <header class="leaf-header" aria-label="Field notebook header">
+    <div class="leaf-row">
+      <span class="leaf-mark">◦</span>
+      <span class="leaf-folio">FOLIO / MYCELIAL FIELD</span>
+      <span class="leaf-coord" id="leaf-coord">— · —</span>
     </div>
-    
+    <div class="leaf-row leaf-row--right">
+      <nav class="view-toggle" aria-label="View switch">
+        <a href="index.html" class="view-toggle-item is-current" aria-current="page">network</a>
+        <span class="view-toggle-sep">·</span>
+        <a href="work.html" class="view-toggle-item">index</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Network — gravity field of specimens with mycelial connection threads -->
+  <main class="network" id="network" aria-label="Specimen network">
+
+    <!-- Small introduction tucked top-left, like a herbarium key -->
+    <section class="net-intro">
+      <p class="net-intro-eyebrow">— sheet 01 / mycelial field · n=09 · thirteen filaments</p>
+      <h1 class="net-intro-title">
+        <em>Grace</em>
+        <span>multidisciplinary practitioner — between architecture, biology, and machine vision.</span>
+      </h1>
+      <p class="net-intro-abstract">
+        Each specimen radiates a mycelial field. Filaments grow between
+        kindred work — same material, site, method, era. Move your cursor
+        to feed the colony; rest, and the strands creep on their own.
+        Click any specimen to open its dossier.
+      </p>
+    </section>
+
+    <!-- Legend — tells you what the line colours mean -->
+    <aside class="net-legend" aria-hidden="true">
+      <div class="net-legend-row"><span class="net-legend-line" data-group="bio-fabric"></span><span>bio-fabric</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="marine"></span><span>marine</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="speculative"></span><span>speculative</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="site"></span><span>shared site</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="method"></span><span>shared method</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="practice"></span><span>practice cluster</span></div>
+    </aside>
+
+    <!-- Nodes + threads injected by network.js -->
+
+  </main>
+
+  <footer class="leaf-footer">
+    <span class="leaf-meta">— end of folio —</span>
+    <a class="leaf-meta" href="mailto:hello@grace.studio">correspondence</a>
+  </footer>
+
+  <div class="cursor-halo" id="cursor-halo" aria-hidden="true"></div>
+
+  <!-- network.js renders the kinship threads directly to #bg-canvas
+       so we don't load organic-bg.js on the homepage. -->
+  <script src="cursor.js" defer></script>
+  <script src="transitions.js" defer></script>
+  <script src="network.js" defer></script>
 </body>
 </html>

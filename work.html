@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0d0a">
+  <meta name="description" content="Grace — Specimen index. The full herbarium, plate by plate.">
+  <meta name="author" content="Grace">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Grace — Specimen Index">
+  <meta property="og:description" content="The herbarium, read plate by plate.">
+
+  <title>Index — Grace</title>
+
+  <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="no-halo">
+
+  <!-- Loading veil — see transitions.js for lifecycle -->
+  <div class="page-veil" data-veil aria-hidden="true">
+    <div class="page-veil-inner">
+      <span class="page-veil-mark">◦</span>
+      <span class="page-veil-line"></span>
+      <span class="page-veil-text">FOLIO</span>
+    </div>
+  </div>
+
+  <!-- Mycelium / curl-noise background -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Field notebook leaf header -->
+  <header class="leaf-header" aria-label="Field notebook header">
+    <div class="leaf-row">
+      <span class="leaf-mark">◦</span>
+      <span class="leaf-folio">FOLIO / INDEX</span>
+      <span class="leaf-coord" id="leaf-coord">— · —</span>
+    </div>
+    <div class="leaf-row leaf-row--right">
+      <nav class="view-toggle" aria-label="View switch">
+        <a href="index.html" class="view-toggle-item">network</a>
+        <span class="view-toggle-sep">·</span>
+        <a href="work.html" class="view-toggle-item is-current" aria-current="page">index</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Herbarium label -->
+  <section class="masthead">
+    <div class="masthead-rule"></div>
+    <h1 class="masthead-title">
+      <span class="masthead-genus">Specimen index</span>
+      <span class="masthead-species">— full herbarium · n=09</span>
+    </h1>
+    <p class="masthead-abstract">
+      The collection, listed plate by plate. Hover any specimen to read its marginalia;
+      click to open the dossier. For the relational network — how each entry sits next to
+      the others — see <a class="inline-link" href="index.html">network</a>.
+    </p>
+    <div class="masthead-rule"></div>
+  </section>
+
+  <!-- Specimen wall -->
+  <main class="specimens" id="specimens" aria-label="Specimen index">
+    <!-- Cards rendered by specimens.js -->
+  </main>
+
+  <footer class="leaf-footer">
+    <span class="leaf-meta">— end of folio —</span>
+    <a class="leaf-meta" href="mailto:hello@grace.studio">correspondence</a>
+  </footer>
+
+  <div class="cursor-halo" id="cursor-halo" aria-hidden="true"></div>
+
+  <script src="cursor.js" defer></script>
+  <script src="transitions.js" defer></script>
+  <script src="organic-bg.js" defer></script>
+  <script src="specimens.js" defer></script>
+</body>
+</html>
