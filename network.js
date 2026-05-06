@@ -35,6 +35,8 @@
   /* --- Specimens — fixed positions on the tall map ----------------- */
 
   const BASE = 'public/images/projects/extracted-portfolio/';
+  const HERO_BASE = 'public/images/projects/hero image/';
+  const heroSrc = (path) => path.startsWith('public/') ? path : BASE + path;
 
   // xPct relative to .network width, yPct relative to .network height.
   // .network is 220vh tall, so yPct=10 means up near the top, yPct=90
@@ -53,35 +55,35 @@
       kind: 'BIO-INTEGRATED RESEARCH',
       abstract: 'Aberdeen waterfront re-imagined as a floating market that breathes with the tide. Algae-trained, GAN-driven membranes.',
       xPct: 70, yPct: 14, peak: 'lg',
-      hero: 'tide-rewoven/images/webp/p15-img02.webp' },
+      hero: HERO_BASE + 'tide rewoven.jpeg' },
 
     { id: 'project-ecoflow',       name: 'Project EcoFlow',       binomial: 'Bryophyta aedicula',
       year: '2023', site: 'London · UK',
       kind: 'BIO-INTEGRATED RESEARCH',
       abstract: 'A water-retaining moss façade — tested against the heat-island of Oxford Street.',
       xPct: 84, yPct: 30, peak: 'md',
-      hero: 'project-ecoflow/images/webp/p33-img02.webp' },
+      hero: HERO_BASE + 'project ecoflow.png' },
 
     { id: 'project-ultra-plant',   name: 'Project Ultra-Plant',   binomial: 'Symbiosis postnuclearis',
       year: '2022', site: 'Auckland · NZ',
       kind: 'SPECULATIVE ARCHITECTURE',
       abstract: 'A modular living organism. Humans and plants share habitat whose vein networks slowly restore the surrounding ecology.',
       xPct: 14, yPct: 32, peak: 'md',
-      hero: 'project-ultra-plant/images/webp/p36-img02.webp' },
+      hero: HERO_BASE + 'project ultra plant 2.png' },
 
     { id: 'co-silo-ferry-station', name: 'Co-Silo Ferry Station', binomial: 'Silo coralinus',
       year: '2022', site: 'Auckland · NZ',
       kind: 'CIVIC ARCHITECTURE',
       abstract: 'Six fuel silos reversed — the ferry threshold becomes a meeting between human and reef.',
       xPct: 50, yPct: 48, peak: 'lg',
-      hero: 'co-silo-ferry-station/images/webp/p27-img01.webp' },
+      hero: HERO_BASE + 'co-slio ferry station.png' },
 
     { id: 'heishui-river-resort',  name: 'Heishui River Resort',  binomial: 'Aquaria nigra',
       year: '2023', site: 'Guangxi · CN',
       kind: 'HOSPITALITY · PRACTICE',
       abstract: 'Hospitality grafted to the Blackwater. Concept stage with the design team; under construction.',
       xPct: 16, yPct: 64, peak: 'sm',
-      hero: 'heishui-river-resort/images/webp/p06-img01.webp' },
+      hero: HERO_BASE + 'herishui river resort.JPG' },
 
     { id: 'les-chardonneuses',     name: 'Les-Chardonneuses',     binomial: 'Cardus couture',
       year: '2026', site: 'Paris · FR',
@@ -95,14 +97,14 @@
       kind: 'EXHIBITION · CURATION',
       abstract: 'Spatial and material setup of an immersive exhibition on the transformative power of nature.',
       xPct: 76, yPct: 65, peak: 'sm',
-      hero: 'seeds-of-change/images/webp/p11-img02.webp' },
+      hero: HERO_BASE + 'seeds of change.JPG' },
 
     { id: 'neptunes-dawn',         name: "Neptune's Dawn",        binomial: 'Neptuni aurora',
       year: '2024', site: 'Shanghai · CN',
       kind: 'COMPETITION · GROUP',
       abstract: 'A submerged sunrise — Shanghai competition entry, designed with Muze Ouyang and Xinning Yu.',
       xPct: 60, yPct: 88, peak: 'sm',
-      hero: 'neptunes-dawn/images/webp/p38-img01.webp' },
+      hero: HERO_BASE + "neptune's dawn.png" },
   ];
 
   /* --- Edges (kinship) -------------------------------------------- */
@@ -252,7 +254,7 @@
         <span class="net-mark-abstract">${n.abstract}</span>
       </span>
       <span class="net-mark-thumb" aria-hidden="true">
-        <img src="${BASE + n.hero}" alt="" loading="${idx < 3 ? 'eager' : 'lazy'}" decoding="async">
+        <img src="${heroSrc(n.hero)}" alt="" loading="${idx < 3 ? 'eager' : 'lazy'}" decoding="async">
       </span>
     `;
     root.appendChild(el);

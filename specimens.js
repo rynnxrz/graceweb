@@ -9,6 +9,7 @@
   /* --- Specimen data ------------------------------------------------ */
 
   const BASE = 'public/images/projects/extracted-portfolio/';
+  const HERO_BASE = 'public/images/projects/hero image/';
 
   // A small accidental Latinity. Keeps with the herbarium tone without
   // taking itself too seriously.
@@ -24,7 +25,7 @@
       aspect: '4-5',
       stagger: 0,
       tick: 'pl. 04 — riverine substrate',
-      hero: BASE + 'heishui-river-resort/images/webp/p06-img01.webp',
+      hero: HERO_BASE + 'herishui river resort.JPG',
       abstract:
         'Hospitality grafted to the Blackwater. Dark stone, mountain-form, native vegetation — seasonal rooms set into the riparian edge.',
     },
@@ -54,7 +55,7 @@
       aspect: '4-3',
       stagger: 2,
       tick: 'pl. 11 — display ecology',
-      hero: BASE + 'seeds-of-change/images/webp/p11-img02.webp',
+      hero: HERO_BASE + 'seeds of change.JPG',
       abstract:
         'Spatial and material setup of an immersive environment — wall display layouts, mounting, and sourced organic materials co-developed with the curatorial team.',
     },
@@ -69,7 +70,7 @@
       aspect: '4-5',
       stagger: 1,
       tick: 'pl. 15 — chitosan membrane study',
-      hero: BASE + 'tide-rewoven/images/webp/p15-img02.webp',
+      hero: HERO_BASE + 'tide rewoven.jpeg',
       abstract:
         'Aberdeen waterfront re-imagined as a floating market that breathes with the tide. Fishnet-chitosan composites, indexed to Micrasterias, shift in porosity through the day.',
     },
@@ -99,7 +100,7 @@
       aspect: '4-3',
       stagger: 0,
       tick: 'pl. 27 — reef–quay interface',
-      hero: BASE + 'co-silo-ferry-station/images/webp/p27-img01.webp',
+      hero: HERO_BASE + 'co-slio ferry station.png',
       abstract:
         'Reclaimed fuel silos translated into a ferry threshold between human and reef. CO₂-driven acidification taught the form: porous, decaying, slowly opening to the bay.',
     },
@@ -114,7 +115,7 @@
       aspect: '3-4',
       stagger: 1,
       tick: 'pl. 33 — moss-vault detail',
-      hero: BASE + 'project-ecoflow/images/webp/p33-img02.webp',
+      hero: HERO_BASE + 'project ecoflow.png',
       abstract:
         'A water-retaining moss façade for dense urban skin — tested against the heat-island of Oxford Street. Surface area, not floor area, becomes the unit.',
     },
@@ -129,7 +130,7 @@
       aspect: '4-5',
       stagger: 2,
       tick: 'pl. 36 — modular living organism',
-      hero: BASE + 'project-ultra-plant/images/webp/p36-img02.webp',
+      hero: HERO_BASE + 'project ultra plant 2.png',
       abstract:
         'Buildings as living organisms. Humans and plants share a modular system that grows and dies; survivors of nuclear loss find a quieter, symbiotic role.',
     },
@@ -144,7 +145,7 @@
       aspect: '4-5',
       stagger: 0,
       tick: 'pl. 38 — submerged dawn',
-      hero: BASE + 'neptunes-dawn/images/webp/p38-img01.webp',
+      hero: HERO_BASE + "neptune's dawn.png",
       abstract:
         'A Shanghai competition entry — a quieter, marine-rooted sunrise. With Muze Ouyang and Xinning Yu.',
     },
