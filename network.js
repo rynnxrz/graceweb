@@ -573,16 +573,16 @@
       const ti = i / SAMPLES;
       const along = ti * len;
       // Half-sine arch + low-freq S-bend + two wobble harmonics.
-      // The arch term tapers to 0 at both ends so the strand always
-      // arrives perpendicular to the AB axis — joints feel rooted.
+      // EVERY term is enveloped by sin(ti·π) so the strand pinches
+      // exactly to (ax,ay) at ti=0 and (bx,by) at ti=1 — the line
+      // visibly emerges from the dot rather than floating off it.
+      const env = Math.sin(ti * Math.PI);
       const sag =
-        Math.sin(ti * Math.PI) * baseSag * bendSign +
-        Math.sin(ti * 2 * Math.PI + phase) * baseSag * 0.18 * bendSign +
-        9.0 * Math.sin(ti * 4 * Math.PI + time * 0.00080 + phase) *
-              Math.sin(ti * Math.PI) +
-        4.2 * Math.sin(ti * 7 * Math.PI - time * 0.00110 + phase * 1.7) *
-              Math.sin(ti * Math.PI) +
-        perpShift * Math.sin(ti * Math.PI);
+        env * baseSag * bendSign +
+        env * Math.sin(ti * 2 * Math.PI + phase) * baseSag * 0.18 * bendSign +
+        env * 9.0 * Math.sin(ti * 4 * Math.PI + time * 0.00080 + phase) +
+        env * 4.2 * Math.sin(ti * 7 * Math.PI - time * 0.00110 + phase * 1.7) +
+        env * perpShift;
       pts[i] = {
         x: ax + ux * along + px * sag,
         y: ay + uy * along + py * sag,
@@ -688,24 +688,18 @@
     mouseEnergy *= ENERGY_DECAY;
 
     // Threads — multi-strand hyphal geometry with lifecycle loop
-    const NODE_PAD = 11;     // px to inset endpoints inside the dot/ring
+    // Strand endpoints sit exactly on the dot centres so each filament
+    // visibly grows OUT OF the dot. The 9px dot covers the line cap.
     for (let i = 0; i < EDGES.length; i++) {
       const e = EDGES[i];
       const a = e.aRef, b = e.bRef;
 
-      // Geometry: shorten endpoints toward node centres so the strand
-      // terminates inside the dot's ring halo instead of butting up
-      // against it. The joint circles cover the last 11px on either
-      // side, hiding the cap entirely.
       const cax = a.x - netLeft, cay = a.y - netTop;
       const cbx = b.x - netLeft, cby = b.y - netTop;
-      const rdx = cbx - cax, rdy = cby - cay;
-      const rlen = Math.hypot(rdx, rdy) || 1;
-      const rux = rdx / rlen, ruy = rdy / rlen;
-      const ax  = cax + rux * NODE_PAD;
-      const ay  = cay + ruy * NODE_PAD;
-      const bxp = cbx - rux * NODE_PAD;
-      const byp = cby - ruy * NODE_PAD;
+      const ax  = cax;
+      const ay  = cay;
+      const bxp = cbx;
+      const byp = cby;
 
       const bendSign = Math.sin(e.phase) >= 0 ? 1 : -1;
       const main = buildStrand(ax, ay, bxp, byp, t, e.phase, 0, bendSign);
