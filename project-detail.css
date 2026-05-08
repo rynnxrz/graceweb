@@ -1,6 +1,7 @@
 /* =========================================================================
    project-detail.css
-   Specimen dossier — vertical plate sequence in the herbarium voice.
+   Specimen dossier — chaptered plate sequence (12-col grid per row,
+   per-project layouts mirror the original PDF spreads).
    Inherits substrate, type, and hairlines from styles.css.
    ========================================================================= */
 
@@ -71,89 +72,338 @@
   color: var(--pigment-paper);
 }
 
-/* --- Plate sequence ---------------------------------------------- */
+/* --- Plate sequence (chapters of rows) --------------------------- */
 
 .plates {
   position: relative;
   z-index: 5;
-  max-width: 1100px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 24px 40px 120px;
   display: flex;
   flex-direction: column;
-  gap: 96px;
+  gap: 80px;
 }
 
-.plate {
-  display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: 32px;
-  align-items: start;
+.plate-chapter {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(20px);
   transition:
-    opacity 1.2s var(--ease-slow),
-    transform 1.2s var(--ease-slow);
+    opacity 1.0s var(--ease-slow),
+    transform 1.0s var(--ease-slow);
 }
-.plate.is-in {
+.plate-chapter.is-in {
   opacity: 1;
   transform: translateY(0);
 }
 
-.plate-marginalia {
+.plate-chapter-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0 10px;
+  border-top: 1px solid var(--hair-faint);
+}
+.plate-chapter-mark {
   font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  line-height: 1.6;
+  font-size: 12px;
+  color: var(--pigment-coral);
+  opacity: 0.75;
+}
+.plate-chapter-note {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--pigment-faint);
-  border-top: 1px solid var(--hair-faint);
-  padding-top: 12px;
-}
-.plate-marginalia .pl-no {
-  color: var(--pigment-coral);
-  opacity: 0.7;
-  display: block;
-  margin-bottom: 8px;
 }
 
-.plate-image {
+/* Each row defaults to a 12-col grid; cells set their own grid-column
+   span. Row variants below override grid + sizing for hero / pair /
+   strip / pull / detail flavours. */
+.plate-row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 18px;
+  align-items: end;            /* captions sit at the same baseline */
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.9s var(--ease-slow),
+    transform 0.9s var(--ease-slow);
+}
+.plate-row.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Row variants — sized by ROLE, not by column-span --------------- */
+/* Each variant caps width / height so a single render can't dominate
+   the scroll, and centres its content within the dossier's reading
+   column. Images stay at native aspect — max-width + max-height
+   shrink them in proportion when needed. */
+
+.plate-row--hero {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+.plate-row--hero .plate-cell { width: 100%; max-width: 880px; }
+.plate-row--hero .plate-img-btn img { max-height: 70vh; }
+
+.plate-row--pair {
+  grid-template-columns: 1fr 1fr;
+  max-width: 1080px;
+  margin: 0 auto;
+  gap: 22px;
+}
+.plate-row--pair .plate-img-btn img { max-height: 56vh; }
+
+.plate-row--strip {
+  grid-template-columns: repeat(var(--strip-cols, 6), 1fr);
+  gap: 10px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.plate-row--strip .plate-cell { gap: 6px; }
+.plate-row--strip .plate-img-btn { aspect-ratio: 4 / 3; }
+.plate-row--strip .plate-img-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.plate-row--strip .plate-cap {
+  font-size: 9.5px;
+  margin-top: 6px;
+}
+
+.plate-row--pull {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+.plate-row--pull .plate-cell { width: 100%; max-width: 1100px; }
+.plate-row--pull .plate-img-btn img { max-height: 80vh; }
+
+.plate-row--detail {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+.plate-row--detail .plate-cell { width: 100%; max-width: 560px; }
+.plate-row--detail .plate-img-btn img { max-height: 56vh; }
+
+/* When a row variant is in play, the cell shouldn't claim a fixed
+   column-span (those rules were written for the 12-col layout). */
+.plate-row--hero .plate-cell,
+.plate-row--pair .plate-cell,
+.plate-row--strip .plate-cell,
+.plate-row--pull .plate-cell,
+.plate-row--detail .plate-cell {
+  grid-column: auto !important;
+}
+
+.plate-cell {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-width: 0;                /* allow flex shrink inside grid */
+}
+
+.plate-img-btn {
+  appearance: none;
+  border: 1px solid var(--hair-faint);
+  background: var(--ink-deep);
+  padding: 0;
   position: relative;
   width: 100%;
-  background: var(--ink-deep);
-  border: 1px solid var(--hair-faint);
+  cursor: zoom-in;
   overflow: hidden;
+  transition: border-color 0.5s var(--ease-slow);
 }
-
-.plate-image::before,
-.plate-image::after {
+.plate-img-btn::before,
+.plate-img-btn::after {
   content: "";
   position: absolute;
-  width: 14px;
+  width: 12px;
   height: 1px;
   background: var(--hair-mid);
+  pointer-events: none;
 }
-.plate-image::before { top: -1px; left: 14px; }
-.plate-image::after  { bottom: -1px; right: 14px; }
+.plate-img-btn::before { top: -1px; left: 12px; }
+.plate-img-btn::after  { bottom: -1px; right: 12px; }
 
-.plate-image img {
+.plate-img-btn:hover { border-color: var(--pigment-coral); }
+.plate-img-btn:focus-visible {
+  outline: none;
+  border-color: var(--pigment-coral);
+  box-shadow: 0 0 0 1px var(--pigment-coral);
+}
+
+.plate-img-btn img {
   display: block;
   width: 100%;
   height: auto;
-  filter:
-    contrast(1.04)
-    brightness(0.92)
-    saturate(0.92);
-  transition: filter 1.2s var(--ease-slow);
+  /* No filter — originals show true colour. The plate's hairline border
+     and dark substrate already give the herbarium framing without
+     mangling the work itself. Hover adds a barely-there breath. */
+  transition:
+    filter 0.8s var(--ease-slow),
+    transform 0.8s var(--ease-slow);
 }
-.plate-image:hover img { filter: contrast(1.08) brightness(1) saturate(1); }
+.plate-img-btn:hover img {
+  filter: contrast(1.02);
+  transform: scale(1.01);
+}
+
+.plate-cap {
+  margin: 10px 2px 0;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  line-height: 1.55;
+  color: var(--pigment-faint);
+}
+
+/* Shared caption below a multi-cell row (e.g. process strip).
+   Centred under the row, reads as a marginalia note. */
+.plate-row-cap {
+  display: block;
+  max-width: 1080px;
+  margin: 14px auto 0;
+  padding: 0 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  color: var(--pigment-faint);
+  text-align: center;
+}
+
+/* --- Lightbox ---------------------------------------------------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(8, 10, 9, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.28s var(--ease-slow),
+    backdrop-filter 0.28s var(--ease-slow);
+}
+.lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+html.lb-open { overflow: hidden; }
+
+.lb-stage {
+  position: relative;
+  max-width: min(1400px, 92vw);
+  max-height: 84vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lb-stage img {
+  display: block;
+  max-width: 100%;
+  max-height: 84vh;
+  width: auto;
+  height: auto;
+  border: 1px solid var(--hair-mid);
+  background: var(--ink-deep);
+  filter: contrast(1.02) saturate(0.98);
+}
+
+.lb-close,
+.lb-nav {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--hair-mid);
+  color: var(--pigment-bone);
+  font-family: var(--font-serif);
+  font-weight: 300;
+  cursor: pointer;
+  position: absolute;
+  transition:
+    border-color 0.4s var(--ease-slow),
+    background 0.4s var(--ease-slow),
+    color 0.4s var(--ease-slow);
+}
+.lb-close:hover,
+.lb-nav:hover {
+  border-color: var(--pigment-coral);
+  background: rgba(201, 122, 85, 0.05);
+}
+.lb-close:focus-visible,
+.lb-nav:focus-visible {
+  outline: none;
+  border-color: var(--pigment-coral);
+  box-shadow: 0 0 0 1px var(--pigment-coral);
+}
+
+.lb-close {
+  top: 22px;
+  right: 22px;
+  width: 38px;
+  height: 38px;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.lb-nav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 60px;
+  font-size: 32px;
+  line-height: 1;
+}
+.lb-prev { left: 22px; }
+.lb-next { right: 22px; }
+
+.lb-meta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 60px;
+  pointer-events: none;
+}
+.lb-count {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--pigment-coral);
+  opacity: 0.85;
+}
+.lb-cap {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--pigment-bone);
+  text-align: left;
+  max-width: 90ch;
+}
 
 /* --- Adjacent specimen nav --------------------------------------- */
 
 .dossier-nav {
   position: relative;
   z-index: 5;
-  max-width: 1100px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 32px 40px 56px;
   display: grid;
@@ -196,23 +446,49 @@
   letter-spacing: -0.005em;
 }
 
-/* --- Small screens ----------------------------------------------- */
+/* --- Tablet / small laptop --------------------------------------- */
+
+@media (max-width: 980px) {
+  .plate-row {
+    /* Collapse very narrow cells (span <= 4) into reasonable widths */
+    grid-template-columns: repeat(12, 1fr);
+    gap: 14px;
+  }
+  .plate-cell[style*="span 3"],
+  .plate-cell[style*="span 4"] { grid-column: span 6 !important; }
+}
+
+/* --- Phones ------------------------------------------------------ */
 
 @media (max-width: 720px) {
   .dossier-head { margin: 56px 24px 40px; }
   .plates {
     gap: 56px;
-    padding: 0 24px 80px;
+    padding: 0 20px 80px;
   }
-  .plate {
+  .plate-chapter { gap: 14px; }
+  .plate-chapter-head { padding: 12px 0 8px; }
+  .plate-row {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 18px;
   }
-  .plate-marginalia {
-    border-top: 0;
-    padding-top: 0;
-    color: var(--pigment-paper);
+  /* Every cell becomes full width on phones */
+  .plate-cell { grid-column: 1 / -1 !important; }
+
+  .lb-close { top: 14px; right: 14px; width: 34px; height: 34px; font-size: 22px; }
+  .lb-nav   { width: 40px; height: 52px; font-size: 28px; }
+  .lb-prev  { left: 12px; }
+  .lb-next  { right: 12px; }
+  .lb-meta {
+    bottom: 14px;
+    padding: 0 24px;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
   }
+  .lb-cap { text-align: center; font-size: 10.5px; }
+
   .dossier-nav {
     padding: 24px;
     grid-template-columns: 1fr;

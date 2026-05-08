@@ -15,8 +15,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260506a">
-  <link rel="stylesheet" href="project-detail.css?v=20260506a">
+  <link rel="stylesheet" href="styles.css?v=20260507c">
+  <link rel="stylesheet" href="project-detail.css?v=20260508a">
 </head>
 <body class="dossier-page no-halo">
 
@@ -46,6 +46,8 @@
         <a href="index.html" class="view-toggle-item">network</a>
         <span class="view-toggle-sep">·</span>
         <a href="work.html" class="view-toggle-item">index</a>
+        <span class="view-toggle-sep">·</span>
+        <a href="profile.html" class="view-toggle-item">profile</a>
       </nav>
     </div>
   </header>
@@ -87,9 +89,23 @@
 
   <div class="cursor-halo" id="cursor-halo" aria-hidden="true"></div>
 
+  <!-- Lightbox — fades over everything when a plate image is clicked -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Plate viewer">
+    <button class="lb-close" type="button" data-lb-close aria-label="Close">×</button>
+    <button class="lb-nav lb-prev" type="button" data-lb-prev aria-label="Previous plate">‹</button>
+    <button class="lb-nav lb-next" type="button" data-lb-next aria-label="Next plate">›</button>
+    <div class="lb-stage">
+      <img id="lb-img" alt="" decoding="async">
+    </div>
+    <div class="lb-meta">
+      <span class="lb-count" id="lb-count">— / —</span>
+      <span class="lb-cap" id="lb-cap">—</span>
+    </div>
+  </div>
+
   <script src="cursor.js?v=20260506a" defer></script>
   <script src="transitions.js?v=20260506a" defer></script>
   <script src="organic-bg.js?v=20260506a" defer></script>
-  <script src="project-detail.js?v=20260506a" defer></script>
+  <script src="project-detail.js?v=20260508a" defer></script>
 </body>
 </html>
