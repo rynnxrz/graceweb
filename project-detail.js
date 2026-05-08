@@ -170,22 +170,23 @@
         ['Collaborators', 'Yingying Yan · Yining Loh'],
         ['Strain',       'Pleurotus ostreatus'],
       ],
-      // Two paragraphs that sit between the head and the first chapter.
-      // Establishes the premise before any plate is shown.
+      // A single, punchier opener. The hero render that follows
+      // (full-bleed) does most of the establishing work.
       intro: [
-        "Architecture, MycoTerra proposes, is not a sealed object but a slow exchange — a thing that breathes alongside the soil it's built from and the people who pass through it. The brief was not to make a building; it was to make a body that admits microbial life as a co-author of its own form.",
-        'Sited in a former rail-yard wedge in north-east London, the project assembles columns of earth-bound mycelium into a porous threshold. Substrate ratios, scaffold geometry, and ambient airflow are tuned together so that a living tissue settles into the geometry rather than coating it.',
+        "MycoTerra is not a building so much as a body — a porous threshold structure that admits microbial life as a co-author of its own form. Earth, mycelium, and air are tuned together so that a living tissue settles into the geometry rather than coats it.",
       ],
       chapters: [
         {
           note: 'Chapter 01 · concept',
           title: 'Mycelium as a material participant',
+          // Open the chapter with the cinematic hero, then prose, then
+          // the supporting section pair. Reads top-down like a film
+          // cut to the title plate before the first dialogue.
           prose: [
             "Mycelium is treated here as a fabrication partner, not a finish. Its hyphae bind earth, hemp shiv, and chitosan into a load-bearing composite while leaving a soft, breathable skin. The tunable variables — humidity, light, substrate moisture — make the material behave less like concrete and more like a slow tide.",
-            "The columns are designed to record their own assembly. Sections through the prototypes show how the print's internal lattice constrains the bloom: where a cavity narrows, the mycelium reaches across; where the wall thickens, it consolidates. Each column carries the trace of its growth conditions like a palimpsest.",
           ],
           rows: [
-            { kind: 'hero', cells: [
+            { kind: 'fullbleed', cells: [
               { img: 'myco-hero-render', cap: 'Entrance perspective — mycelial-earth grove at the threshold' },
             ]},
             { kind: 'pair', cells: [
@@ -199,7 +200,6 @@
           title: 'Computational tuning meets biological growth',
           prose: [
             "The form was iterated in Grasshopper with a Galapagos solver, scoring candidates against CFD simulations of airflow, humidity, and surface temperature. The fitness function rewarded geometry that admitted enough light for the substrate's first life cycle while protecting it from drying winds during the critical 6–14 day bloom window.",
-            'The six massings below trace a single substrate logic across morphological permutations — a study of how an envelope that "wants" to be eroded can hold its civic posture while admitting weathering as a design layer.',
           ],
           rows: [
             { kind: 'strip', cells: [
@@ -209,15 +209,14 @@
               { img: 'myco-massing-04', cap: '04' },
               { img: 'myco-massing-05', cap: '05' },
               { img: 'myco-massing-06', cap: '06' },
-            ], cap: 'Six massing iterations — eroded mycelium-textured envelopes; computational variation across a single substrate logic.' },
+            ], cap: 'Six massings trace a single substrate logic across morphological permutations — an envelope that "wants" to be eroded, holding its civic posture while admitting weathering as a design layer.' },
           ],
         },
         {
           note: 'Chapter 03 · fabrication',
           title: 'From print to bloom',
           prose: [
-            'Each scaffold was 3-D printed in PLA and bio-filament, then inoculated with a Pleurotus ostreatus strain raised in our lab. The print acted both as formwork and as a sacrificial nutrient bed: the mycelium consumed the lignin in the filament during growth, leaving a denser composite skin where the print was thickest.',
-            'The detail strip documents four states across a single iteration cycle — seed, cluster, tower, mesh substrate. The mesh, in particular, is a structural revelation: under 12 % density the lattice flexes, above 30 % the bloom can\'t penetrate, and the working band is narrow.',
+            'Each scaffold was 3-D printed in PLA and bio-filament, then inoculated with a Pleurotus ostreatus strain raised in our lab. The print acted both as formwork and as sacrificial nutrient: the mycelium consumed the lignin in the filament during growth, leaving a denser composite skin where the print was thickest.',
           ],
           rows: [
             { kind: 'pair', cells: [
@@ -225,22 +224,20 @@
               { img: 'myco-fab-pair-02', cap: 'Lattice prototype with clear-resin substrate' },
             ]},
             { kind: 'strip', cells: [
-              { img: 'myco-fab-detail-01', cap: 'detail · seed' },
-              { img: 'myco-fab-detail-02', cap: 'detail · cluster' },
-              { img: 'myco-fab-detail-03', cap: 'detail · tower' },
-              { img: 'myco-fab-detail-04', cap: 'detail · mesh substrate' },
-            ], cap: 'Process plates — fabrication of mycelium-bearing scaffolds, four states across the iteration cycle.' },
+              { img: 'myco-fab-detail-01', cap: 'seed' },
+              { img: 'myco-fab-detail-02', cap: 'cluster' },
+              { img: 'myco-fab-detail-03', cap: 'tower' },
+              { img: 'myco-fab-detail-04', cap: 'mesh substrate' },
+            ], cap: 'Four states across one iteration cycle. The mesh, in particular, was a structural revelation — under 12 % density the lattice flexes; above 30 % the bloom can\'t penetrate; the working band is narrow.' },
           ],
         },
       ],
-      // Long-form artist statement / reflection at the foot of the
-      // dossier. Closes the page with what the project asked of us.
+      // Closing reflection — two paragraphs, slow.
       reflection: {
         title: 'What the colony asks of us',
         paragraphs: [
           "If a column is alive, the maintenance contract changes. There is no longer a finished structure to inspect; there is a tissue to keep fed, watered, and shaded. Buildings of this kind ask their inhabitants to enter into a small, slow reciprocity — to read the wall's surface for stress as a gardener reads a leaf.",
-          "The project's failures were as instructive as its renders. Two columns collapsed during the final humidity cycle when the lab's HVAC over-corrected for outside cold; one bloom went black under contamination from an open window. These are not exceptions to the architecture; they are its ordinary weather.",
-          'What the colony asks, in the end, is that we widen our idea of who is collaborating. The mycelium is not decoration; it is a member of the design team with its own rate of work, its own reasons.',
+          'What the colony asks, in the end, is that we widen our idea of who is collaborating. The mycelium is not decoration; it is a member of the design team — with its own rate of work, its own reasons.',
         ],
       },
       // Colophon — production credits in dt/dd pairs.
@@ -500,18 +497,22 @@
       const rowCap   = isShape ? row.cap  : null;
 
       const itemsHtml = rowCells.map((it) => {
-        const src   = imgSrc(d.folder, it.img);
-        const srcLg = imgSrcLg(d.folder, it.img);
+        const isVideo = !!it.video;
+        const src   = isVideo ? `${BASE}${d.folder}/videos/${it.video}` : imgSrc(d.folder, it.img);
+        const srcLg = isVideo ? src : imgSrcLg(d.folder, it.img);
+        const poster = it.poster ? imgSrc(d.folder, it.poster) : '';
         const lbIdx = lbItems.length;
-        // Lightbox prefers the -lg companion. project-detail.js will
-        // gracefully fall back to `src` if -lg 404s.
-        lbItems.push({ src, srcLg, cap: it.cap });
+        lbItems.push({ src, srcLg, cap: it.cap, isVideo });
         const safeCap = it.cap.replace(/"/g, '&quot;');
         const styleAttr = it.span ? `style="grid-column: span ${it.span};"` : '';
+        const cursorLabel = isVideo ? 'play' : 'view';
+        const mediaHtml = isVideo
+          ? `<video src="${src}" ${poster ? `poster="${poster}"` : ''} autoplay loop muted playsinline preload="metadata" aria-label="${safeCap}"></video>`
+          : `<img src="${src}" alt="${safeCap}" loading="lazy" decoding="async">`;
         return `
           <figure class="plate-cell" ${styleAttr} data-lb="${lbIdx}">
-            <button class="plate-img-btn" type="button" aria-label="Open ${safeCap}">
-              <img src="${src}" alt="${safeCap}" loading="lazy" decoding="async">
+            <button class="plate-img-btn" type="button" data-cursor="${cursorLabel}" aria-label="${isVideo ? 'Watch' : 'Open'} ${safeCap}">
+              ${mediaHtml}
             </button>
             <figcaption class="plate-cap">${it.cap}</figcaption>
           </figure>

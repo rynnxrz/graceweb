@@ -100,6 +100,7 @@
     '.specimen',
     '.net-thread',
     '.net-thread-label',
+    '.plate-img-btn',
     'a[href]',
     'button',
     '.view-toggle-item',
@@ -109,12 +110,15 @@
     const target = e.target.closest(HOVER_SELECTOR);
     if (!target) return;
     halo.classList.add('is-pointing');
-    // Pick a label that fits the target. .net-mark / .specimen → "open"
-    // for the dossier; threads → "kinship"; everything else → "+".
+    // Contextual label — short verb-ish word fitting the target.
     let label = '+';
     if (target.matches('.net-mark, .specimen')) label = 'open';
     else if (target.matches('.net-thread, .net-thread-label')) label = 'kin';
     else if (target.matches('a[href^="mailto:"]')) label = 'write';
+    else if (target.matches('.plate-img-btn')) {
+      // Plate buttons may carry a video — JS-flagged via data-cursor.
+      label = target.dataset.cursor || 'view';
+    }
     labelEl.textContent = label;
   }
 

@@ -12,7 +12,7 @@
 .dossier-head {
   position: relative;
   z-index: 5;
-  max-width: 880px;
+  max-width: 1100px;               /* room for the larger display title */
   margin: 110px auto 80px;
   padding: 48px 40px 56px;
 }
@@ -34,22 +34,23 @@
 
 .dossier-name {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 18px;
-  margin: 0 0 18px;
+  flex-direction: column;          /* genus on top, binomial beneath */
+  gap: 14px;
+  align-items: flex-start;
+  margin: 0 0 22px;
   font-family: var(--font-serif);
-  font-style: italic;
   font-weight: 300;
-  font-size: clamp(38px, 5.6vw, 72px);
-  line-height: 1.05;
-  letter-spacing: -0.01em;
   color: var(--pigment-bone);
 }
-
+.dossier-genus {
+  font-style: italic;
+  font-size: clamp(56px, 9vw, 144px);  /* MLF-scale display */
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
 .dossier-binomial {
   font-style: italic;
-  font-size: clamp(15px, 1.4vw, 19px);
+  font-size: clamp(16px, 1.5vw, 21px);
   color: var(--pigment-spore);
   font-weight: 300;
   letter-spacing: 0.005em;
@@ -151,7 +152,8 @@
   justify-items: center;
 }
 .plate-row--hero .plate-cell { width: 100%; max-width: 880px; }
-.plate-row--hero .plate-img-btn img { max-height: 70vh; }
+.plate-row--hero .plate-img-btn img,
+.plate-row--hero .plate-img-btn video { max-height: 70vh; }
 
 .plate-row--pair {
   grid-template-columns: 1fr 1fr;
@@ -159,7 +161,8 @@
   margin: 0 auto;
   gap: 22px;
 }
-.plate-row--pair .plate-img-btn img { max-height: 56vh; }
+.plate-row--pair .plate-img-btn img,
+.plate-row--pair .plate-img-btn video { max-height: 56vh; }
 
 .plate-row--strip {
   grid-template-columns: repeat(var(--strip-cols, 6), 1fr);
@@ -169,7 +172,8 @@
 }
 .plate-row--strip .plate-cell { gap: 6px; }
 .plate-row--strip .plate-img-btn { aspect-ratio: 4 / 3; }
-.plate-row--strip .plate-img-btn img {
+.plate-row--strip .plate-img-btn img,
+.plate-row--strip .plate-img-btn video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -184,14 +188,56 @@
   justify-items: center;
 }
 .plate-row--pull .plate-cell { width: 100%; max-width: 1100px; }
-.plate-row--pull .plate-img-btn img { max-height: 80vh; }
+.plate-row--pull .plate-img-btn img,
+.plate-row--pull .plate-img-btn video { max-height: 80vh; }
 
 .plate-row--detail {
   grid-template-columns: 1fr;
   justify-items: center;
 }
 .plate-row--detail .plate-cell { width: 100%; max-width: 560px; }
-.plate-row--detail .plate-img-btn img { max-height: 56vh; }
+.plate-row--detail .plate-img-btn img,
+.plate-row--detail .plate-img-btn video { max-height: 56vh; }
+
+/* Full-bleed — breaks out of the .plates max-width and rides the
+   viewport edge-to-edge. Reserved for one or two cinematic moments
+   per dossier. The image is cover-cropped at 16/9 (capped at 92vh)
+   so a tall portrait still fills the plane without leaving voids. */
+.plate-row--fullbleed {
+  grid-template-columns: 1fr;
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  gap: 0;
+}
+.plate-row--fullbleed .plate-cell {
+  width: 100%;
+  max-width: none;
+}
+.plate-row--fullbleed .plate-img-btn {
+  aspect-ratio: 16 / 9;
+  max-height: 92vh;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+.plate-row--fullbleed .plate-img-btn::before,
+.plate-row--fullbleed .plate-img-btn::after {
+  display: none;                   /* hairline ticks would hit the screen edge */
+}
+.plate-row--fullbleed .plate-img-btn img,
+.plate-row--fullbleed .plate-img-btn video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-height: 92vh;
+}
+.plate-row--fullbleed .plate-cap {
+  max-width: 35rem;
+  margin: 14px auto 0;
+  padding: 0 16px;
+  text-align: center;
+}
 
 /* When a row variant is in play, the cell shouldn't claim a fixed
    column-span (those rules were written for the 12-col layout). */
@@ -240,7 +286,8 @@
   box-shadow: 0 0 0 1px var(--pigment-coral);
 }
 
-.plate-img-btn img {
+.plate-img-btn img,
+.plate-img-btn video {
   display: block;
   width: 100%;
   height: auto;
@@ -251,7 +298,8 @@
     filter 0.8s var(--ease-slow),
     transform 0.8s var(--ease-slow);
 }
-.plate-img-btn:hover img {
+.plate-img-btn:hover img,
+.plate-img-btn:hover video {
   filter: contrast(1.02);
   transform: scale(1.01);
 }
@@ -545,7 +593,7 @@ html.lb-open { overflow: hidden; }
 .dossier-reflection {
   align-self: center;             /* centre when a flex child of .plates */
   width: 100%;
-  max-width: 680px;
+  max-width: 35rem;                /* MLF-scale reading column ≈ 560px */
   margin: 0 auto;
   padding: 0 8px;
   font-family: var(--font-serif);
