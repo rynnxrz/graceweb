@@ -158,11 +158,32 @@
       kind: 'Bio-integrated · YR 1 Master · Group research project',
       meta: 'London, UK · 02–08 / 2024 · with Yingying Yan & Yining Loh',
       abstract:
-        "Architecture as participant rather than shelter. MycoTerra integrates mycelium fabrication with earth construction, embracing growth, decay, and renewal. Computationally tuned through Grasshopper / Galapagos against CFD simulations for airflow, humidity, and temperature, then prototyped and tested for structural and biological viability.",
+        'Architecture as a participant in an ecological cycle rather than a sealed shelter — earth, mycelium, and air tuned together so that a living tissue settles into the geometry rather than coating it.',
       folder: 'mycoterra',
+      // Editorial metadata strip — 4–6 short keys/values, shown after
+      // the abstract in the dossier head.
+      metadata: [
+        ['Released',     '08 / 2024'],
+        ['Type',         'Bio-integrated research'],
+        ['Site',         'London, UK'],
+        ['Programme',    'MArch · Bartlett UCL'],
+        ['Collaborators', 'Yingying Yan · Yining Loh'],
+        ['Strain',       'Pleurotus ostreatus'],
+      ],
+      // Two paragraphs that sit between the head and the first chapter.
+      // Establishes the premise before any plate is shown.
+      intro: [
+        "Architecture, MycoTerra proposes, is not a sealed object but a slow exchange — a thing that breathes alongside the soil it's built from and the people who pass through it. The brief was not to make a building; it was to make a body that admits microbial life as a co-author of its own form.",
+        'Sited in a former rail-yard wedge in north-east London, the project assembles columns of earth-bound mycelium into a porous threshold. Substrate ratios, scaffold geometry, and ambient airflow are tuned together so that a living tissue settles into the geometry rather than coating it.',
+      ],
       chapters: [
         {
-          note: 'Project leaf · entrance & section',
+          note: 'Chapter 01 · concept',
+          title: 'Mycelium as a material participant',
+          prose: [
+            "Mycelium is treated here as a fabrication partner, not a finish. Its hyphae bind earth, hemp shiv, and chitosan into a load-bearing composite while leaving a soft, breathable skin. The tunable variables — humidity, light, substrate moisture — make the material behave less like concrete and more like a slow tide.",
+            "The columns are designed to record their own assembly. Sections through the prototypes show how the print's internal lattice constrains the bloom: where a cavity narrows, the mycelium reaches across; where the wall thickens, it consolidates. Each column carries the trace of its growth conditions like a palimpsest.",
+          ],
           rows: [
             { kind: 'hero', cells: [
               { img: 'myco-hero-render', cap: 'Entrance perspective — mycelial-earth grove at the threshold' },
@@ -174,7 +195,12 @@
           ],
         },
         {
-          note: 'Massing studies · iterative form',
+          note: 'Chapter 02 · methodology',
+          title: 'Computational tuning meets biological growth',
+          prose: [
+            "The form was iterated in Grasshopper with a Galapagos solver, scoring candidates against CFD simulations of airflow, humidity, and surface temperature. The fitness function rewarded geometry that admitted enough light for the substrate's first life cycle while protecting it from drying winds during the critical 6–14 day bloom window.",
+            'The six massings below trace a single substrate logic across morphological permutations — a study of how an envelope that "wants" to be eroded can hold its civic posture while admitting weathering as a design layer.',
+          ],
           rows: [
             { kind: 'strip', cells: [
               { img: 'myco-massing-01', cap: '01' },
@@ -183,14 +209,19 @@
               { img: 'myco-massing-04', cap: '04' },
               { img: 'myco-massing-05', cap: '05' },
               { img: 'myco-massing-06', cap: '06' },
-            ], cap: 'Six massing iterations — eroded mycelium-textured envelopes, computational variation across a single substrate logic.' },
+            ], cap: 'Six massing iterations — eroded mycelium-textured envelopes; computational variation across a single substrate logic.' },
           ],
         },
         {
-          note: 'Fabrication & living material',
+          note: 'Chapter 03 · fabrication',
+          title: 'From print to bloom',
+          prose: [
+            'Each scaffold was 3-D printed in PLA and bio-filament, then inoculated with a Pleurotus ostreatus strain raised in our lab. The print acted both as formwork and as a sacrificial nutrient bed: the mycelium consumed the lignin in the filament during growth, leaving a denser composite skin where the print was thickest.',
+            'The detail strip documents four states across a single iteration cycle — seed, cluster, tower, mesh substrate. The mesh, in particular, is a structural revelation: under 12 % density the lattice flexes, above 30 % the bloom can\'t penetrate, and the working band is narrow.',
+          ],
           rows: [
             { kind: 'pair', cells: [
-              { img: 'myco-fab-pair-01', cap: '3D-printed lace scaffold — branching macro detail' },
+              { img: 'myco-fab-pair-01', cap: '3-D-printed lace scaffold — branching macro detail' },
               { img: 'myco-fab-pair-02', cap: 'Lattice prototype with clear-resin substrate' },
             ]},
             { kind: 'strip', cells: [
@@ -201,6 +232,26 @@
             ], cap: 'Process plates — fabrication of mycelium-bearing scaffolds, four states across the iteration cycle.' },
           ],
         },
+      ],
+      // Long-form artist statement / reflection at the foot of the
+      // dossier. Closes the page with what the project asked of us.
+      reflection: {
+        title: 'What the colony asks of us',
+        paragraphs: [
+          "If a column is alive, the maintenance contract changes. There is no longer a finished structure to inspect; there is a tissue to keep fed, watered, and shaded. Buildings of this kind ask their inhabitants to enter into a small, slow reciprocity — to read the wall's surface for stress as a gardener reads a leaf.",
+          "The project's failures were as instructive as its renders. Two columns collapsed during the final humidity cycle when the lab's HVAC over-corrected for outside cold; one bloom went black under contamination from an open window. These are not exceptions to the architecture; they are its ordinary weather.",
+          'What the colony asks, in the end, is that we widen our idea of who is collaborating. The mycelium is not decoration; it is a member of the design team with its own rate of work, its own reasons.',
+        ],
+      },
+      // Colophon — production credits in dt/dd pairs.
+      credits: [
+        ['Designers',  'Yu (Grace) Shen · Yingying Yan · Yining Loh'],
+        ['Programme',  'MArch Bio-integrated Design'],
+        ['School',     'The Bartlett School of Architecture, UCL'],
+        ['Lab',        'Bio-Integrated Design Lab, UCL Here East'],
+        ['Substrate',  'Hemp shiv · earth · chitosan'],
+        ['Strain',     'Pleurotus ostreatus'],
+        ['Year',       '2024'],
       ],
     },
 
@@ -392,13 +443,52 @@
   document.getElementById('dossier-meta').textContent = d.meta;
   document.getElementById('dossier-abstract').textContent = d.abstract;
 
-  // Plates — one chapter per PDF spread; each chapter has a row grid
+  // Editorial metadata strip — rendered into dossier-head if the
+  // dossier provides a `metadata` array. Older dossiers without
+  // metadata fall through and render nothing here.
+  const headEl = document.querySelector('.dossier-head');
+  if (headEl && Array.isArray(d.metadata) && d.metadata.length) {
+    const dl = document.createElement('dl');
+    dl.className = 'dossier-meta-grid';
+    dl.innerHTML = d.metadata.map(([key, val]) => `
+      <div><dt>${key}</dt><dd>${val}</dd></div>
+    `).join('');
+    // Insert before the closing rule so the strip lives inside the
+    // head card.
+    const rules = headEl.querySelectorAll('.dossier-rule');
+    const lastRule = rules[rules.length - 1];
+    if (lastRule) headEl.insertBefore(dl, lastRule);
+    else headEl.appendChild(dl);
+  }
+
+  // Plates — chapter sequence (each chapter optionally has title +
+  // prose preceding its plates).
   const platesEl = document.getElementById('plates');
 
   // Flat list of {src, cap} for lightbox navigation
   const lbItems = [];
 
+  // Helpers for editorial blocks ----------------------------------
+  const escapeHtml = (s) => String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+  const proseBlock = (paragraphs, klass) => {
+    if (!Array.isArray(paragraphs) || !paragraphs.length) return '';
+    const ps = paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join('');
+    return `<div class="${klass}">${ps}</div>`;
+  };
+
+  // Optional intro section — sits between dossier-head and chapter 1.
+  const introHtml = proseBlock(d.intro, 'dossier-prose dossier-prose--intro');
+
   const chaptersHtml = d.chapters.map((ch) => {
+    const titleHtml = ch.title
+      ? `<h2 class="plate-chapter-title">${escapeHtml(ch.title)}</h2>`
+      : '';
+    const proseHtml = proseBlock(ch.prose, 'plate-chapter-prose');
+    const proseAfterHtml = proseBlock(ch.proseAfter, 'plate-chapter-prose');
+
     const rowsHtml = ch.rows.map((row) => {
       // A row may be either:
       //   • the legacy shape — an array of cells (default 12-col grid)
@@ -446,12 +536,43 @@
           <span class="plate-chapter-mark">◦</span>
           <span class="plate-chapter-note">${ch.note}</span>
         </header>
+        ${titleHtml}
+        ${proseHtml}
         ${rowsHtml}
+        ${proseAfterHtml}
       </section>
     `;
   }).join('');
 
-  platesEl.innerHTML = chaptersHtml;
+  // Reflection / artist statement — sits after the last chapter.
+  let reflectionHtml = '';
+  if (d.reflection && Array.isArray(d.reflection.paragraphs) && d.reflection.paragraphs.length) {
+    const refTitle = d.reflection.title
+      ? `<h2 class="dossier-reflection-title">${escapeHtml(d.reflection.title)}</h2>`
+      : '';
+    reflectionHtml = `
+      <aside class="dossier-reflection-wrap" aria-label="Reflection">
+        ${refTitle}
+        ${proseBlock(d.reflection.paragraphs, 'dossier-reflection')}
+      </aside>
+    `;
+  }
+
+  // Colophon / credits — closes the dossier.
+  let colophonHtml = '';
+  if (Array.isArray(d.credits) && d.credits.length) {
+    const rows = d.credits.map(([key, val]) => `
+      <div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(val)}</dd></div>
+    `).join('');
+    colophonHtml = `
+      <aside class="dossier-colophon" aria-label="Colophon">
+        <h2 class="dossier-colophon-title">Colophon</h2>
+        <dl class="dossier-credits">${rows}</dl>
+      </aside>
+    `;
+  }
+
+  platesEl.innerHTML = introHtml + chaptersHtml + reflectionHtml + colophonHtml;
 
   // Reveal-on-scroll for chapters and rows
   if ('IntersectionObserver' in window) {

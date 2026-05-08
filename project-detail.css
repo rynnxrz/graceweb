@@ -12,9 +12,9 @@
 .dossier-head {
   position: relative;
   z-index: 5;
-  max-width: 760px;
-  margin: 80px 40px 64px;
-  padding: 36px 0;
+  max-width: 880px;
+  margin: 110px auto 80px;
+  padding: 48px 40px 56px;
 }
 
 .dossier-rule {
@@ -79,16 +79,16 @@
   z-index: 5;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 24px 40px 120px;
+  padding: 60px 40px 160px;
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 160px;                      /* generous breath between chapters */
 }
 
 .plate-chapter {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 44px;                       /* internal: title → prose → plates */
   opacity: 0;
   transform: translateY(20px);
   transition:
@@ -495,4 +495,209 @@ html.lb-open { overflow: hidden; }
     gap: 12px;
   }
   .dossier-nav-next { text-align: left; }
+}
+
+/* =========================================================================
+   v2 — Editorial dossier structure
+   Beyond plates, a project earns prose: a metadata strip in the head,
+   chapter titles + body copy alongside the plates, an artist-statement
+   reflection block, and a colophon at the foot. Reading column is held
+   to 680 px so each line lands at a comfortable cadence.
+   ========================================================================= */
+
+/* --- Metadata strip (in dossier-head, after the abstract) --------- */
+.dossier-meta-grid {
+  margin: 36px 0 0;
+  padding: 28px 0 0;
+  border-top: 1px solid var(--hair-faint);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 22px 36px;
+  list-style: none;
+}
+.dossier-meta-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+.dossier-meta-grid dt {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--pigment-faint);
+}
+.dossier-meta-grid dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--pigment-paper);
+}
+
+/* --- Body prose blocks (intro / chapter / reflection) ------------- */
+/* Single column at 680 px, centred, with paragraph rhythm via gap.
+   Serif at 17 px / 1.75 leading is the comfortable reading default —
+   matches the field-notebook tone without being precious. */
+.dossier-prose,
+.plate-chapter-prose,
+.dossier-reflection {
+  align-self: center;             /* centre when a flex child of .plates */
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 8px;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--pigment-paper);
+}
+.dossier-prose p,
+.plate-chapter-prose p,
+.dossier-reflection p {
+  margin: 0;
+}
+.dossier-prose p + p,
+.plate-chapter-prose p + p,
+.dossier-reflection p + p {
+  margin-top: 1.4em;
+}
+.dossier-prose em,
+.plate-chapter-prose em,
+.dossier-reflection em {
+  font-style: italic;
+  color: var(--pigment-bone);
+}
+
+/* Intro sits between dossier-head and the first chapter, with a touch
+   more vertical air around it. */
+.dossier-prose--intro {
+  margin: 8px auto 60px;
+}
+
+/* --- Chapter title --------------------------------------------------- */
+/* The chapter-head note (existing small mono label) becomes the eyebrow
+   and the new italic display title sits below it. */
+.plate-chapter-title {
+  align-self: center;
+  margin: 0;
+  max-width: 880px;
+  width: 100%;
+  padding: 0 8px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(28px, 3.4vw, 42px);
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--pigment-bone);
+}
+/* Re-target the chapter head so its eyebrow note lines up with the
+   title's reading column instead of stretching to full container. */
+.plate-chapter > .plate-chapter-head {
+  align-self: center;
+  width: 100%;
+  max-width: 880px;
+}
+
+/* --- Reflection (artist-statement) section ------------------------- */
+.dossier-reflection-wrap {
+  position: relative;
+  z-index: 5;
+  align-self: center;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0;
+  padding: 60px 40px 0;
+  border-top: 1px solid var(--hair-faint);
+}
+.dossier-reflection-title {
+  margin: 0 auto 32px;
+  max-width: 680px;
+  padding: 0 8px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1.2;
+  color: var(--pigment-bone);
+}
+
+/* --- Colophon (credits) -------------------------------------------- */
+.dossier-colophon {
+  position: relative;
+  z-index: 5;
+  align-self: center;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0;
+  padding: 60px 40px 40px;
+  border-top: 1px solid var(--hair-faint);
+}
+.dossier-colophon-title {
+  margin: 0 0 32px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--pigment-faint);
+}
+.dossier-credits {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(140px, 0.4fr) minmax(0, 1fr);
+  gap: 16px 36px;
+}
+.dossier-credits > div {
+  display: contents;
+}
+.dossier-credits dt {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--pigment-faint);
+  padding-top: 4px;
+}
+.dossier-credits dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--pigment-paper);
+}
+
+/* --- Mobile editorial reflow --------------------------------------- */
+@media (max-width: 720px) {
+  .dossier-head {
+    margin: 72px 0 48px;
+    padding: 36px 24px 40px;
+  }
+  .dossier-meta-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+  }
+  .plates { gap: 120px; padding: 40px 24px 100px; }
+  .plate-chapter { gap: 32px; }
+  .dossier-prose,
+  .plate-chapter-prose,
+  .dossier-reflection {
+    font-size: 15.5px;
+    padding: 0 12px;
+  }
+  .dossier-reflection-wrap {
+    padding: 60px 24px 0;
+    margin: 32px auto 0;
+  }
+  .dossier-colophon {
+    padding: 48px 24px 36px;
+    margin: 80px auto 0;
+  }
+  .dossier-credits {
+    grid-template-columns: 1fr;
+    gap: 6px 0;
+  }
+  .dossier-credits dt { padding-top: 16px; }
+  .dossier-credits dt:first-of-type { padding-top: 0; }
 }
