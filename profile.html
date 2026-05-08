@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0d0a">
+  <meta name="description" content="Grace — Profile. Yu (Grace) Shen. Bio-integrated computational designer.">
+  <meta name="author" content="Grace">
+
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="Grace — Profile">
+  <meta property="og:description" content="Yu (Grace) Shen — bio-integrated computational designer.">
+
+  <title>Profile — Grace</title>
+
+  <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css?v=20260507c">
+</head>
+<body class="page-profile no-halo">
+
+  <!-- Loading veil — see transitions.js for lifecycle -->
+  <div class="page-veil" data-veil aria-hidden="true">
+    <div class="page-veil-inner">
+      <span class="page-veil-mark">◦</span>
+      <span class="page-veil-line"></span>
+      <span class="page-veil-text">PROFILE</span>
+    </div>
+  </div>
+
+  <!-- Quiet substrate canvas (same drift as elsewhere, dialed low) -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Field notebook leaf header -->
+  <header class="leaf-header" aria-label="Field notebook header">
+    <div class="leaf-row">
+      <span class="leaf-mark">◦</span>
+      <span class="leaf-folio">FOLIO / PROFILE</span>
+      <span class="leaf-meta">spec.00 / curator</span>
+    </div>
+    <div class="leaf-row leaf-row--right">
+      <nav class="view-toggle" aria-label="View switch">
+        <a href="index.html" class="view-toggle-item">network</a>
+        <span class="view-toggle-sep">·</span>
+        <a href="work.html" class="view-toggle-item">index</a>
+        <span class="view-toggle-sep">·</span>
+        <a href="profile.html" class="view-toggle-item is-current" aria-current="page">profile</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="profile" id="profile" aria-label="Profile">
+
+    <!-- Masthead — herbarium label for the curator -->
+    <section class="profile-mast">
+      <div class="profile-mast-rule"></div>
+      <div class="profile-mast-grid">
+        <div class="profile-mast-text">
+          <p class="profile-mast-eyebrow">— sheet 00 / curator · n=01</p>
+          <h1 class="profile-mast-title">
+            <span class="profile-mast-name">Yu <em>(Grace)</em> Shen</span>
+            <span class="profile-mast-role">multidisciplinary practitioner — between architecture, biology, and machine vision.</span>
+          </h1>
+          <ul class="profile-mast-meta" aria-label="Contact">
+            <li><span class="profile-mast-key">contact</span><a class="profile-link" href="mailto:gracesy014@gmail.com">gracesy014@gmail.com</a></li>
+            <li><span class="profile-mast-key">phone</span><a class="profile-link" href="tel:+447587664323">(+44) 07587 664 323</a></li>
+            <li><span class="profile-mast-key">based</span><span>London · UK</span></li>
+          </ul>
+        </div>
+        <figure class="profile-portrait" aria-hidden="true">
+          <img src="public/images/grace-profile.jpeg" alt="Portrait of Yu (Grace) Shen" loading="eager" decoding="async">
+        </figure>
+      </div>
+      <p class="profile-summary">
+        A Master's graduate with a dual background in architectural design and bio-integrated systems,
+        specialising in computational methods and AI-assisted design. Skilled in integrating generative
+        models (GAN, CycleGAN), environmental data, and experimental materials to develop intelligent
+        and responsive architectural systems. Experienced in independently managing the full pipeline
+        from algorithmic simulation to spatial design and prototyping. Proficient in Rhino /
+        Grasshopper, Python, and Adobe Suite, with hands-on experience in bioplastic, mycelium, and
+        algae-based fabrication. Seeking roles in design research, material innovation, or intelligent
+        system development — including computational designer, R&amp;D assistant, or bio-design specialist.
+      </p>
+      <div class="profile-mast-rule"></div>
+    </section>
+
+    <!-- Two-column body: timeline-style entries -->
+    <div class="profile-body">
+
+      <!-- LEFT COLUMN — formation + roles -->
+      <div class="profile-col">
+
+        <section class="profile-section" aria-labelledby="edu-heading">
+          <h2 class="profile-section-title" id="edu-heading">Education</h2>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">University College London, Bartlett</h3>
+              <p class="profile-entry-when">Sep 2023 — Jun 2025 · London, UK</p>
+            </header>
+            <p class="profile-entry-role">MArch, Bio-integrated Design</p>
+            <ul class="profile-entry-list">
+              <li><span class="profile-tag">research focus</span> Bio-digital fabrication and lab analysis.</li>
+            </ul>
+          </article>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">University of Auckland</h3>
+              <p class="profile-entry-when">Jan 2020 — Nov 2022 · Auckland, NZ</p>
+            </header>
+            <p class="profile-entry-role">BAS, Bachelor of Architectural Studies</p>
+            <ul class="profile-entry-list">
+              <li><span class="profile-tag">award</span> First in Course Award in Design (2020 – 22); SANNZ Sponsor's Favourite Prize.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="profile-section" aria-labelledby="work-heading">
+          <h2 class="profile-section-title" id="work-heading">Work</h2>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">Ivy J Studio</h3>
+              <p class="profile-entry-when">Oct 2025 — Jan 2026 · London, UK</p>
+            </header>
+            <p class="profile-entry-role">Head of Design Assistant</p>
+            <ul class="profile-entry-list">
+              <li><span class="profile-tag">couture collaboration</span> Served as Head of Design Assistant for the <strong>Germanier Paris Haute Couture SS26</strong> collaboration. Translated artistic concepts of floral lifecycles — growth and decay — into wearable micro-structures, balancing aesthetic complexity with structural stability for the runway.</li>
+              <li><span class="profile-tag">parametric development</span> Drove design development through rapid 3D iteration and <strong>parametric exploration</strong>. Generated complex, lace-like digital textures and "controlled deformations" to simulate organic rupture and weathering.</li>
+              <li><span class="profile-tag">fabrication &amp; prototyping</span> Managed the transition from digital design to physical reality through extensive <strong>3D printing</strong> tests. Refined internal frameworks and surface geometries to align computational complexity with real-world material behavior for final production.</li>
+            </ul>
+          </article>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">Oliver Andrew Associates</h3>
+              <p class="profile-entry-when">Mar 2023 — Aug 2023 · Auckland, NZ</p>
+            </header>
+            <p class="profile-entry-role">Architectural Designer Assistant</p>
+            <ul class="profile-entry-list">
+              <li><span class="profile-tag">design exploration</span> Conceptualised diverse <strong>modular</strong> combinations for resort accommodations, ranging from one-bedroom en-suites to four-bedroom blocks, while integrating Guangxi's traditional culture into public-facility design and activity planning.</li>
+              <li><span class="profile-tag">cultural integration</span> Crafted a unique, site-specific <strong>masterplan</strong> that enhances the resort experience through thoughtful arrangement of spaces, incorporating local materials and adapting designs to harmonise with the existing village culture.</li>
+              <li><span class="profile-tag">collaborative innovation</span> Spearheaded a transportation-mapping <strong>prototype</strong> for travel interests and conducted comprehensive <strong>material analysis</strong>, fostering teamwork and clear communication to rapidly absorb and apply insights from local village culture in the design process.</li>
+            </ul>
+          </article>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">University of Auckland — School of Architecture &amp; Planning</h3>
+              <p class="profile-entry-when">Mar 2022 — Dec 2022 · Auckland, NZ</p>
+            </header>
+            <p class="profile-entry-role">Technical Assistant — Digital Research Hub (DRH)</p>
+            <ul class="profile-entry-list">
+              <li>Provided technical support in digital modelling, 3D printing, laser cutting, and fabrication workflows.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="profile-section" aria-labelledby="proj-heading">
+          <h2 class="profile-section-title" id="proj-heading">Project research</h2>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">MycoTerra — bio-receptive novel research development</h3>
+              <p class="profile-entry-when">Feb 2024 — Aug 2024 · London, UK</p>
+            </header>
+            <p class="profile-entry-role">Bio-integrated Computational Designer</p>
+            <ul class="profile-entry-list">
+              <li><span class="profile-tag">innovative integration</span> Pioneered the MycoTerra project, redefining conventional architecture by merging mycelium fabrication and earth construction techniques to create sustainable, circular design solutions.</li>
+              <li><span class="profile-tag">environmental engineering</span> Developed optimal micro-environments balancing material science, geometric design, and digital fabrication to enhance spatial quality and functionality for both mycelium growth and human habitation.</li>
+              <li><span class="profile-tag">experiential design</span> Conceived and implemented an <strong>installation</strong> showcasing extruded living materials, challenging users to re-conceptualise architecture as an inhabited ecosystem.</li>
+            </ul>
+          </article>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">Tide-ReWoven — tidal-informed regenerative design research</h3>
+              <p class="profile-entry-when">Sep 2024 — Jun 2025 · London, UK</p>
+            </header>
+            <p class="profile-entry-role">Bio-integrated Computational Designer</p>
+            <ul class="profile-entry-list">
+              <li><span class="profile-tag">tidal adaptation</span> Investigated tidal systems as generative data inputs for shaping coastal architecture, embedding environmental rhythms into spatial design logic.</li>
+              <li><span class="profile-tag">computational ecology</span> Developed a responsive roof system using Rhino &amp; Grasshopper, incorporating tidal range, curvature logic, and water retention for micro-habitat creation.</li>
+              <li><span class="profile-tag">machine-learning integration</span> Trained a conditional GAN on environmental light conditions to generate interpolated morphology; combined with nutrient availability and algal metabolic patterns to enable context-aware architectural transformation.</li>
+            </ul>
+          </article>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN — auxiliary record -->
+      <div class="profile-col">
+
+        <section class="profile-section" aria-labelledby="other-heading">
+          <h2 class="profile-section-title" id="other-heading">Other engagement</h2>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">Seeds of Change — Exhibition &amp; pop-up</h3>
+              <p class="profile-entry-when">Oct 2025 · London, UK</p>
+            </header>
+            <p class="profile-entry-role">Event Curation &amp; Spatial Design Support</p>
+            <ul class="profile-entry-list">
+              <li>Assisted in spatial and material setup of the exhibition — from display layout and installation to printed-material production and visitor engagement.</li>
+            </ul>
+          </article>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">Bartlett Autumn Show 2025 — Bio-integrated Design, UCL</h3>
+              <p class="profile-entry-when">Sep 2025 — Oct 2025 · London, UK</p>
+            </header>
+            <p class="profile-entry-role">Online Exhibition Coordinator</p>
+            <ul class="profile-entry-list">
+              <li>Coordinated the online curation of the Bartlett Autumn Show — collecting, formatting, and uploading student works for the Bio-integrated Design programme's digital exhibition platform.</li>
+            </ul>
+          </article>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">University of Auckland — School of Architecture &amp; Planning</h3>
+              <p class="profile-entry-when">Mar 2023 — Jun 2023 · Auckland, NZ</p>
+            </header>
+            <p class="profile-entry-role">Media Tutor — first-year media course</p>
+            <ul class="profile-entry-list">
+              <li>Supported students in architectural visual communication: Rhino modelling, diagram production, Adobe workflows. Provided feedback and technical assistance during studio sessions.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="profile-section" aria-labelledby="pubs-heading">
+          <h2 class="profile-section-title" id="pubs-heading">Publication</h2>
+
+          <article class="profile-entry">
+            <header class="profile-entry-head">
+              <h3 class="profile-entry-title">The Psychological Impact of Biophilic Architectural Spatial Experiences: A Study on Hydrophilic Architecture based on Grasshopper Analysis</h3>
+              <p class="profile-entry-when">2025</p>
+            </header>
+            <p class="profile-entry-role">International Journal of Social Science and Public Affairs · Vol. 5, No. 2, 2025</p>
+            <ul class="profile-entry-list">
+              <li><span class="profile-tag">doi</span><a class="profile-link" href="https://doi.org/10.62051/ijsspa.v5n2.07" target="_blank" rel="noopener">10.62051/ijsspa.v5n2.07</a></li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="profile-section" aria-labelledby="skills-heading">
+          <h2 class="profile-section-title" id="skills-heading">Skills</h2>
+          <dl class="profile-skills">
+            <dt>3D modelling</dt>
+            <dd>Rhinoceros · SketchUp</dd>
+
+            <dt>Parametric design</dt>
+            <dd>Grasshopper · Houdini FX</dd>
+
+            <dt>Rendering</dt>
+            <dd>Enscape 3D · Redshift · Unreal Engine</dd>
+
+            <dt>Technical drawing</dt>
+            <dd>AutoCAD · Autodesk Revit</dd>
+
+            <dt>Post-production &amp; graphics</dt>
+            <dd>Adobe Photoshop · Illustrator · InDesign · CapCut</dd>
+
+            <dt>Environmental analysis</dt>
+            <dd>SimScale (CFD) · Ladybug Tools</dd>
+
+            <dt>Bio-fabrication &amp; wet-lab</dt>
+            <dd>Cultivating and testing bio-based materials — chitosan, mycelium, algae</dd>
+
+            <dt>Prototyping &amp; analysis</dt>
+            <dd>3D printing · microscopy · material performance evaluation</dd>
+
+            <dt>Machine learning &amp; AI</dt>
+            <dd>Generative Adversarial Networks (GANs) — CycleGAN, Pix2Pix · Midjourney</dd>
+
+            <dt>Interests</dt>
+            <dd>Photography · Python · futuristic design</dd>
+
+            <dt>Languages</dt>
+            <dd>English · Mandarin · Suzhounese · Japanese</dd>
+          </dl>
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="leaf-footer">
+    <span class="leaf-meta">— end of profile —</span>
+    <a class="leaf-meta" href="mailto:gracesy014@gmail.com">correspondence</a>
+  </footer>
+
+  <div class="cursor-halo" id="cursor-halo" aria-hidden="true"></div>
+
+  <script src="cursor.js?v=20260506a" defer></script>
+  <script src="transitions.js?v=20260506a" defer></script>
+  <script src="organic-bg.js?v=20260506a" defer></script>
+</body>
+</html>
