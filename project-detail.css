@@ -199,10 +199,12 @@
 .plate-row--detail .plate-img-btn img,
 .plate-row--detail .plate-img-btn video { max-height: 56vh; }
 
-/* Full-bleed — breaks out of the .plates max-width and rides the
-   viewport edge-to-edge. Reserved for one or two cinematic moments
-   per dossier. The image is cover-cropped at 16/9 (capped at 92vh)
-   so a tall portrait still fills the plane without leaving voids. */
+/* Full-bleed — breaks out of .plates max-width and rides the viewport
+   edge-to-edge. The image keeps its native aspect ratio: width 100%,
+   height auto, no cropping. This is a deliberate choice over the
+   MLF-style aspect-locked cover crop — Grace's hero renders are the
+   work itself, not background loops, so they're shown in full even
+   if that makes the row tall on wide screens. */
 .plate-row--fullbleed {
   grid-template-columns: 1fr;
   width: 100vw;
@@ -215,8 +217,6 @@
   max-width: none;
 }
 .plate-row--fullbleed .plate-img-btn {
-  aspect-ratio: 16 / 9;
-  max-height: 92vh;
   border-left: none;
   border-right: none;
   border-radius: 0;
@@ -227,10 +227,10 @@
 }
 .plate-row--fullbleed .plate-img-btn img,
 .plate-row--fullbleed .plate-img-btn video {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  max-height: 92vh;
+  height: auto;                    /* native aspect — show the work in full */
+  max-height: none;
 }
 .plate-row--fullbleed .plate-cap {
   max-width: 35rem;
