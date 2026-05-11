@@ -96,8 +96,9 @@
               { img: 'heishui-plan-villa', cap: 'Guest villa cluster — ground floor plan' },
               { img: 'heishui-plan-villa-detail', cap: 'Villa detail — room layouts with spiral stair' },
             ]},
-            { kind: 'detail', cells: [
+            { kind: 'pair', cells: [
               { img: 'heishui-plan-hotel', cap: 'Main hotel — reception and guest room wing' },
+              { img: 'heishui-screenshot-old', cap: 'Early study — design iteration screenshot' },
             ]},
           ],
         },
@@ -167,20 +168,14 @@
         },
         {
           note: 'Chapter 02 · process',
-          title: 'October — the atelier sessions',
+          title: 'The atelier sessions',
           prose: [
-            'Three weeks of nightly print cycles and studio sessions in October. The clear resin caught the light differently at every angle; the black resin absorbed it. Both had to read on the runway — the choice of material was a lighting decision as much as a structural one.',
+            'Nightly print cycles and studio sessions across three months. The clear resin caught the light differently at every angle; the black resin absorbed it. Both had to read on the runway — the choice of material was a lighting decision as much as a structural one.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
               { img: 'lc-hero-thistle', cap: 'Clear-resin thistle leaf detail against black — translucent, spiky' },
             ]},
-            { kind: 'strip', cells: [
-              { img: 'lc-process-01', cap: '25 Oct' },
-              { img: 'lc-process-02', cap: '25 Oct' },
-              { img: 'lc-process-03', cap: '25 Oct' },
-              { img: 'lc-process-04', cap: '26 Oct' },
-            ], cap: 'October atelier sessions — translating the floral brief into structural geometry.' },
           ],
         },
         {
@@ -191,12 +186,12 @@
           ],
           rows: [
             { kind: 'pair', cells: [
-              { img: 'lc-proto-black', cap: 'Black-resin prototype on mannequin bust' },
               { img: 'lc-proto-black-top', cap: 'Top-down view — seed-pod form with ferns' },
+              { img: 'lc-resin-sphere', cap: 'Clear-resin thistle sphere — casting shadows' },
             ]},
             { kind: 'pair', cells: [
-              { img: 'lc-resin-sphere', cap: 'Clear-resin thistle sphere — casting shadows' },
               { img: 'lc-resin-hand', cap: 'Hand-held clear-resin pod — testing translucency' },
+              { img: 'lc-ref-hydrangea', cap: 'Reference — dried hydrangea skeleton, the original template' },
             ]},
             { kind: 'fullbleed', cells: [
               { img: 'lc-proto-full', cap: 'Full clear-resin headpiece on dress form — branching silhouette against concrete' },
@@ -216,7 +211,7 @@
             ]},
             { kind: 'pair', cells: [
               { img: 'lc-final-detail', cap: 'Backstage fitting — hands placing headpiece on model' },
-              { img: 'lc-backstage', cap: 'Clear-resin detail, backstage, model partially visible' },
+              { img: 'lc-render-sculpture', cap: 'Digital sculpt — organic form study' },
             ]},
           ],
         },
@@ -231,8 +226,9 @@
               { img: 'lc-proto-detail', cap: 'Runway — dark gown with black-resin floral headpiece' },
               { img: 'lc-proto-clear-01', cap: 'Runway — neon tulle with silver thistle branch' },
             ]},
-            { kind: 'fullbleed', cells: [
+            { kind: 'pair', cells: [
               { img: 'lc-wall-install', cap: 'Gallery installation — botanical forms on white cards, archival grid' },
+              { img: 'lc-backstage', cap: 'Backstage — clear-resin detail, model partially visible' },
             ]},
           ],
         },
@@ -314,7 +310,22 @@
           ],
         },
         {
-          note: 'Chapter 03 · design & print',
+          note: 'Chapter 03 · making',
+          title: 'Studio process — resin, print, assembly',
+          prose: [
+            'The translucent flora specimens started as resin and filament experiments in the studio. Each piece went through hand-finishing before installation.',
+          ],
+          rows: [
+            { kind: 'strip', cells: [
+              { img: 'seeds-process-01', cap: '25 Oct' },
+              { img: 'seeds-process-02', cap: '25 Oct' },
+              { img: 'seeds-process-03', cap: '25 Oct' },
+              { img: 'seeds-process-04', cap: '26 Oct' },
+            ], cap: 'Studio sessions — material experiments, assembly, and finishing.' },
+          ],
+        },
+        {
+          note: 'Chapter 04 · design & print',
           title: 'Flora studies and the graphic identity',
           prose: [
             'The flora forms were designed as silhouette studies first — black-on-white — then resolved into translucent 3-D-printed specimens with gradient colouring. The graphic identity stayed tonal: buff, oat, no high-contrast.',
@@ -413,7 +424,7 @@
           ],
           rows: [
             { kind: 'pair', cells: [
-              { img: 'tide-algae-micro', cap: 'Micrasterias algae — biological inspiration at high magnification' },
+              { img: 'tide-site-analysis-02', cap: 'Site analysis — secondary mapping, spatial data overlay' },
               { img: 'tide-method-gan', cap: 'Algae to computation — GAN training pipeline, morphological analysis' },
             ]},
             { kind: 'strip', cells: [
@@ -435,8 +446,7 @@
               { img: 'tide-iter-01', cap: '01' },
               { img: 'tide-iter-02', cap: '02' },
               { img: 'tide-iter-03', cap: '03' },
-              { img: 'tide-iter-04', cap: '04' },
-            ], cap: 'Four iterations — variation across density, curvature, and tessellation.' },
+            ], cap: 'Three iterations — variation across density, curvature, and tessellation.' },
             { kind: 'strip', cells: [
               { img: 'tide-wave-terrain-01', cap: '01' },
               { img: 'tide-wave-terrain-02', cap: '02' },
@@ -476,6 +486,10 @@
               { img: 'tide-fab-02', cap: 'weave 02' },
               { img: 'tide-fab-03', cap: 'weave 03' },
             ], cap: 'Fabrication studies — material and weaving experiments.' },
+            { kind: 'pair', cells: [
+              { img: 'tide-fab-macro', cap: 'Macro detail — chitosan composite texture' },
+              { img: 'tide-algae-micro', cap: 'Micrasterias algae — biological inspiration at high magnification' },
+            ]},
             { kind: 'pair', cells: [
               { img: 'tide-tension-01', cap: 'Tension test — membrane study 01' },
               { img: 'tide-tension-02', cap: 'Tension test — membrane study 02' },
@@ -548,9 +562,8 @@
             { kind: 'fullbleed', cells: [
               { img: 'myco-hero-render', cap: 'Street-level perspective — people walking through mycelium wall corridor' },
             ]},
-            { kind: 'pair', cells: [
+            { kind: 'fullbleed', cells: [
               { img: 'myco-section-01', cap: 'Section — wall zone, growth zone, seating zone, ecology zone' },
-              { img: 'myco-section-02', cap: 'Perspective section — habitation along the spine' },
             ]},
           ],
         },
@@ -576,24 +589,7 @@
           ],
         },
         {
-          note: 'Chapter 03 · research',
-          title: 'The Y1 Almanac — from lab to site',
-          prose: [
-            'The Y1 Almanac documented the full arc from material cultivation to site proposal. Mycelium samples were raised in the Bio-Integrated Design Lab over 15-day growth cycles, then tested for structural performance.',
-          ],
-          rows: [
-            { kind: 'pair', cells: [
-              { img: 'myco-almanac-material', cap: 'Material studies — mycelium cultivation in petri dishes, 15-day growth' },
-              { img: 'myco-almanac-proto', cap: 'Prototyping — computation evaluation, extrudability / adhesion / stability' },
-            ]},
-            { kind: 'pair', cells: [
-              { img: 'myco-almanac-site', cap: 'Site proposal — aggregation pattern, solar study comparison' },
-              { img: 'myco-almanac-render', cap: 'Mycelium block wall — lit to show aggregate surface texture' },
-            ]},
-          ],
-        },
-        {
-          note: 'Chapter 04 · render',
+          note: 'Chapter 03 · render',
           title: 'The mycelium city',
           prose: [
             'The urban-scale render tested whether the mycelium wall logic could hold at city scale — a misty corridor where people and structure share the same substrate.',
@@ -605,14 +601,46 @@
           ],
         },
         {
-          note: 'Chapter 05 · fabrication',
-          title: 'From print to bloom',
+          note: 'Chapter 04 · research',
+          title: 'The Y1 Almanac — from lab to site',
           prose: [
-            'Each scaffold was 3-D printed in PLA and bio-filament, then inoculated with Pleurotus ostreatus. The print acted both as formwork and as sacrificial nutrient: the mycelium consumed the lignin during growth.',
+            'The Y1 Almanac documented the full arc from material cultivation to site proposal. Mycelium samples were raised in the Bio-Integrated Design Lab over 15-day growth cycles, then tested for structural performance.',
           ],
           rows: [
+            { kind: 'pair', cells: [
+              { img: 'myco-almanac-038', cap: 'Material studies — mycelium cultivation in petri dishes, 15-day growth' },
+              { img: 'myco-almanac-045', cap: 'Lab documentation — growth cycle studies' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'myco-almanac-065', cap: 'Material research — substrate experiments' },
+              { img: 'myco-almanac-068', cap: 'Computational analysis — structural performance' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'myco-almanac-069', cap: 'Growth documentation — colony development' },
+              { img: 'myco-almanac-071', cap: 'Fabrication testing — composite assembly' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'myco-almanac-074', cap: 'Prototyping — computation evaluation, extrudability / adhesion / stability' },
+              { img: 'myco-almanac-075', cap: 'Material catalogue — substrate and binding agents' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'myco-almanac-076', cap: 'Lab process — inoculation and curing' },
+              { img: 'myco-almanac-087', cap: 'Site proposal — aggregation pattern, solar study comparison' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'myco-almanac-088', cap: 'Environmental analysis — airflow and humidity' },
+              { img: 'myco-almanac-089', cap: 'Structural analysis — load paths through mycelium composite' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'myco-almanac-090', cap: 'Assembly sequence — growth to inhabitation' },
+              { img: 'myco-almanac-091', cap: 'Lifecycle diagram — from spore to structure' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'myco-almanac-096', cap: 'Mycelium block wall — lit to show aggregate surface texture' },
+              { img: 'myco-almanac-097', cap: 'Final render — inhabited mycelium landscape' },
+            ]},
             { kind: 'fullbleed', cells: [
-              { img: 'myco-fab-crystal', cap: 'Salt-water crystallisation on scaffold — material experiment' },
+              { img: 'myco-almanac-098', cap: 'Almanac closing — project synthesis' },
             ]},
           ],
         },
@@ -703,10 +731,14 @@
               { img: 'silo-fab-coral-01', cap: 'branching · low' },
               { img: 'silo-fab-coral-02', cap: 'branching · mid' },
               { img: 'silo-fab-coral-03', cap: 'branching · canopy' },
-            ], cap: 'Three scales of the same coral lattice — low cluster, mid section, full canopy.' },
+              { img: 'silo-fab-coral-04', cap: 'branching · detail' },
+            ], cap: 'Four scales of the same coral lattice — low cluster, mid section, canopy, and detail.' },
             { kind: 'pair', cells: [
               { img: 'silo-preform-slicer', cap: 'PreForm slicer — coral model ready for SLA printing' },
               { img: 'silo-model-topdown', cap: 'Model top-down — resin print on dark surface' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-render-exterior', cap: 'Exterior render — silo structure on waterfront' },
             ]},
           ],
         },
@@ -873,7 +905,11 @@
               { img: 'ultra-print-dark', cap: 'dark metallic' },
               { img: 'ultra-print-wax', cap: 'translucent wax' },
               { img: 'ultra-print-shell', cap: 'white shell' },
-            ], cap: 'Three pod prototypes — each material reads the organism differently.' },
+              { img: 'ultra-crystal', cap: 'crystal resin' },
+            ], cap: 'Four pod prototypes — each material reads the organism differently.' },
+            { kind: 'fullbleed', cells: [
+              { img: 'ultra-board-01', cap: 'Presentation board — project synthesis' },
+            ]},
             { kind: 'fullbleed', cells: [
               { img: 'ultra-perspective-02', cap: 'Alternate perspective section — comic-style annotations, building section' },
             ]},
