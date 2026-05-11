@@ -1,23 +1,17 @@
 /* =========================================================================
-   project-detail.js
-   Specimen dossier — chaptered plate sequence built from the PDF's raw
-   embedded images (not page crops with caption text). Per-project
-   layouts mirror the original spread composition; click any plate to
-   open the lightbox.
+   project-detail.js  ·  v4 (2026-05-11)
+   Cinematic scroll dossiers — all images from curated originals.
    ========================================================================= */
 
 (() => {
 
   const BASE = 'public/images/projects/extracted-portfolio/';
 
-  /* --- Project dossiers -------------------------------------------- */
-  // Each dossier carries a `chapters` array. A chapter corresponds to
-  // a PDF spread page; its `rows` are 12-col grid rows where each item
-  // declares its `img` (file stem under `<folder>/images/webp/`), a
-  // `span` (1-12), and a short caption.
-
   const DOSSIERS = {
 
+    /* ================================================================
+       HEISHUI RIVER RESORT
+       ================================================================ */
     'heishui-river-resort': {
       no: 'spec.001 / 2023',
       name: 'Heishui River Resort',
@@ -25,7 +19,7 @@
       kind: 'Hospitality · Practice — Concept stage, design team',
       meta: 'Guangxi, China · 03–08 / 2023 · ≈100 rooms, 50 homestays',
       abstract:
-        "Hospitality grafted to the Blackwater River. Slate roofs, dark tones, native vegetation — the architecture retreats into the karst valley rather than imposing on it.",
+        'Hospitality grafted to the Blackwater River. Slate roofs, dark tones, native vegetation — the architecture retreats into the karst valley rather than imposing on it.',
       folder: 'heishui-river-resort',
       metadata: [
         ['Released', '08 / 2023'],
@@ -43,7 +37,7 @@
           note: 'Chapter 01 · site & landscape',
           title: 'A masterplan that reads the river first',
           prose: [
-            "The masterplan is read as a riverine substrate first, building stock second. Each cluster sits inside a fold of the karst valley, oriented to the river bend, set behind native bamboo and slate retaining walls. Room typologies (one-, two-, four-bedroom) modulate density without changing the roofscape rhythm — every block reads as a piece of the river's edge.",
+            'The masterplan is read as a riverine substrate first, building stock second. Each cluster sits inside a fold of the karst valley, oriented to the river bend, set behind native bamboo and slate retaining walls.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
@@ -57,31 +51,53 @@
         },
         {
           note: 'Chapter 02 · public houses',
-          title: 'Anchors for the visitor’s day',
+          title: 'Anchors for the visitor\'s day',
           prose: [
-            'The public buildings — courtyard tea house, pool house, central reception — work as anchors for the visitor’s day. Each is a quiet inversion of a Wuyuan public-house: black slate roof, deep eaves, courtyard with single tree, inward gaze toward the river. The lighting strategy relies on aperture rather than fixture; at dusk, internal lights spill out as small orange gestures across the dark river.',
+            'The public buildings — courtyard tea house, pool house, central reception — work as anchors for the visitor\'s day. Each is a quiet inversion of a Wuyuan public-house: black slate roof, deep eaves, courtyard with single tree, inward gaze toward the river.',
           ],
           rows: [
+            { kind: 'fullbleed', cells: [
+              { img: 'heishui-render-waterfall', cap: 'Angular stone buildings with waterfall feature, karst mountains beyond' },
+            ]},
             { kind: 'strip', cells: [
-              { img: 'heishui-render-01', cap: 'over-water platform' },
-              { img: 'heishui-render-02', cap: 'tea house entry' },
-              { img: 'heishui-render-04', cap: 'pool house, dusk' },
-            ], cap: 'Three of the public buildings, each at a different hour — the architecture asked to read across light.' },
+              { img: 'heishui-render-01', cap: 'glass pavilions, riverbank' },
+              { img: 'heishui-render-02', cap: 'pathway through trees' },
+              { img: 'heishui-render-04', cap: 'aerial, valley scatter' },
+            ], cap: 'Three postures of the same architecture — from the river, from the path, from above.' },
           ],
         },
         {
           note: 'Chapter 03 · atmosphere',
           title: 'The architecture disappears at dusk',
           prose: [
-            'The render set traces the resort’s posture across hours — dawn at the tea house, midday over the pool, dusk along the river path. The brief was to test whether the architecture could disappear into the dusk; the renders, by Dan Lah, were our proof that it could.',
+            'The render set traces the resort\'s posture across hours — dawn at the tea house, midday over the pool, dusk along the river path. The brief was to test whether the architecture could disappear into the dusk.',
           ],
           rows: [
             { kind: 'pair', cells: [
-              { img: 'heishui-render-03', cap: 'Resort house — over-water terrace' },
-              { img: 'heishui-render-05', cap: 'Pool house — slate void looking out' },
+              { img: 'heishui-render-05', cap: 'Courtyard, dark angular roof, karst behind' },
+              { img: 'heishui-render-06', cap: 'Guest pavilion — garden path, wooden deck bridge' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'heishui-render-03', cap: 'Two pavilions, mountain mist' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'heishui-interior', cap: 'Interior — dramatic stone opening with pool and mountain view' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 04 · plans',
+          title: 'Room typologies modulate density',
+          prose: [
+            'Room typologies — one-, two-, four-bedroom — modulate density without changing the roofscape rhythm. Every block reads as a piece of the river\'s edge.',
+          ],
+          rows: [
+            { kind: 'pair', cells: [
+              { img: 'heishui-plan-villa', cap: 'Guest villa cluster — ground floor plan' },
+              { img: 'heishui-plan-villa-detail', cap: 'Villa detail — room layouts with spiral stair' },
             ]},
             { kind: 'detail', cells: [
-              { img: 'heishui-render-06', cap: 'Aerial — resort cluster across the valley' },
+              { img: 'heishui-plan-hotel', cap: 'Main hotel — reception and guest room wing' },
             ]},
           ],
         },
@@ -89,8 +105,8 @@
       reflection: {
         title: 'The masterplan is the project',
         paragraphs: [
-          'The competition winning condition was not innovation but restraint. The brief asked for a resort, the site asked for a retreat, and the architecture had to make both legible at once. The masterplan is now under construction; whether it will read as quietly as the renders proposed is the question that comes after the photographs.',
-          'What I learned working as part of the design team: the masterplan IS the project. The pictures are evidence; the plan is the argument. Once the masterplan was decided, every room type and detail followed; the masterplan itself was where the design happened.',
+          'The competition winning condition was not innovation but restraint. The brief asked for a resort, the site asked for a retreat, and the architecture had to make both legible at once.',
+          'What I learned working as part of the design team: the masterplan IS the project. The pictures are evidence; the plan is the argument.',
         ],
       },
       credits: [
@@ -104,6 +120,9 @@
       ],
     },
 
+    /* ================================================================
+       LES CHARDONNEUSES
+       ================================================================ */
     'les-chardonneuses': {
       no: 'spec.002 / 2026',
       name: 'Les-Chardonneuses',
@@ -111,7 +130,7 @@
       kind: 'Couture · Collaboration — Germanier Paris, Haute Couture SS26',
       meta: 'Paris, France · 10 / 2025 – 01 / 2026 · headpiece × 3',
       abstract:
-        "A wearable micro-structure for Germanier's SS26 — the floral lifecycle (growth, collapse, decay) translated into runway couture. Lace-like digital textures, controlled deformations, internal frameworks resolved through 3-D-print iteration.",
+        'A wearable micro-structure for Germanier\'s SS26 — the floral lifecycle (growth, collapse, decay) translated into runway couture. Lace-like digital textures, controlled deformations, internal frameworks resolved through 3-D-print iteration.',
       folder: 'les-chardonneuses',
       metadata: [
         ['Released', '01 / 2026'],
@@ -122,55 +141,98 @@
         ['Method',   'Parametric · 3-D-print iteration'],
       ],
       intro: [
-        "The brief from Germanier's atelier was a flower in three states: bloom, collapse, decay. The brief in our 3-D printer was harder — how does a 60-gram crystal-resin lattice behave when worn at speed under runway lights, when the model turns sharp, when the camera catches it from below? Three weeks of nightly print cycles and one Paris fitting.",
+        'The brief from Germanier\'s atelier was a flower in three states: bloom, collapse, decay. The brief in our 3-D printer was harder — how does a 60-gram crystal-resin lattice behave when worn at speed under runway lights, when the model turns sharp, when the camera catches it from below?',
       ],
       chapters: [
         {
-          note: 'Chapter 01 · the brief, the bloom',
-          title: 'A flower caught mid-burst',
+          note: 'Chapter 01 · concept',
+          title: 'From hydrangea skeleton to digital lattice',
           prose: [
-            'The first headpiece reads as full bloom — translucent thistles caught mid-burst, internal armature hidden behind the resin lace. The challenge was structural: the petals had to fan from a single nape attachment without snagging tulle. Five iterations on the print bed, two failed at the fitting, the third walked SS26 look 13.',
+            'The work began with a dried hydrangea — its skeletal vein network the template for the headpiece\'s lattice. Digital sculpts translated the organic decay into a branching system that could be 3-D printed in crystal resin.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'lc-hero-thistle', cap: 'Final piece — crystal-resin thistle headpiece for SS26 look 13' },
+              { img: 'lc-render-bloom', cap: 'Digital sculpt — full-bloom headpiece, grey-clay render on mannequin' },
+            ]},
+            { kind: 'strip', cells: [
+              { img: 'lc-render-detail', cap: 'lattice close-up' },
+              { img: 'lc-render-branch', cap: 'branching variant' },
+              { img: 'lc-render-sculpture', cap: 'organic sculpture' },
+            ], cap: 'Three digital sculpts testing density, branch length, and silhouette from below.' },
+            { kind: 'pair', cells: [
+              { img: 'lc-concept-01', cap: 'Concept render — perforated membrane wings' },
+              { img: 'lc-concept-02', cap: 'Concept render — smooth thistle variant' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 02 · process',
+          title: 'October — the atelier sessions',
+          prose: [
+            'Three weeks of nightly print cycles and studio sessions in October. The clear resin caught the light differently at every angle; the black resin absorbed it. Both had to read on the runway — the choice of material was a lighting decision as much as a structural one.',
+          ],
+          rows: [
+            { kind: 'fullbleed', cells: [
+              { img: 'lc-hero-thistle', cap: 'Clear-resin thistle leaf detail against black — translucent, spiky' },
             ]},
             { kind: 'strip', cells: [
               { img: 'lc-process-01', cap: '25 Oct' },
               { img: 'lc-process-02', cap: '25 Oct' },
               { img: 'lc-process-03', cap: '25 Oct' },
               { img: 'lc-process-04', cap: '26 Oct' },
-            ], cap: 'October process — atelier sessions translating the floral brief into structural geometry.' },
+            ], cap: 'October atelier sessions — translating the floral brief into structural geometry.' },
           ],
         },
         {
-          note: 'Chapter 02 · print, fail, refine',
+          note: 'Chapter 03 · prototyping',
           title: 'The 3-D printer as a fabric loom',
           prose: [
-            'The second piece tested a controlled-collapse logic — petals deformed from their idealised geometry by a parametric weathering pass, then re-printed at a density that allowed the lace to flex on impact. Failures were instructive: sections that broke during fitting got reinforced not by adding material but by re-routing internal struts. The print process became part of the design conversation, not its execution stage.',
+            'Failures were instructive: sections that broke during fitting got reinforced not by adding material but by re-routing internal struts. The print process became part of the design conversation, not its execution stage.',
           ],
           rows: [
             { kind: 'pair', cells: [
-              { img: 'lc-proto-black',     cap: 'Black-resin prototype — controlled collapse geometry' },
-              { img: 'lc-proto-clear-02',  cap: 'Clear-resin prototype — print bed pre-cure' },
+              { img: 'lc-proto-black', cap: 'Black-resin prototype on mannequin bust' },
+              { img: 'lc-proto-black-top', cap: 'Top-down view — seed-pod form with ferns' },
             ]},
-            { kind: 'strip', cells: [
-              { img: 'lc-proto-clear-01', cap: 'lattice' },
-              { img: 'lc-proto-detail',   cap: 'detail' },
-              { img: 'lc-final-detail',   cap: 'final' },
-            ], cap: 'Three states across the iteration cycle — lattice scaffold, structural detail, and the final printed piece.' },
+            { kind: 'pair', cells: [
+              { img: 'lc-resin-sphere', cap: 'Clear-resin thistle sphere — casting shadows' },
+              { img: 'lc-resin-hand', cap: 'Hand-held clear-resin pod — testing translucency' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'lc-proto-full', cap: 'Full clear-resin headpiece on dress form — branching silhouette against concrete' },
+            ]},
           ],
         },
         {
-          note: 'Chapter 03 · atelier, runway, after',
-          title: 'Decay is the absence of frame',
+          note: 'Chapter 04 · January refinement',
+          title: 'The last mile before the runway',
           prose: [
-            'The final piece — decay — was about absence. The headpiece’s frame stays whole while the lace opens. We printed it in four parts so the fitting team could swap density mid-rehearsal; the final density landed lighter than expected, almost weightless on the model. After the show, the pieces were archived; the atelier kept one copy, we kept the print files.',
+            'January sessions dialled in the final density — lighter than expected, almost weightless on the model. The backstage fitting was where the piece stopped being a print and became a garment.',
           ],
           rows: [
             { kind: 'pair', cells: [
-              { img: 'lc-process-05', cap: 'January refinement — atelier studio shot' },
-              { img: 'lc-process-06', cap: 'January refinement — petal articulation test' },
+              { img: 'lc-process-05', cap: 'January — black-resin headpiece, gallery setting' },
+              { img: 'lc-process-06', cap: 'January — petal articulation, person in background' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'lc-final-detail', cap: 'Backstage fitting — hands placing headpiece on model' },
+              { img: 'lc-backstage', cap: 'Clear-resin detail, backstage, model partially visible' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 05 · runway',
+          title: 'Paris Couture Week, January 2026',
+          prose: [
+            'Two looks walked — one in dark navy with the black-resin piece, one in neon yellow-green tulle with the clear thistle branch. The pieces survived; the photographs proved the silhouette read at thirty paces.',
+          ],
+          rows: [
+            { kind: 'pair', cells: [
+              { img: 'lc-proto-detail', cap: 'Runway — dark gown with black-resin floral headpiece' },
+              { img: 'lc-proto-clear-01', cap: 'Runway — neon tulle with silver thistle branch' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'lc-wall-install', cap: 'Gallery installation — botanical forms on white cards, archival grid' },
             ]},
           ],
         },
@@ -178,8 +240,8 @@
       reflection: {
         title: 'Where sculpture and architecture meet',
         paragraphs: [
-          'Couture is one of the few disciplines that still treats fabrication as performance. There is no maintenance contract, no after-life of a building; the piece exists for the runway and a month of editorial. That short window forced a different kind of rigour — every detail had to read at thirty paces and survive a fitting room. The 3-D printer became a fabric loom — slow, iterative, and deeply unglamorous between renders.',
-          'What stayed with me afterward was how thin the line is between sculpture and architecture when the structure is the design. The internal armature of the headpiece is small-scale architecture; the petals are the surface; the brief is the same as a building’s — make a thing that holds itself up under load and reads from the right distance.',
+          'Couture is one of the few disciplines that still treats fabrication as performance. The piece exists for the runway and a month of editorial. That short window forced a different kind of rigour — every detail had to read at thirty paces and survive a fitting room.',
+          'What stayed with me afterward was how thin the line is between sculpture and architecture when the structure is the design.',
         ],
       },
       credits: [
@@ -193,6 +255,9 @@
       ],
     },
 
+    /* ================================================================
+       SEEDS OF CHANGE
+       ================================================================ */
     'seeds-of-change': {
       no: 'spec.003 / 2025',
       name: 'Seeds of Change',
@@ -200,7 +265,7 @@
       kind: 'Spatial · Exhibition design — Curation team',
       meta: 'London, UK · 10 / 2025',
       abstract:
-        "Spatial and material setup for an immersive exhibition on the transformative power of nature — a single immersive wall, vitrines, printed graphics, and on-site coordination across a one-week run.",
+        'Spatial and material setup for an immersive exhibition on the transformative power of nature — a single immersive wall, vitrines, printed graphics, and on-site coordination across a one-week run.',
       folder: 'seeds-of-change',
       metadata: [
         ['Released', '10 / 2025'],
@@ -218,15 +283,15 @@
           note: 'Chapter 01 · the room, the wall',
           title: 'One immersive wall, slow-shifting light',
           prose: [
-            'The exhibition centred on a single immersive wall — translucent flora, suspended above moss and slow-shifting light. We sourced perspex flowers, glass vitrines, and printed-petal substrate; the wall composition went through three iterations before the opening, with each pass favouring a more legible hierarchy of object → surround → light.',
+            'The exhibition centred on a single immersive wall — translucent flora, suspended above moss and slow-shifting light. The wall composition went through three iterations before the opening, each pass favouring a more legible hierarchy of object, surround, light.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'seeds-hero-installation', cap: 'Immersive wall — translucent flora on moss substrate' },
+              { img: 'seeds-hero-installation', cap: 'Close-up — translucent 3-D-printed flora specimens on moss' },
             ]},
             { kind: 'pair', cells: [
-              { img: 'seeds-doc-01', cap: 'Wall composition — full view, opening night' },
-              { img: 'seeds-doc-02', cap: 'Vitrine detail — perspex flora cluster' },
+              { img: 'seeds-doc-01', cap: 'Table display — gradient-coloured translucent flora, glass vessels' },
+              { img: 'seeds-doc-02', cap: 'Detail — translucent flowers on moss beds' },
             ]},
           ],
         },
@@ -234,34 +299,44 @@
           note: 'Chapter 02 · documentation',
           title: 'What visitors photograph first',
           prose: [
-            'The show was photographed on opening night under exhibition lighting only. The image set below documents the wall, the vitrines, and one of the visitor-engagement micro-installations — a perspex-petal cloud that visitors could photograph themselves under, a small interactive moment that ended up generating most of the social-media share.',
+            'The show was photographed on opening night under exhibition lighting only. The visitor-engagement micro-installations — the perspex-petal cloud, the headpiece try-on — ended up generating most of the social-media share.',
           ],
           rows: [
             { kind: 'strip', cells: [
-              { img: 'seeds-doc-03', cap: 'wall corner' },
-              { img: 'seeds-doc-04', cap: 'vitrine row' },
-              { img: 'seeds-doc-05', cap: 'cloud detail' },
-            ], cap: 'Three documentation views — wall, vitrines, and the suspended-petal cloud that visitors most often photographed themselves with.' },
+              { img: 'seeds-doc-03', cap: 'wider angle' },
+              { img: 'seeds-doc-04', cap: 'visitor viewing' },
+              { img: 'seeds-doc-05', cap: 'specimens' },
+            ], cap: 'Three documentation views — the installation at widening focal lengths.' },
+            { kind: 'pair', cells: [
+              { img: 'seeds-headpiece', cap: 'Wearable headpiece — tulle-wrapped with 3-D-printed floral elements' },
+              { img: 'seeds-wall-display', cap: 'Wall display — pressed flower specimens in watercolour gradient' },
+            ]},
           ],
         },
         {
-          note: 'Chapter 03 · print run',
-          title: 'Posters, postcards, the legible hierarchy',
+          note: 'Chapter 03 · design & print',
+          title: 'Flora studies and the graphic identity',
           prose: [
-            'The graphic identity was kept tonal — buff and oat, no high-contrast. Posters, postcards, stickers, and floor stickers were produced for opening week and a small print run sold during the show. The poster shown below was the closing print.',
+            'The flora forms were designed as silhouette studies first — black-on-white — then resolved into translucent 3-D-printed specimens with gradient colouring. The graphic identity stayed tonal: buff, oat, no high-contrast.',
           ],
           rows: [
-            { kind: 'detail', cells: [
-              { img: 'seeds-poster', cap: 'Closing-week poster — the show’s graphic anchor' },
+            { kind: 'fullbleed', cells: [
+              { img: 'seeds-flora-study', cap: 'Silhouette studies and 3-D renderings of translucent flora variants' },
             ]},
+            { kind: 'strip', cells: [
+              { img: 'seeds-poster', cap: 'poster' },
+              { img: 'seeds-poster-03', cap: 'variant' },
+              { img: 'seeds-poster-04', cap: 'closing' },
+              { img: 'seeds-sticker-sheet', cap: 'stickers' },
+            ], cap: 'Print run — posters, postcards, and the sticker sheet that visitors took home.' },
           ],
         },
       ],
       reflection: {
         title: 'Exhibition design is closer to theatre',
         paragraphs: [
-          'Exhibition design is closer to theatre than architecture. The build is fast, the run is short, and most of the work goes into rehearsing what the visitor sees in the first ten seconds. The lessons here were practical: a single immersive moment beats three competing ones; the lighting plot is half the design; visitors photograph themselves before they read the wall text. Plan for that.',
-          'What I’d do differently: keep one signature moment, lose two. The wall and the cloud both worked; the table sets in between competed for attention. The most memorable exhibitions I’ve been to do one thing well and let everything else be the room.',
+          'Exhibition design is closer to theatre than architecture. The build is fast, the run is short, and most of the work goes into rehearsing what the visitor sees in the first ten seconds.',
+          'What I\'d do differently: keep one signature moment, lose two. The wall and the cloud both worked; the table sets in between competed for attention.',
         ],
       },
       credits: [
@@ -274,6 +349,9 @@
       ],
     },
 
+    /* ================================================================
+       TIDE-REWOVEN
+       ================================================================ */
     'tide-rewoven': {
       no: 'spec.004 / 2025',
       name: 'Tide-ReWoven',
@@ -281,80 +359,148 @@
       kind: 'Bio-integrated · YR 2 Master · Thesis project',
       meta: 'Aberdeen Harbour, Hong Kong · 10 / 2024 – 06 / 2025',
       abstract:
-        "Aberdeen's working waterfront re-imagined as a tidal-breathing market — algae-trained membranes index light, oxygen, and human flow into a single sectional system.",
+        'Aberdeen\'s working waterfront re-imagined as a tidal-breathing market — algae-trained membranes index light, oxygen, and human flow into a single sectional system.',
       folder: 'tide-rewoven',
       metadata: [
         ['Released',   '06 / 2025'],
         ['Type',       'Bio-integrated thesis'],
         ['Site',       'Aberdeen Harbour, HK'],
         ['Programme',  'MArch · Bartlett UCL'],
-        ['Year',       'Year 2 (Master’s thesis)'],
+        ['Year',       'Year 2 (Master\'s thesis)'],
         ['Method',     'Conditional GAN · parametric'],
       ],
       intro: [
-        "Aberdeen's typhoon-shelter waterfront still works the way it has for half a century — fishermen at dawn, wet floors, tarp roofs hung over the dry market. Tide-ReWoven asks whether the same scaffolding could be tuned by light, salt, and tide instead of by tarp.",
+        'Aberdeen\'s typhoon-shelter waterfront still works the way it has for half a century — fishermen at dawn, wet floors, tarp roofs hung over the dry market. Tide-ReWoven asks whether the same scaffolding could be tuned by light, salt, and tide instead of by tarp.',
       ],
       chapters: [
         {
-          note: 'Chapter 01 · site & vision',
+          note: 'Chapter 01 · site',
+          title: 'Aberdeen — reading the harbour',
+          prose: [
+            'The first task was reading the harbour as it is: tidal range, wind corridors, vendor density by hour. The wholesale fish market interior — wet, loud, functional — set the standard the new structure had to match.',
+          ],
+          rows: [
+            { kind: 'fullbleed', cells: [
+              { img: 'tide-site-analysis', cap: 'Site analysis board — Hong Kong / Aberdeen maps, environmental data, urban planning iterations' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'tide-site-photo', cap: 'Aberdeen wholesale fish market — existing conditions, six views' },
+              { img: 'tide-plan', cap: 'Market masterplan — harbour edge' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 02 · vision',
           title: 'A market that breathes with the tide',
           prose: [
-            'The market sits at the threshold between fresh-catch trade and the tidal pool that feeds it. The new roofscape is read as a single sectional system — fishnet–chitosan composite stretched between bamboo masts, indexed to tide table and air-quality readings. At low tide the membrane hangs taut; at high tide, slack. The market opens and closes the way the harbour does.',
+            'The new roofscape is read as a single sectional system — fishnet-chitosan composite stretched between bamboo masts, indexed to tide table and air-quality readings. At low tide the membrane hangs taut; at high tide, slack.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
               { img: 'tide-hero-section', cap: 'Sectional study — fishnet-chitosan membrane at the harbour edge' },
             ]},
             { kind: 'pair', cells: [
-              { img: 'tide-board-01', cap: 'Final review board 01 — site reading' },
-              { img: 'tide-board-02', cap: 'Final review board 02 — proposal logic' },
+              { img: 'tide-aerial', cap: 'Aerial render — harbour market on waterfront, organic forms with piers' },
+              { img: 'tide-harbour-iso', cap: 'Isometric — harbour market view and underwater plan' },
             ]},
           ],
         },
         {
-          note: 'Chapter 02 · method',
+          note: 'Chapter 03 · method',
           title: 'GAN-trained membranes, light as input',
           prose: [
-            'The membrane geometry was generated by a conditional GAN trained on Micrasterias diatom morphology and wave-forms sampled from the harbour over a year. Parametric inputs — algal photo-tropism, tidal range, vendor density — were embedded in the latent space; iterations were scored against shading, ventilation, and cleaning-cycle requirements.',
+            'The membrane geometry was generated by a conditional GAN trained on Micrasterias diatom morphology and wave-forms sampled from the harbour. Parametric inputs — algal photo-tropism, tidal range, vendor density — were embedded in the latent space.',
           ],
           rows: [
             { kind: 'pair', cells: [
-              { img: 'tide-method-gan',    cap: 'Algae → computation — GAN training set, latent traversal' },
-              { img: 'tide-method-render', cap: 'Mid-fidelity render — membrane in motion' },
+              { img: 'tide-algae-micro', cap: 'Micrasterias algae — biological inspiration at high magnification' },
+              { img: 'tide-method-gan', cap: 'Algae to computation — GAN training pipeline, morphological analysis' },
             ]},
             { kind: 'strip', cells: [
               { img: 'tide-method-wave-01', cap: 'wave 01' },
               { img: 'tide-method-wave-02', cap: 'wave 02' },
               { img: 'tide-method-wave-03', cap: 'wave 03' },
               { img: 'tide-method-wave-04', cap: 'wave 04' },
-            ], cap: 'Four wave-form studies — tidal data sampled from Aberdeen across a single lunar cycle, fed back into the GAN as conditioning.' },
+            ], cap: 'Four wave-form studies — tidal data across a single lunar cycle, fed back into the GAN.' },
           ],
         },
         {
-          note: 'Chapter 03 · system',
+          note: 'Chapter 04 · iteration',
           title: 'From ornament to tessellation',
           prose: [
-            'The final geometry sits at the boundary of computational ornament and structural logic — each panel reads as biomorphic but resolves into a tessellated system that fabricates from a single-curvature net. The render sequence below traces the membrane through dawn, midday, dusk, and typhoon prep — four states of the same envelope.',
+            'Each panel reads as biomorphic but resolves into a tessellated system that fabricates from a single-curvature net. The iteration sequence tested density, curvature, and seam logic.',
           ],
           rows: [
-            { kind: 'pair', cells: [
-              { img: 'tide-system-01', cap: 'System render 01 — daylight, full porosity' },
-              { img: 'tide-system-02', cap: 'System render 02 — dusk, partial closure' },
-            ]},
             { kind: 'strip', cells: [
               { img: 'tide-iter-01', cap: '01' },
               { img: 'tide-iter-02', cap: '02' },
               { img: 'tide-iter-03', cap: '03' },
               { img: 'tide-iter-04', cap: '04' },
-            ], cap: 'Four iterations of the same membrane field — variation across density, curvature, and tessellation seam logic.' },
+            ], cap: 'Four iterations — variation across density, curvature, and tessellation.' },
+            { kind: 'strip', cells: [
+              { img: 'tide-wave-terrain-01', cap: '01' },
+              { img: 'tide-wave-terrain-02', cap: '02' },
+              { img: 'tide-wave-terrain-03', cap: '03' },
+              { img: 'tide-wave-terrain-04', cap: '04' },
+            ], cap: 'Wave-terrain mesh studies — colourful topographic surfaces from GAN output.' },
+          ],
+        },
+        {
+          note: 'Chapter 05 · system & render',
+          title: 'The market under the membrane',
+          prose: [
+            'The render sequence traces the membrane through dawn, midday, dusk — the same envelope in different states. The exploded isometric breaks the system into its twelve fabrication layers.',
+          ],
+          rows: [
+            { kind: 'pair', cells: [
+              { img: 'tide-system-01', cap: 'Interior — bamboo structure, algae-membrane roof, dappled light' },
+              { img: 'tide-system-02', cap: 'Interior — monochrome, membrane casting patterned light on stalls' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'tide-explode', cap: 'Exploded isometric — 12 layers from roof tiles to dock foundations' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'tide-method-render', cap: 'Unreal render — turquoise water lapping against calcified edge structure' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 06 · fabrication',
+          title: 'Material tests — tension and weave',
+          prose: [
+            'Membrane tension tests and weaving experiments at bench scale. The chitosan composite had to hold its geometry at low tide while flexing enough to survive a harbour gust.',
+          ],
+          rows: [
+            { kind: 'strip', cells: [
+              { img: 'tide-fab-01', cap: 'weave 01' },
+              { img: 'tide-fab-02', cap: 'weave 02' },
+              { img: 'tide-fab-03', cap: 'weave 03' },
+            ], cap: 'Fabrication studies — material and weaving experiments.' },
+            { kind: 'pair', cells: [
+              { img: 'tide-tension-01', cap: 'Tension test — membrane study 01' },
+              { img: 'tide-tension-02', cap: 'Tension test — membrane study 02' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 07 · boards',
+          title: 'Final review',
+          prose: [
+            'The thesis was presented across two boards — site reading and proposal logic — synthesising a year of research into a single argument about what a working harbour could become.',
+          ],
+          rows: [
+            { kind: 'pair', cells: [
+              { img: 'tide-board-01', cap: 'Final review board 01 — site reading' },
+              { img: 'tide-board-02', cap: 'Final review board 02 — proposal logic' },
+            ]},
           ],
         },
       ],
       reflection: {
         title: 'A city that draws its own weather',
         paragraphs: [
-          "Tide-ReWoven asks something quiet — that the city stop drawing its own infrastructure as background and start drawing it as weather. A market that opens and closes is not new; what's new is making the opening a physical answer to data that was always there but never acknowledged.",
-          "Hong Kong's harbours will not be the working spaces they were. The project tries to imagine what an honest replacement looks like — not nostalgia, not erasure, but a membrane that registers the trade still happening underneath it.",
+          'Tide-ReWoven asks something quiet — that the city stop drawing its own infrastructure as background and start drawing it as weather.',
+          'Hong Kong\'s harbours will not be the working spaces they were. The project tries to imagine what an honest replacement looks like — not nostalgia, not erasure, but a membrane that registers the trade still happening underneath it.',
         ],
       },
       credits: [
@@ -368,6 +514,9 @@
       ],
     },
 
+    /* ================================================================
+       MYCOTERRA
+       ================================================================ */
     'mycoterra': {
       no: 'spec.005 / 2024',
       name: 'MycoTerra',
@@ -377,8 +526,6 @@
       abstract:
         'Architecture as a participant in an ecological cycle rather than a sealed shelter — earth, mycelium, and air tuned together so that a living tissue settles into the geometry rather than coating it.',
       folder: 'mycoterra',
-      // Editorial metadata strip — 4–6 short keys/values, shown after
-      // the abstract in the dossier head.
       metadata: [
         ['Released',     '08 / 2024'],
         ['Type',         'Bio-integrated research'],
@@ -387,27 +534,22 @@
         ['Collaborators', 'Yingying Yan · Yining Loh'],
         ['Strain',       'Pleurotus ostreatus'],
       ],
-      // A single, punchier opener. The hero render that follows
-      // (full-bleed) does most of the establishing work.
       intro: [
-        "MycoTerra is not a building so much as a body — a porous threshold structure that admits microbial life as a co-author of its own form. Earth, mycelium, and air are tuned together so that a living tissue settles into the geometry rather than coats it.",
+        'MycoTerra is not a building so much as a body — a porous threshold structure that admits microbial life as a co-author of its own form. Earth, mycelium, and air are tuned together so that a living tissue settles into the geometry rather than coats it.',
       ],
       chapters: [
         {
           note: 'Chapter 01 · concept',
           title: 'Mycelium as a material participant',
-          // Open the chapter with the cinematic hero, then prose, then
-          // the supporting section pair. Reads top-down like a film
-          // cut to the title plate before the first dialogue.
           prose: [
-            "Mycelium is treated here as a fabrication partner, not a finish. Its hyphae bind earth, hemp shiv, and chitosan into a load-bearing composite while leaving a soft, breathable skin. The tunable variables — humidity, light, substrate moisture — make the material behave less like concrete and more like a slow tide.",
+            'Mycelium is treated here as a fabrication partner, not a finish. Its hyphae bind earth, hemp shiv, and chitosan into a load-bearing composite while leaving a soft, breathable skin.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'myco-hero-render', cap: 'Entrance perspective — mycelial-earth grove at the threshold' },
+              { img: 'myco-hero-render', cap: 'Street-level perspective — people walking through mycelium wall corridor' },
             ]},
             { kind: 'pair', cells: [
-              { img: 'myco-section-01', cap: 'Long section — modular columns above the grove' },
+              { img: 'myco-section-01', cap: 'Section — wall zone, growth zone, seating zone, ecology zone' },
               { img: 'myco-section-02', cap: 'Perspective section — habitation along the spine' },
             ]},
           ],
@@ -416,7 +558,7 @@
           note: 'Chapter 02 · methodology',
           title: 'Computational tuning meets biological growth',
           prose: [
-            "The form was iterated in Grasshopper with a Galapagos solver, scoring candidates against CFD simulations of airflow, humidity, and surface temperature. The fitness function rewarded geometry that admitted enough light for the substrate's first life cycle while protecting it from drying winds during the critical 6–14 day bloom window.",
+            'The form was iterated in Grasshopper with a Galapagos solver, scoring candidates against CFD simulations of airflow, humidity, and surface temperature.',
           ],
           rows: [
             { kind: 'strip', cells: [
@@ -426,38 +568,62 @@
               { img: 'myco-massing-04', cap: '04' },
               { img: 'myco-massing-05', cap: '05' },
               { img: 'myco-massing-06', cap: '06' },
-            ], cap: 'Six massings trace a single substrate logic across morphological permutations — an envelope that "wants" to be eroded, holding its civic posture while admitting weathering as a design layer.' },
+            ], cap: 'Six massings — an envelope that "wants" to be eroded, holding civic posture while admitting weathering.' },
+            { kind: 'pair', cells: [
+              { img: 'myco-voxel-board', cap: 'Computational design board — voxel aggregation, population iterations' },
+              { img: 'myco-lifecycle', cap: 'Mycelium growth lifecycle — aggregation diagram with massing studies' },
+            ]},
           ],
         },
         {
-          note: 'Chapter 03 · fabrication',
-          title: 'From print to bloom',
+          note: 'Chapter 03 · research',
+          title: 'The Y1 Almanac — from lab to site',
           prose: [
-            'Each scaffold was 3-D printed in PLA and bio-filament, then inoculated with a Pleurotus ostreatus strain raised in our lab. The print acted both as formwork and as sacrificial nutrient: the mycelium consumed the lignin in the filament during growth, leaving a denser composite skin where the print was thickest.',
+            'The Y1 Almanac documented the full arc from material cultivation to site proposal. Mycelium samples were raised in the Bio-Integrated Design Lab over 15-day growth cycles, then tested for structural performance.',
           ],
           rows: [
             { kind: 'pair', cells: [
-              { img: 'myco-fab-pair-01', cap: '3-D-printed lace scaffold — branching macro detail' },
-              { img: 'myco-fab-pair-02', cap: 'Lattice prototype with clear-resin substrate' },
+              { img: 'myco-almanac-material', cap: 'Material studies — mycelium cultivation in petri dishes, 15-day growth' },
+              { img: 'myco-almanac-proto', cap: 'Prototyping — computation evaluation, extrudability / adhesion / stability' },
             ]},
-            { kind: 'strip', cells: [
-              { img: 'myco-fab-detail-01', cap: 'seed' },
-              { img: 'myco-fab-detail-02', cap: 'cluster' },
-              { img: 'myco-fab-detail-03', cap: 'tower' },
-              { img: 'myco-fab-detail-04', cap: 'mesh substrate' },
-            ], cap: 'Four states across one iteration cycle. The mesh, in particular, was a structural revelation — under 12 % density the lattice flexes; above 30 % the bloom can\'t penetrate; the working band is narrow.' },
+            { kind: 'pair', cells: [
+              { img: 'myco-almanac-site', cap: 'Site proposal — aggregation pattern, solar study comparison' },
+              { img: 'myco-almanac-render', cap: 'Mycelium block wall — lit to show aggregate surface texture' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 04 · render',
+          title: 'The mycelium city',
+          prose: [
+            'The urban-scale render tested whether the mycelium wall logic could hold at city scale — a misty corridor where people and structure share the same substrate.',
+          ],
+          rows: [
+            { kind: 'fullbleed', cells: [
+              { img: 'myco-render-urban', cap: 'Urban render — people walking through mycelium wall landscape, city backdrop' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 05 · fabrication',
+          title: 'From print to bloom',
+          prose: [
+            'Each scaffold was 3-D printed in PLA and bio-filament, then inoculated with Pleurotus ostreatus. The print acted both as formwork and as sacrificial nutrient: the mycelium consumed the lignin during growth.',
+          ],
+          rows: [
+            { kind: 'fullbleed', cells: [
+              { img: 'myco-fab-crystal', cap: 'Salt-water crystallisation on scaffold — material experiment' },
+            ]},
           ],
         },
       ],
-      // Closing reflection — two paragraphs, slow.
       reflection: {
         title: 'What the colony asks of us',
         paragraphs: [
-          "If a column is alive, the maintenance contract changes. There is no longer a finished structure to inspect; there is a tissue to keep fed, watered, and shaded. Buildings of this kind ask their inhabitants to enter into a small, slow reciprocity — to read the wall's surface for stress as a gardener reads a leaf.",
-          'What the colony asks, in the end, is that we widen our idea of who is collaborating. The mycelium is not decoration; it is a member of the design team — with its own rate of work, its own reasons.',
+          'If a column is alive, the maintenance contract changes. There is no longer a finished structure to inspect; there is a tissue to keep fed, watered, and shaded.',
+          'What the colony asks, in the end, is that we widen our idea of who is collaborating. The mycelium is not decoration; it is a member of the design team.',
         ],
       },
-      // Colophon — production credits in dt/dd pairs.
       credits: [
         ['Designers',  'Yu (Grace) Shen · Yingying Yan · Yining Loh'],
         ['Programme',  'MArch Bio-integrated Design'],
@@ -469,6 +635,9 @@
       ],
     },
 
+    /* ================================================================
+       CO-SILO FERRY STATION
+       ================================================================ */
     'co-silo-ferry-station': {
       no: 'spec.006 / 2022',
       name: 'Co-Silo Ferry Station',
@@ -487,30 +656,36 @@
         ['Status',   'Design proposal'],
       ],
       intro: [
-        "Wynyard Point's six retired fuel silos asked a different question of a ferry station: what if the threshold to the bay reversed the silo's role — capturing CO₂ instead of releasing it, and routing passengers across a slow architectural reef? The proposal grafts a coral-growth lattice onto the silo footprint, with the public programme tucked into the calcifying envelope.",
+        'Wynyard Point\'s six retired fuel silos asked a different question of a ferry station: what if the threshold to the bay reversed the silo\'s role — capturing CO₂ instead of releasing it, and routing passengers across a slow architectural reef?',
       ],
       chapters: [
         {
           note: 'Chapter 01 · the threshold',
           title: 'A ferry station that reads as a reef',
           prose: [
-            "The dusk render anchors the proposal — an organic silo opening onto the harbour, the silhouette closer to anemone than industry. The structure is meant to be seen first across water, when the colour of the bay does most of the architectural work.",
+            'The dusk render anchors the proposal — an organic silo opening onto the harbour, the silhouette closer to anemone than industry. The structure is meant to be seen first across water.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'silo-hero-dusk', cap: 'Silo at dusk — silhouette against Waitematā harbour' },
+              { img: 'silo-hero-dusk', cap: 'Silo at dusk — sculptural organic form on waterfront pier' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-hero-glow', cap: 'Night render — glowing translucent shell forms with figures on the pier' },
             ]},
           ],
         },
         {
-          note: 'Chapter 02 · programme',
+          note: 'Chapter 02 · programme & section',
           title: 'Programme stitched into the calcified envelope',
           prose: [
-            'Inside, the sequence is set by the ferry day — arrival path, waiting hall, food court, departure hall — each spliced through the coral lattice so that the structure itself becomes wayfinding. Algal columns inhabit the public room, and the underside of the slab shows water and reflection rather than soffit.',
+            'Inside, the sequence is set by the ferry day — arrival path, waiting hall, food court, departure hall — each spliced through the coral lattice so that the structure itself becomes wayfinding.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
               { img: 'silo-interior-program', cap: 'Plan + interior — food court, waiting, departure, arrival' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-section-dark', cap: 'Section drawing — organic forms, underwater elements, teal accent lighting' },
             ]},
           ],
         },
@@ -518,25 +693,29 @@
           note: 'Chapter 03 · fabrication',
           title: 'Coral as a fabrication strategy',
           prose: [
-            'The structural logic was derived from coral-growth simulations, then 3-D printed in clear and white resin to test the lattice at three scales. The lattice resolves into a single curvature net — fragile in the print, structural in aggregate. The fingertip image is the working scale; the larger pieces are the legible ones.',
+            'The structural logic was derived from coral-growth simulations, then 3-D printed in clear and white resin to test the lattice at three scales. The lattice resolves into a single curvature net — fragile in the print, structural in aggregate.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'silo-fab-hero', cap: '3-D printed lattice — working scale, mushroom-cap detail in fingers' },
+              { img: 'silo-fab-hero', cap: '3-D printed lattice — mushroom-cap detail held in fingers' },
             ]},
             { kind: 'strip', cells: [
               { img: 'silo-fab-coral-01', cap: 'branching · low' },
               { img: 'silo-fab-coral-02', cap: 'branching · mid' },
               { img: 'silo-fab-coral-03', cap: 'branching · canopy' },
-            ], cap: 'Three scales of the same coral lattice — low cluster, mid section, full canopy at the print envelope.' },
+            ], cap: 'Three scales of the same coral lattice — low cluster, mid section, full canopy.' },
+            { kind: 'pair', cells: [
+              { img: 'silo-preform-slicer', cap: 'PreForm slicer — coral model ready for SLA printing' },
+              { img: 'silo-model-topdown', cap: 'Model top-down — resin print on dark surface' },
+            ]},
           ],
         },
       ],
       reflection: {
         title: 'Industrial silos, reversed',
         paragraphs: [
-          "The proposal's simplest move is the most legible: the silo, retired, doesn't need to be erased to read as architecture. Reverse its purpose — capture instead of release — and the tank becomes a public room with a programme already embedded.",
-          'What the project taught me: the most expensive architectural moves are often subtraction. The silo wall stays; the coral fills its breath. Wynyard Point doesn\'t need another iconic building; it needs a new use for the ones it already has.',
+          'The proposal\'s simplest move is the most legible: the silo, retired, doesn\'t need to be erased to read as architecture. Reverse its purpose — capture instead of release — and the tank becomes a public room.',
+          'What the project taught me: the most expensive architectural moves are often subtraction. The silo wall stays; the coral fills its breath.',
         ],
       },
       credits: [
@@ -549,6 +728,9 @@
       ],
     },
 
+    /* ================================================================
+       PROJECT ECOFLOW
+       ================================================================ */
     'project-ecoflow': {
       no: 'spec.007 / 2023',
       name: 'Project EcoFlow',
@@ -556,28 +738,28 @@
       kind: 'Bio-integrated · YR 1 Master · Individual research project',
       meta: 'Oxford St, London, UK · 09 / 2023 – 01 / 2024',
       abstract:
-        'A water-retaining moss façade for dense urban skin — tested against the heat-island of Oxford Street. Surface area, not floor area, becomes the unit. Architecture as metabolic system: existing buildings re-skinned to invite an interspecies network into the city.',
+        'A water-retaining moss facade for dense urban skin — tested against the heat-island of Oxford Street. Surface area, not floor area, becomes the unit. Architecture as metabolic system.',
       folder: 'project-ecoflow',
       metadata: [
         ['Released', '01 / 2024'],
-        ['Type',     'Bio-integrated façade'],
+        ['Type',     'Bio-integrated facade'],
         ['Site',     'Oxford St, London'],
         ['Programme', 'MArch YR 1 — Bartlett UCL'],
-        ['Output',   'Façade chamber system · moss growth study'],
+        ['Output',   'Facade chamber system · moss growth study'],
       ],
       intro: [
-        "Oxford Street is a heat-island corridor with no soil to spare and almost no green volume. EcoFlow proposes a re-skinning strategy that turns existing facades into a water-retentive moss substrate — a façade chamber system tuned to slow flow, hold humidity, and let species the city has lost re-attach to its surfaces.",
+        'Oxford Street is a heat-island corridor with no soil to spare and almost no green volume. EcoFlow proposes a re-skinning strategy that turns existing facades into a water-retentive moss substrate.',
       ],
       chapters: [
         {
           note: 'Chapter 01 · streetscape',
           title: 'A re-skinned street, not a new building',
           prose: [
-            "The proposal works on the existing wall plane: keep the building, change the skin. The collage below tests the read at street scale — moss as architectural element rather than hanging garden. The visual tension is intentional: moss reads soft, the host wall reads hard, the seam between them is where the project lives.",
+            'The proposal works on the existing wall plane: keep the building, change the skin. Moss as architectural element rather than hanging garden.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'p32-img01', cap: 'Streetscape collage — moss-façade prototype on Oxford Street' },
+              { img: 'p32-img01', cap: 'Streetscape collage — moss-facade prototype on Oxford Street' },
             ]},
           ],
         },
@@ -585,7 +767,7 @@
           note: 'Chapter 02 · growth · time',
           title: 'Two stages of the same wall',
           prose: [
-            'A façade made of moss is also a façade made of time. The pair below traces a single chamber through two states — early colonisation and mature growth — to make the time axis legible. The finish state isn\'t the picture; the change is.',
+            'A facade made of moss is also a facade made of time. The pair below traces a single chamber through two states — early colonisation and mature growth.',
           ],
           rows: [
             { kind: 'pair', cells: [
@@ -596,9 +778,9 @@
         },
       ],
       reflection: {
-        title: 'A façade is a substrate before it\'s an aesthetic',
+        title: 'A facade is a substrate before it\'s an aesthetic',
         paragraphs: [
-          "The lesson the moss kept teaching: a façade is a substrate before it's an aesthetic. The chamber system was the moment the project turned — once we treated the wall as something organisms had to *colonise*, the design questions changed from \"what does this look like\" to \"what does this hold\".",
+          'The lesson the moss kept teaching: a facade is a substrate before it\'s an aesthetic. Once we treated the wall as something organisms had to colonise, the design questions changed from "what does this look like" to "what does this hold".',
         ],
       },
       credits: [
@@ -610,6 +792,9 @@
       ],
     },
 
+    /* ================================================================
+       PROJECT ULTRA PLANT
+       ================================================================ */
     'project-ultra-plant': {
       no: 'spec.008 / 2022',
       name: 'Project Ultra-Plant',
@@ -617,7 +802,7 @@
       kind: 'Speculative · YR 3 Undergraduate design project',
       meta: 'Auckland CBD, New Zealand (post-WW3) · 03–05 / 2022',
       abstract:
-        'A modular living system in a post-nuclear Auckland: humans and plants share expandable habitats whose vein networks transfer energy, resources, and slowly restore the surrounding ecology. Residents are linked to a meta-verse layer through biological–digital exchange; design lives in four evolutionary phases. The project is presented in a speculative, illustrative voice — the boards below are reproduced as drawn.',
+        'A modular living system in a post-nuclear Auckland: humans and plants share expandable habitats whose vein networks transfer energy, resources, and slowly restore the surrounding ecology. The project is presented in a speculative, illustrative voice.',
       folder: 'project-ultra-plant',
       metadata: [
         ['Released', '05 / 2022'],
@@ -627,30 +812,70 @@
         ['Voice',    'Illustrative · narrative comic'],
       ],
       intro: [
-        "Ultra-Plant imagines Auckland CBD in the year 2330, after a nuclear war has redrawn the rules of habitation. Survivors live inside modular pods grafted onto plant cores; the building is a co-organism, not a shell. The project is presented in a speculative, illustrated voice — boards below are reproduced as drawn.",
+        'Ultra-Plant imagines Auckland CBD in the year 2330, after a nuclear war has redrawn the rules of habitation. Survivors live inside modular pods grafted onto plant cores; the building is a co-organism, not a shell.',
       ],
       chapters: [
         {
-          note: 'Chapter 01 · site',
-          title: 'Auckland 2330 — a pod network',
+          note: 'Chapter 01 · narrative section',
+          title: 'The building as a comic',
           prose: [
-            "The site board indexes the post-war CBD as a network of habitable pods anchored to the existing concrete cores. Year 2330 is far enough into the future that the architecture can drop pretence: the city is no longer a dense plane of buildings; it's a sparse field of plant-architecture symbionts.",
+            'The project is presented in a speculative, illustrated voice — perspective sections with comic-style annotations, where each floor tells its own story of symbiosis between human and plant.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'p35-img01', cap: 'Site map — Auckland CBD pod network · year 2330 (illustrative)' },
+              { img: 'ultra-section-comic', cap: 'Perspective section — post-nuclear tower with programme annotations' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'ultra-perspective', cap: 'Narrative perspective — organic building with annotated programme, illustrated elements' },
             ]},
           ],
         },
         {
-          note: 'Chapter 02 · core · pod',
-          title: 'The core stays, the pod cycles',
+          note: 'Chapter 02 · system',
+          title: 'Pod typologies and funding logic',
           prose: [
-            "The core perspective shows the project's mechanic: the concrete tower stays, the modular pods around it cycle — born, used, shed — over generations. The drawing is intentionally illustrative; the work was about the social science fiction more than the construction detail.",
+            'Three pod typologies — each a blob-formed habitable unit with its own plan, section, and material logic. The funding system imagines blockchain, meta-life, and nuclear energy as infrastructural layers.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'p37-img01', cap: 'Core perspective section — concrete core, pod cycle (illustrative)' },
+              { img: 'ultra-typology-sheet', cap: 'Three pod typologies — plans, sections, and material panels' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'ultra-flowchart', cap: 'Ultra-Plant Funding System — blockchain, meta-life, robotic collection' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 03 · computation & form',
+          title: 'Subdivision surfaces — finding the organism',
+          prose: [
+            'The pod geometry was developed through subdivision surface iterations — organic blob forms resolved through parametric variation. The 3-D modelling process produced the final forms that populate the speculative city.',
+          ],
+          rows: [
+            { kind: 'pair', cells: [
+              { img: 'ultra-subd-07', cap: 'Subdivision iterations — six blob-form variations, pink-mauve gradient' },
+              { img: 'ultra-subd-08', cap: 'Subdivision iterations — alternate angle' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'ultra-model-01', cap: '3-D modelling environment — organic blob building form' },
+              { img: 'ultra-model-02', cap: '3-D modelling — alternate view' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 04 · fabrication',
+          title: 'Pod prototypes — resin and wax',
+          prose: [
+            'Physical prototypes tested the pod forms at model scale — dark metallic resin, translucent wax, and white shell prints. Each material revealed different structural and aesthetic qualities of the organism logic.',
+          ],
+          rows: [
+            { kind: 'strip', cells: [
+              { img: 'ultra-print-dark', cap: 'dark metallic' },
+              { img: 'ultra-print-wax', cap: 'translucent wax' },
+              { img: 'ultra-print-shell', cap: 'white shell' },
+            ], cap: 'Three pod prototypes — each material reads the organism differently.' },
+            { kind: 'fullbleed', cells: [
+              { img: 'ultra-perspective-02', cap: 'Alternate perspective section — comic-style annotations, building section' },
             ]},
           ],
         },
@@ -658,7 +883,7 @@
       reflection: {
         title: 'Speculative work as design rehearsal',
         paragraphs: [
-          "Looking back at this YR 3 project from 2026, the speculative voice was a rehearsal for the bio-integrated direction the Master's took up later. The lesson: when the brief is impossible (post-nuclear), what stays is the *relationship* you draw between species — and that relationship was the same one MycoTerra and Tide-ReWoven kept investigating with real materials.",
+          'Looking back at this YR 3 project from 2026, the speculative voice was a rehearsal for the bio-integrated direction the Master\'s took up later. When the brief is impossible, what stays is the relationship you draw between species.',
         ],
       },
       credits: [
@@ -668,14 +893,17 @@
       ],
     },
 
+    /* ================================================================
+       NEPTUNE'S DAWN
+       ================================================================ */
     'neptunes-dawn': {
       no: 'spec.009 / 2024',
-      name: "Neptune's Dawn",
+      name: 'Neptune\'s Dawn',
       binomial: 'Neptuni aurora',
       kind: 'Competition · Group project',
       meta: 'Shanghai, China · 08–09 / 2024 · with Muze Ouyang & Xinning Yu',
       abstract:
-        "A Shanghai competition entry — submerged ecologies and shifting waterlines translated into a riverside vertical-tower scheme. Hand-drawn sea-creature taxonomy informs partition strategy; the site map indexes towers to programme nodes. Presented as competition boards (full sheets reproduced).",
+        'A Shanghai competition entry — submerged ecologies and shifting waterlines translated into a riverside vertical-tower scheme. Hand-drawn sea-creature taxonomy informs partition strategy.',
       folder: 'neptunes-dawn',
       metadata: [
         ['Released',     '09 / 2024'],
@@ -685,18 +913,18 @@
         ['Output',       '2 competition sheets'],
       ],
       intro: [
-        "Neptune's Dawn (临海深都) was a Shanghai competition entry developed in two months across a small distributed team. The proposal reads the riverside as a habitat at risk of waterline shift, and translates a hand-drawn sea-creature taxonomy into a partition strategy for a vertical tower cluster. The two boards below are reproduced as submitted.",
+        'Neptune\'s Dawn was a Shanghai competition entry developed in two months. The proposal reads the riverside as a habitat at risk of waterline shift, and translates a hand-drawn sea-creature taxonomy into a partition strategy for a vertical tower cluster.',
       ],
       chapters: [
         {
           note: 'Chapter 01 · concept',
           title: 'A taxonomy of partitions',
           prose: [
-            "Sheet 1 sets the conceptual stage: background, concept, partition strategies derived from a hand-drawn sea-creature taxonomy, programme spaces. The illustrated voice is intentional — the entry argued that the conventional vocabulary of mixed-use towers was insufficient for the site's ecological condition, and that a hand-drawn taxonomy could carry the argument better than a render set.",
+            'Sheet 1 sets the conceptual stage: background, concept, partition strategies derived from a hand-drawn sea-creature taxonomy, programme spaces. The illustrated voice argued that the conventional vocabulary of mixed-use towers was insufficient for the site\'s ecological condition.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'p38-img01', cap: 'Background · concept · spaces · partitions — competition sheet 1' },
+              { img: 'neptune-sheet-01', cap: 'Background · concept · spaces · partitions — competition sheet 1' },
             ]},
           ],
         },
@@ -704,11 +932,11 @@
           note: 'Chapter 02 · site',
           title: 'The towers, indexed',
           prose: [
-            "Sheet 2 places the tower cluster on its riverside site — an axonometric mapping each tower to a programme node from sheet 1. The geometry is restrained; the legibility comes from the indexing, which is what the jury was asked to read first.",
+            'Sheet 2 places the tower cluster on its riverside site — an axonometric mapping each tower to a programme node from sheet 1.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'p39-img01', cap: 'Site axonometric — vertical tower cluster — competition sheet 2' },
+              { img: 'neptune-sheet-02', cap: 'Site axonometric — vertical tower cluster — competition sheet 2' },
             ]},
           ],
         },
@@ -722,7 +950,6 @@
     },
   };
 
-  // Order matters for prev/next navigation (matches index.html ordering)
   const ORDER = [
     'heishui-river-resort',
     'les-chardonneuses',
@@ -785,8 +1012,6 @@
     `;
   }
 
-  // Render a single image-row as a 100vh section.
-  // `plateNo` is the running counter for the "[ PLATE — 0XX ]" tag.
   function rowSection(row, d, plateNo) {
     const isShape = !Array.isArray(row);
     const kind    = isShape ? row.kind : null;
@@ -815,7 +1040,6 @@
       `;
     }
 
-    // Single-image rows: fullbleed | hero | pull | detail | (legacy)
     const cell = cells[0];
     const tag  = (kind === 'fullbleed' || plateNo === 1)
       ? '[ HERO ]'
@@ -915,14 +1139,12 @@
     return;
   }
 
-  // Title + persistent chip
   document.title = `${d.name} — Grace`;
   const chipNoEl   = document.getElementById('story-chip-no');
   const chipNameEl = document.getElementById('story-chip-name');
   if (chipNoEl)   chipNoEl.textContent   = d.no || '';
   if (chipNameEl) chipNameEl.textContent = d.name;
 
-  // Build sections — intro → (prose? + rows + proseAfter?)* → outro
   const idx = ORDER.indexOf(id);
   const prevId = ORDER[(idx - 1 + ORDER.length) % ORDER.length];
   const nextId = ORDER[(idx + 1) % ORDER.length];
@@ -949,7 +1171,6 @@
 
   document.getElementById('story').innerHTML = sections.join('');
 
-  // Activate intro background image after first paint so it fades in.
   requestAnimationFrame(() => {
     document.querySelector('.s-intro')?.classList.add('is-loaded');
   });
@@ -984,7 +1205,6 @@
     updateProgress();
   }
 
-  // Esc → exit. Native scroll-snap handles arrows / page keys.
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') window.location.href = 'index.html';
   });
