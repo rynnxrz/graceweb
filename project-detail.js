@@ -478,46 +478,74 @@
       abstract:
         'Six existing fuel silos on reclaimed land, reversed: rather than producing CO₂, they capture it. The ferry station becomes a threshold between human and reef — passengers asked to read the decay of coral as the architecture itself slowly opens, calcifies, and re-attaches to the bay.',
       folder: 'co-silo-ferry-station',
+      metadata: [
+        ['Released', '10 / 2022'],
+        ['Type',     'Civic · ferry station'],
+        ['Site',     'Wynyard Point, Auckland'],
+        ['Programme', 'Undergrad YR 3 (UoA)'],
+        ['Method',   'Coral-growth simulation · 3-D print'],
+        ['Status',   'Design proposal'],
+      ],
+      intro: [
+        "Wynyard Point's six retired fuel silos asked a different question of a ferry station: what if the threshold to the bay reversed the silo's role — capturing CO₂ instead of releasing it, and routing passengers across a slow architectural reef? The proposal grafts a coral-growth lattice onto the silo footprint, with the public programme tucked into the calcifying envelope.",
+      ],
       chapters: [
         {
-          note: 'Spread 25 · project leaf',
+          note: 'Chapter 01 · the threshold',
+          title: 'A ferry station that reads as a reef',
+          prose: [
+            "The dusk render anchors the proposal — an organic silo opening onto the harbour, the silhouette closer to anemone than industry. The structure is meant to be seen first across water, when the colour of the bay does most of the architectural work.",
+          ],
           rows: [
-            [{ img: 'p25-img01', span: 12, cap: 'Underwater perspective — ferry above water, coral structure below' }],
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-hero-dusk', cap: 'Silo at dusk — silhouette against Waitematā harbour' },
+            ]},
           ],
         },
         {
-          note: 'Spread 26–27 · coral ecology',
+          note: 'Chapter 02 · programme',
+          title: 'Programme stitched into the calcified envelope',
+          prose: [
+            'Inside, the sequence is set by the ferry day — arrival path, waiting hall, food court, departure hall — each spliced through the coral lattice so that the structure itself becomes wayfinding. Algal columns inhabit the public room, and the underside of the slab shows water and reflection rather than soffit.',
+          ],
           rows: [
-            [
-              { img: 'p26-img11', span: 6, cap: 'Coral structure — physical model' },
-              { img: 'p26-img10', span: 6, cap: 'Coral structure — digital model' },
-            ],
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-interior-program', cap: 'Plan + interior — food court, waiting, departure, arrival' },
+            ]},
           ],
         },
         {
-          note: 'Spread 28–29 · design logic',
+          note: 'Chapter 03 · fabrication',
+          title: 'Coral as a fabrication strategy',
+          prose: [
+            'The structural logic was derived from coral-growth simulations, then 3-D printed in clear and white resin to test the lattice at three scales. The lattice resolves into a single curvature net — fragile in the print, structural in aggregate. The fingertip image is the working scale; the larger pieces are the legible ones.',
+          ],
           rows: [
-            [
-              { img: 'p28-img06', span: 4, cap: 'Architectural model — first study' },
-              { img: 'p28-img07', span: 4, cap: 'Architectural model — second study' },
-              { img: 'p28-img08', span: 4, cap: 'Architectural model — final form' },
-            ],
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-fab-hero', cap: '3-D printed lattice — working scale, mushroom-cap detail in fingers' },
+            ]},
+            { kind: 'strip', cells: [
+              { img: 'silo-fab-coral-01', cap: 'branching · low' },
+              { img: 'silo-fab-coral-02', cap: 'branching · mid' },
+              { img: 'silo-fab-coral-03', cap: 'branching · canopy' },
+            ], cap: 'Three scales of the same coral lattice — low cluster, mid section, full canopy at the print envelope.' },
           ],
         },
-        {
-          note: 'Spread 30–31 · external · interior',
-          rows: [
-            [{ img: 'p30-img02', span: 12, cap: 'External perspective — coral-flower form catching the dusk' }],
-            [
-              { img: 'p30-img01', span: 5, cap: 'Façade detail — bio-material weave at scale' },
-              { img: 'p30-img03', span: 7, cap: 'Elevation render — illuminated façade against dark sky' },
-            ],
-            [
-              { img: 'p31-img02', span: 6, cap: 'Interior — waiting hall, reef columns' },
-              { img: 'p31-img03', span: 6, cap: 'Interior atmospheres — lobby · departure · food court' },
-            ],
-          ],
-        },
+      ],
+      reflection: {
+        title: 'Industrial silos, reversed',
+        paragraphs: [
+          "The proposal's simplest move is the most legible: the silo, retired, doesn't need to be erased to read as architecture. Reverse its purpose — capture instead of release — and the tank becomes a public room with a programme already embedded.",
+          'What the project taught me: the most expensive architectural moves are often subtraction. The silo wall stays; the coral fills its breath. Wynyard Point doesn\'t need another iconic building; it needs a new use for the ones it already has.',
+        ],
+      },
+      credits: [
+        ['Designer', 'Yu (Grace) Shen'],
+        ['Programme', 'BAS YR 3 — University of Auckland'],
+        ['Tutors',   'School of Architecture and Planning'],
+        ['Site',     'Wynyard Point, Auckland CBD'],
+        ['Method',   'Coral-growth simulation · resin 3-D print'],
+        ['Year',     '2022'],
       ],
     },
 
@@ -530,17 +558,55 @@
       abstract:
         'A water-retaining moss façade for dense urban skin — tested against the heat-island of Oxford Street. Surface area, not floor area, becomes the unit. Architecture as metabolic system: existing buildings re-skinned to invite an interspecies network into the city.',
       folder: 'project-ecoflow',
+      metadata: [
+        ['Released', '01 / 2024'],
+        ['Type',     'Bio-integrated façade'],
+        ['Site',     'Oxford St, London'],
+        ['Programme', 'MArch YR 1 — Bartlett UCL'],
+        ['Output',   'Façade chamber system · moss growth study'],
+      ],
+      intro: [
+        "Oxford Street is a heat-island corridor with no soil to spare and almost no green volume. EcoFlow proposes a re-skinning strategy that turns existing facades into a water-retentive moss substrate — a façade chamber system tuned to slow flow, hold humidity, and let species the city has lost re-attach to its surfaces.",
+      ],
       chapters: [
         {
-          note: 'Spread 32–33 · narrative · facade',
+          note: 'Chapter 01 · streetscape',
+          title: 'A re-skinned street, not a new building',
+          prose: [
+            "The proposal works on the existing wall plane: keep the building, change the skin. The collage below tests the read at street scale — moss as architectural element rather than hanging garden. The visual tension is intentional: moss reads soft, the host wall reads hard, the seam between them is where the project lives.",
+          ],
           rows: [
-            [{ img: 'p32-img01', span: 12, cap: 'Streetscape collage — moss-façade prototype on Oxford Street' }],
-            [
-              { img: 'p33-img04', span: 6, cap: 'Stage 1 — moss-patch perspective, early growth' },
-              { img: 'p33-img16', span: 6, cap: 'Stage 3 — moss-patch perspective, mature growth' },
-            ],
+            { kind: 'fullbleed', cells: [
+              { img: 'p32-img01', cap: 'Streetscape collage — moss-façade prototype on Oxford Street' },
+            ]},
           ],
         },
+        {
+          note: 'Chapter 02 · growth · time',
+          title: 'Two stages of the same wall',
+          prose: [
+            'A façade made of moss is also a façade made of time. The pair below traces a single chamber through two states — early colonisation and mature growth — to make the time axis legible. The finish state isn\'t the picture; the change is.',
+          ],
+          rows: [
+            { kind: 'pair', cells: [
+              { img: 'p33-img04', cap: 'Stage 1 — moss-patch perspective, early growth' },
+              { img: 'p33-img16', cap: 'Stage 3 — moss-patch perspective, mature growth' },
+            ]},
+          ],
+        },
+      ],
+      reflection: {
+        title: 'A façade is a substrate before it\'s an aesthetic',
+        paragraphs: [
+          "The lesson the moss kept teaching: a façade is a substrate before it's an aesthetic. The chamber system was the moment the project turned — once we treated the wall as something organisms had to *colonise*, the design questions changed from \"what does this look like\" to \"what does this hold\".",
+        ],
+      },
+      credits: [
+        ['Designer',  'Yu (Grace) Shen'],
+        ['Programme', 'MArch Bio-integrated Design — Year 1'],
+        ['School',    'The Bartlett School of Architecture, UCL'],
+        ['Site',      'Oxford St, London, UK'],
+        ['Year',      '2023–2024'],
       ],
     },
 
@@ -553,19 +619,52 @@
       abstract:
         'A modular living system in a post-nuclear Auckland: humans and plants share expandable habitats whose vein networks transfer energy, resources, and slowly restore the surrounding ecology. Residents are linked to a meta-verse layer through biological–digital exchange; design lives in four evolutionary phases. The project is presented in a speculative, illustrative voice — the boards below are reproduced as drawn.',
       folder: 'project-ultra-plant',
+      metadata: [
+        ['Released', '05 / 2022'],
+        ['Type',     'Speculative architecture'],
+        ['Site',     'Auckland CBD (post-WW3)'],
+        ['Programme', 'BAS YR 3 — University of Auckland'],
+        ['Voice',    'Illustrative · narrative comic'],
+      ],
+      intro: [
+        "Ultra-Plant imagines Auckland CBD in the year 2330, after a nuclear war has redrawn the rules of habitation. Survivors live inside modular pods grafted onto plant cores; the building is a co-organism, not a shell. The project is presented in a speculative, illustrated voice — boards below are reproduced as drawn.",
+      ],
       chapters: [
         {
-          note: 'Spread 34–35 · site',
+          note: 'Chapter 01 · site',
+          title: 'Auckland 2330 — a pod network',
+          prose: [
+            "The site board indexes the post-war CBD as a network of habitable pods anchored to the existing concrete cores. Year 2330 is far enough into the future that the architecture can drop pretence: the city is no longer a dense plane of buildings; it's a sparse field of plant-architecture symbionts.",
+          ],
           rows: [
-            [{ img: 'p35-img01', span: 12, cap: 'Site map — Auckland CBD pod network · year 2330 (illustrative)' }],
+            { kind: 'fullbleed', cells: [
+              { img: 'p35-img01', cap: 'Site map — Auckland CBD pod network · year 2330 (illustrative)' },
+            ]},
           ],
         },
         {
-          note: 'Spread 36–37 · core & pod',
+          note: 'Chapter 02 · core · pod',
+          title: 'The core stays, the pod cycles',
+          prose: [
+            "The core perspective shows the project's mechanic: the concrete tower stays, the modular pods around it cycle — born, used, shed — over generations. The drawing is intentionally illustrative; the work was about the social science fiction more than the construction detail.",
+          ],
           rows: [
-            [{ img: 'p37-img01', span: 12, cap: 'Core perspective section — concrete core, pod cycle (illustrative)' }],
+            { kind: 'fullbleed', cells: [
+              { img: 'p37-img01', cap: 'Core perspective section — concrete core, pod cycle (illustrative)' },
+            ]},
           ],
         },
+      ],
+      reflection: {
+        title: 'Speculative work as design rehearsal',
+        paragraphs: [
+          "Looking back at this YR 3 project from 2026, the speculative voice was a rehearsal for the bio-integrated direction the Master's took up later. The lesson: when the brief is impossible (post-nuclear), what stays is the *relationship* you draw between species — and that relationship was the same one MycoTerra and Tide-ReWoven kept investigating with real materials.",
+        ],
+      },
+      credits: [
+        ['Designer',  'Yu (Grace) Shen'],
+        ['Programme', 'BAS YR 3 — University of Auckland'],
+        ['Year',      '2022'],
       ],
     },
 
@@ -578,19 +677,47 @@
       abstract:
         "A Shanghai competition entry — submerged ecologies and shifting waterlines translated into a riverside vertical-tower scheme. Hand-drawn sea-creature taxonomy informs partition strategy; the site map indexes towers to programme nodes. Presented as competition boards (full sheets reproduced).",
       folder: 'neptunes-dawn',
+      metadata: [
+        ['Released',     '09 / 2024'],
+        ['Type',         'Competition · group entry'],
+        ['Site',         'Shanghai, China'],
+        ['Collaborators', 'Muze Ouyang · Xinning Yu'],
+        ['Output',       '2 competition sheets'],
+      ],
+      intro: [
+        "Neptune's Dawn (临海深都) was a Shanghai competition entry developed in two months across a small distributed team. The proposal reads the riverside as a habitat at risk of waterline shift, and translates a hand-drawn sea-creature taxonomy into a partition strategy for a vertical tower cluster. The two boards below are reproduced as submitted.",
+      ],
       chapters: [
         {
-          note: 'Spread 38 · concept board',
+          note: 'Chapter 01 · concept',
+          title: 'A taxonomy of partitions',
+          prose: [
+            "Sheet 1 sets the conceptual stage: background, concept, partition strategies derived from a hand-drawn sea-creature taxonomy, programme spaces. The illustrated voice is intentional — the entry argued that the conventional vocabulary of mixed-use towers was insufficient for the site's ecological condition, and that a hand-drawn taxonomy could carry the argument better than a render set.",
+          ],
           rows: [
-            [{ img: 'p38-img01', span: 12, cap: 'Background · concept · spaces · partitions — competition sheet 1' }],
+            { kind: 'fullbleed', cells: [
+              { img: 'p38-img01', cap: 'Background · concept · spaces · partitions — competition sheet 1' },
+            ]},
           ],
         },
         {
-          note: 'Spread 39 · site board',
+          note: 'Chapter 02 · site',
+          title: 'The towers, indexed',
+          prose: [
+            "Sheet 2 places the tower cluster on its riverside site — an axonometric mapping each tower to a programme node from sheet 1. The geometry is restrained; the legibility comes from the indexing, which is what the jury was asked to read first.",
+          ],
           rows: [
-            [{ img: 'p39-img01', span: 12, cap: 'Site axonometric — vertical tower cluster — competition sheet 2' }],
+            { kind: 'fullbleed', cells: [
+              { img: 'p39-img01', cap: 'Site axonometric — vertical tower cluster — competition sheet 2' },
+            ]},
           ],
         },
+      ],
+      credits: [
+        ['Designers', 'Yu (Grace) Shen · Muze Ouyang · Xinning Yu'],
+        ['Type',      'Competition entry'],
+        ['Site',      'Shanghai, China'],
+        ['Year',      '2024'],
       ],
     },
   };
@@ -618,19 +745,166 @@
   function imgSrc(folder, stem) {
     return `${BASE}${folder}/images/webp/${stem}.webp`;
   }
-
-  // For lightbox / retina viewing, prefer a `<stem>-lg.webp` companion
-  // when the dossier was authored from curated originals (the
-  // conversion script writes both sizes side-by-side). Fall back to
-  // the page-size webp when no -lg variant exists.
   function imgSrcLg(folder, stem) {
     return `${BASE}${folder}/images/webp/${stem}-lg.webp`;
   }
 
-  /* --- Render ------------------------------------------------------ */
+  const escapeHtml = (s) => String(s ?? '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+  function findFirstImageStem(d) {
+    for (const ch of d.chapters || []) {
+      for (const row of ch.rows || []) {
+        const isShape = !Array.isArray(row);
+        const cells  = isShape ? row.cells : row;
+        const c = (cells || [])[0];
+        if (c && c.img) return c.img;
+      }
+    }
+    return null;
+  }
+
+  /* --- Section builders ------------------------------------------- */
+
+  function mediaTag(cell, d) {
+    if (cell.video) {
+      const vsrc   = `${BASE}${d.folder}/videos/${cell.video}`;
+      const poster = cell.poster ? imgSrc(d.folder, cell.poster) : '';
+      return `<video src="${vsrc}" ${poster ? `poster="${poster}"` : ''} autoplay loop muted playsinline preload="metadata" aria-label="${escapeHtml(cell.cap || '')}"></video>`;
+    }
+    return `<img src="${imgSrc(d.folder, cell.img)}" alt="${escapeHtml(cell.cap || '')}" loading="lazy" decoding="async">`;
+  }
+
+  function capHtml(text, plateNo, tag) {
+    return `
+      <figcaption class="s-cap">
+        <span class="s-cap-tag">${escapeHtml(tag)}</span>
+        <span class="s-cap-text">${escapeHtml(text)}</span>
+      </figcaption>
+    `;
+  }
+
+  // Render a single image-row as a 100vh section.
+  // `plateNo` is the running counter for the "[ PLATE — 0XX ]" tag.
+  function rowSection(row, d, plateNo) {
+    const isShape = !Array.isArray(row);
+    const kind    = isShape ? row.kind : null;
+    const cells   = isShape ? row.cells : row;
+    const sharedCap = isShape ? row.cap : null;
+
+    if (kind === 'pair' && cells.length === 2) {
+      const panes = cells.map((c) => `<div class="pane">${mediaTag(c, d)}</div>`).join('');
+      const cap = sharedCap || cells.map((c) => c.cap).filter(Boolean).join('  ·  ');
+      return `
+        <section class="s-pair">
+          <div class="s-pair-media">${panes}</div>
+          ${cap ? capHtml(cap, plateNo, '[ PAIR ]') : ''}
+        </section>
+      `;
+    }
+
+    if (kind === 'strip') {
+      const panes = cells.map((c) => `<div class="pane">${mediaTag(c, d)}</div>`).join('');
+      const cap = sharedCap || '';
+      return `
+        <section class="s-strip" style="--strip-cols: ${cells.length}">
+          <div class="s-strip-media">${panes}</div>
+          ${cap ? capHtml(cap, plateNo, '[ SEQUENCE ]') : ''}
+        </section>
+      `;
+    }
+
+    // Single-image rows: fullbleed | hero | pull | detail | (legacy)
+    const cell = cells[0];
+    const tag  = (kind === 'fullbleed' || plateNo === 1)
+      ? '[ HERO ]'
+      : `[ PLATE — ${String(plateNo).padStart(3, '0')} ]`;
+    return `
+      <section class="s-image">
+        <div class="s-image-media">${mediaTag(cell, d)}</div>
+        ${cell.cap ? capHtml(cell.cap, plateNo, tag) : ''}
+      </section>
+    `;
+  }
+
+  function proseSection(ch) {
+    const eyebrow = ch.note  ? `<p class="s-prose-eyebrow">${escapeHtml(ch.note)}</p>` : '';
+    const title   = ch.title ? `<h2 class="s-prose-title">${escapeHtml(ch.title)}</h2>` : '';
+    const body    = (ch.prose || []).map((p) => `<p>${escapeHtml(p)}</p>`).join('');
+    return `
+      <section class="s-prose">
+        <div class="s-prose-inner">
+          ${eyebrow}
+          ${title}
+          <div class="s-prose-body">${body}</div>
+        </div>
+      </section>
+    `;
+  }
+
+  function introSection(d, firstStem) {
+    const bgUrl = firstStem ? imgSrcLg(d.folder, firstStem) : '';
+    const styleAttr = bgUrl ? `style="--bg-img: url('${bgUrl}');"` : '';
+    return `
+      <section class="s-intro" ${styleAttr}>
+        <p class="s-intro-no">${escapeHtml(d.no || '')}</p>
+        <h1 class="s-intro-name">${escapeHtml(d.name)}</h1>
+        ${d.binomial ? `<p class="s-intro-binomial">${escapeHtml(d.binomial)}</p>` : ''}
+        ${d.meta     ? `<p class="s-intro-meta">${escapeHtml(d.meta)}</p>` : ''}
+        ${d.abstract ? `<p class="s-intro-abstract">${escapeHtml(d.abstract)}</p>` : ''}
+        <p class="s-intro-scroll-cue">scroll</p>
+      </section>
+    `;
+  }
+
+  function outroSection(d, prevId, nextId) {
+    const prev = DOSSIERS[prevId];
+    const next = DOSSIERS[nextId];
+
+    const reflectionHtml = d.reflection && Array.isArray(d.reflection.paragraphs) && d.reflection.paragraphs.length
+      ? `<div class="s-outro-reflection">
+          <p class="s-outro-eyebrow">Reflection</p>
+          ${d.reflection.title ? `<h2>${escapeHtml(d.reflection.title)}</h2>` : ''}
+          ${d.reflection.paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join('')}
+         </div>`
+      : '<div class="s-outro-reflection"></div>';
+
+    const creditsRows = Array.isArray(d.credits)
+      ? d.credits.map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`).join('')
+      : '';
+    const creditsHtml = creditsRows
+      ? `<div class="s-outro-credits"><dl>${creditsRows}</dl></div>`
+      : '<div class="s-outro-credits"></div>';
+
+    const navHtml = `
+      <nav class="s-outro-nav" aria-label="Project navigation">
+        <a class="s-outro-nav-prev" href="project-detail.html?project=${prevId}">
+          <span class="s-outro-nav-label">← prev specimen</span>
+          <span class="s-outro-nav-name">${escapeHtml(prev?.name || '')}</span>
+        </a>
+        <a class="s-outro-nav-next" href="project-detail.html?project=${nextId}">
+          <span class="s-outro-nav-label">next specimen →</span>
+          <span class="s-outro-nav-name">${escapeHtml(next?.name || '')}</span>
+        </a>
+      </nav>
+    `;
+
+    return `
+      <section class="s-outro">
+        <div class="s-outro-grid">
+          ${reflectionHtml}
+          ${creditsHtml}
+          ${navHtml}
+        </div>
+      </section>
+    `;
+  }
+
+  /* --- Render ------------------------------------------------------- */
 
   const id = qs('project') || ORDER[0];
-  const d = DOSSIERS[id];
+  const d  = DOSSIERS[id];
 
   if (!d) {
     document.body.innerHTML =
@@ -641,255 +915,78 @@
     return;
   }
 
-  // Title
+  // Title + persistent chip
   document.title = `${d.name} — Grace`;
+  const chipNoEl   = document.getElementById('story-chip-no');
+  const chipNameEl = document.getElementById('story-chip-name');
+  if (chipNoEl)   chipNoEl.textContent   = d.no || '';
+  if (chipNameEl) chipNameEl.textContent = d.name;
 
-  // Header chips
-  const folio = document.getElementById('dossier-folio');
-  const dossierId = document.getElementById('dossier-id');
-  if (folio) folio.textContent = `FOLIO / ${d.name.toUpperCase()}`;
-  if (dossierId) dossierId.textContent = d.no;
-
-  // Hero
-  document.getElementById('dossier-kind').textContent = d.kind;
-  document.getElementById('dossier-name-text').textContent = d.name;
-  document.getElementById('dossier-binomial').textContent = d.binomial;
-  document.getElementById('dossier-meta').textContent = d.meta;
-  document.getElementById('dossier-abstract').textContent = d.abstract;
-
-  // Editorial metadata strip — rendered into dossier-head if the
-  // dossier provides a `metadata` array. Older dossiers without
-  // metadata fall through and render nothing here.
-  const headEl = document.querySelector('.dossier-head');
-  if (headEl && Array.isArray(d.metadata) && d.metadata.length) {
-    const dl = document.createElement('dl');
-    dl.className = 'dossier-meta-grid';
-    dl.innerHTML = d.metadata.map(([key, val]) => `
-      <div><dt>${key}</dt><dd>${val}</dd></div>
-    `).join('');
-    // Insert before the closing rule so the strip lives inside the
-    // head card.
-    const rules = headEl.querySelectorAll('.dossier-rule');
-    const lastRule = rules[rules.length - 1];
-    if (lastRule) headEl.insertBefore(dl, lastRule);
-    else headEl.appendChild(dl);
-  }
-
-  // Plates — chapter sequence (each chapter optionally has title +
-  // prose preceding its plates).
-  const platesEl = document.getElementById('plates');
-
-  // Flat list of {src, cap} for lightbox navigation
-  const lbItems = [];
-
-  // Helpers for editorial blocks ----------------------------------
-  const escapeHtml = (s) => String(s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-
-  const proseBlock = (paragraphs, klass) => {
-    if (!Array.isArray(paragraphs) || !paragraphs.length) return '';
-    const ps = paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join('');
-    return `<div class="${klass}">${ps}</div>`;
-  };
-
-  // Optional intro section — sits between dossier-head and chapter 1.
-  const introHtml = proseBlock(d.intro, 'dossier-prose dossier-prose--intro');
-
-  const chaptersHtml = d.chapters.map((ch) => {
-    const titleHtml = ch.title
-      ? `<h2 class="plate-chapter-title">${escapeHtml(ch.title)}</h2>`
-      : '';
-    const proseHtml = proseBlock(ch.prose, 'plate-chapter-prose');
-    const proseAfterHtml = proseBlock(ch.proseAfter, 'plate-chapter-prose');
-
-    const rowsHtml = ch.rows.map((row) => {
-      // A row may be either:
-      //   • the legacy shape — an array of cells (default 12-col grid)
-      //   • the new shape  — { kind: 'hero|pair|strip|pull|detail',
-      //                        cells: [...], cap?: '...' }
-      const isShape = !Array.isArray(row);
-      const rowKind = isShape ? row.kind : null;
-      const rowCells = isShape ? row.cells : row;
-      const rowCap   = isShape ? row.cap  : null;
-
-      const itemsHtml = rowCells.map((it) => {
-        const isVideo = !!it.video;
-        const src   = isVideo ? `${BASE}${d.folder}/videos/${it.video}` : imgSrc(d.folder, it.img);
-        const srcLg = isVideo ? src : imgSrcLg(d.folder, it.img);
-        const poster = it.poster ? imgSrc(d.folder, it.poster) : '';
-        const lbIdx = lbItems.length;
-        lbItems.push({ src, srcLg, cap: it.cap, isVideo });
-        const safeCap = it.cap.replace(/"/g, '&quot;');
-        const styleAttr = it.span ? `style="grid-column: span ${it.span};"` : '';
-        const cursorLabel = isVideo ? 'play' : 'view';
-        const mediaHtml = isVideo
-          ? `<video src="${src}" ${poster ? `poster="${poster}"` : ''} autoplay loop muted playsinline preload="metadata" aria-label="${safeCap}"></video>`
-          : `<img src="${src}" alt="${safeCap}" loading="lazy" decoding="async">`;
-        return `
-          <figure class="plate-cell" ${styleAttr} data-lb="${lbIdx}">
-            <button class="plate-img-btn" type="button" data-cursor="${cursorLabel}" aria-label="${isVideo ? 'Watch' : 'Open'} ${safeCap}">
-              ${mediaHtml}
-            </button>
-            <figcaption class="plate-cap">${it.cap}</figcaption>
-          </figure>
-        `;
-      }).join('');
-
-      const rowClass = rowKind ? `plate-row plate-row--${rowKind}` : 'plate-row';
-      // Strip rows pass cell count via custom property so the grid
-      // template adapts automatically (4-up, 5-up, 6-up …).
-      const rowStyle = rowKind === 'strip'
-        ? ` style="--strip-cols: ${rowCells.length}"`
-        : '';
-      const sharedCapHtml = rowCap
-        ? `<figcaption class="plate-row-cap">${rowCap}</figcaption>`
-        : '';
-      return `<div class="${rowClass}"${rowStyle}>${itemsHtml}</div>${sharedCapHtml}`;
-    }).join('');
-
-    return `
-      <section class="plate-chapter">
-        <header class="plate-chapter-head">
-          <span class="plate-chapter-mark">◦</span>
-          <span class="plate-chapter-note">${ch.note}</span>
-        </header>
-        ${titleHtml}
-        ${proseHtml}
-        ${rowsHtml}
-        ${proseAfterHtml}
-      </section>
-    `;
-  }).join('');
-
-  // Reflection / artist statement — sits after the last chapter.
-  let reflectionHtml = '';
-  if (d.reflection && Array.isArray(d.reflection.paragraphs) && d.reflection.paragraphs.length) {
-    const refTitle = d.reflection.title
-      ? `<h2 class="dossier-reflection-title">${escapeHtml(d.reflection.title)}</h2>`
-      : '';
-    reflectionHtml = `
-      <aside class="dossier-reflection-wrap" aria-label="Reflection">
-        ${refTitle}
-        ${proseBlock(d.reflection.paragraphs, 'dossier-reflection')}
-      </aside>
-    `;
-  }
-
-  // Colophon / credits — closes the dossier.
-  let colophonHtml = '';
-  if (Array.isArray(d.credits) && d.credits.length) {
-    const rows = d.credits.map(([key, val]) => `
-      <div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(val)}</dd></div>
-    `).join('');
-    colophonHtml = `
-      <aside class="dossier-colophon" aria-label="Colophon">
-        <h2 class="dossier-colophon-title">Colophon</h2>
-        <dl class="dossier-credits">${rows}</dl>
-      </aside>
-    `;
-  }
-
-  platesEl.innerHTML = introHtml + chaptersHtml + reflectionHtml + colophonHtml;
-
-  // Reveal-on-scroll for chapters and rows
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-in');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.06, rootMargin: '0px 0px -6% 0px' });
-    document.querySelectorAll('.plate-chapter, .plate-row').forEach((el) => io.observe(el));
-  } else {
-    document.querySelectorAll('.plate-chapter, .plate-row').forEach((el) => el.classList.add('is-in'));
-  }
-
-  /* --- Lightbox ---------------------------------------------------- */
-
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lb-img');
-  const lbCap = document.getElementById('lb-cap');
-  const lbCount = document.getElementById('lb-count');
-  let lbCurrent = -1;
-
-  function lbOpen(idx) {
-    if (!lb) return;
-    if (idx < 0 || idx >= lbItems.length) return;
-    lbCurrent = idx;
-    const it = lbItems[idx];
-    // Show the page-size webp instantly (it's already in cache), then
-    // upgrade to the -lg variant once it loads. If -lg 404s (older
-    // dossiers without curated originals), keep the page-size view.
-    lbImg.src = it.src;
-    lbImg.alt = it.cap;
-    if (it.srcLg && it.srcLg !== it.src) {
-      const probe = new Image();
-      probe.onload = () => {
-        if (lbCurrent === idx) lbImg.src = it.srcLg;
-      };
-      probe.src = it.srcLg;
-    }
-    if (lbCap) lbCap.textContent = it.cap;
-    if (lbCount) lbCount.textContent = `${idx + 1} / ${lbItems.length}`;
-    lb.classList.add('is-open');
-    lb.setAttribute('aria-hidden', 'false');
-    document.documentElement.classList.add('lb-open');
-  }
-  function lbClose() {
-    if (!lb) return;
-    lb.classList.remove('is-open');
-    lb.setAttribute('aria-hidden', 'true');
-    document.documentElement.classList.remove('lb-open');
-    setTimeout(() => { if (!lb.classList.contains('is-open')) lbImg.src = ''; }, 280);
-  }
-  function lbStep(delta) {
-    if (lbCurrent < 0) return;
-    const next = (lbCurrent + delta + lbItems.length) % lbItems.length;
-    lbOpen(next);
-  }
-
-  platesEl.addEventListener('click', (e) => {
-    const btn = e.target.closest('.plate-img-btn');
-    if (!btn) return;
-    const fig = btn.closest('.plate-cell');
-    if (!fig) return;
-    const idx = Number(fig.dataset.lb);
-    lbOpen(idx);
-  });
-
-  if (lb) {
-    lb.addEventListener('click', (e) => {
-      if (e.target.closest('[data-lb-close]')) { lbClose(); return; }
-      if (e.target.closest('[data-lb-prev]')) { lbStep(-1); return; }
-      if (e.target.closest('[data-lb-next]')) { lbStep(1); return; }
-      if (e.target === lb) lbClose();
-    });
-    window.addEventListener('keydown', (e) => {
-      if (!lb.classList.contains('is-open')) return;
-      if (e.key === 'Escape') lbClose();
-      else if (e.key === 'ArrowLeft') lbStep(-1);
-      else if (e.key === 'ArrowRight') lbStep(1);
-    });
-  }
-
-  /* --- Prev / next ------------------------------------------------- */
-
+  // Build sections — intro → (prose? + rows + proseAfter?)* → outro
   const idx = ORDER.indexOf(id);
   const prevId = ORDER[(idx - 1 + ORDER.length) % ORDER.length];
   const nextId = ORDER[(idx + 1) % ORDER.length];
-  const prev = DOSSIERS[prevId];
-  const next = DOSSIERS[nextId];
-  const prevEl = document.getElementById('dossier-prev');
-  const nextEl = document.getElementById('dossier-next');
-  if (prevEl) {
-    prevEl.href = `project-detail.html?project=${prevId}`;
-    document.getElementById('dossier-prev-name').textContent = prev.name;
+
+  const firstStem = findFirstImageStem(d);
+  const sections = [];
+  sections.push(introSection(d, firstStem));
+
+  let plateNo = 0;
+  d.chapters.forEach((ch) => {
+    if (Array.isArray(ch.prose) && ch.prose.length) {
+      sections.push(proseSection(ch));
+    }
+    (ch.rows || []).forEach((row) => {
+      plateNo += 1;
+      sections.push(rowSection(row, d, plateNo));
+    });
+    if (Array.isArray(ch.proseAfter) && ch.proseAfter.length) {
+      sections.push(proseSection({ note: (ch.note || '') + ' (cont.)', prose: ch.proseAfter }));
+    }
+  });
+
+  sections.push(outroSection(d, prevId, nextId));
+
+  document.getElementById('story').innerHTML = sections.join('');
+
+  // Activate intro background image after first paint so it fades in.
+  requestAnimationFrame(() => {
+    document.querySelector('.s-intro')?.classList.add('is-loaded');
+  });
+
+  /* --- Scroll: section-active observer + progress fill ------------ */
+
+  const sectionEls = document.querySelectorAll('.story > section');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && e.intersectionRatio > 0.55) {
+          e.target.classList.add('is-active');
+        } else if (e.intersectionRatio < 0.2) {
+          e.target.classList.remove('is-active');
+        }
+      });
+    }, { threshold: [0.2, 0.55, 0.85] });
+    sectionEls.forEach((el) => io.observe(el));
+  } else {
+    sectionEls.forEach((el) => el.classList.add('is-active'));
   }
-  if (nextEl) {
-    nextEl.href = `project-detail.html?project=${nextId}`;
-    document.getElementById('dossier-next-name').textContent = next.name;
+
+  const progressFill = document.getElementById('story-progress-fill');
+  if (progressFill) {
+    const updateProgress = () => {
+      const total = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+      const pct = Math.max(0, Math.min(1, window.scrollY / total));
+      progressFill.style.bottom = `${(1 - pct) * 100}%`;
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
   }
+
+  // Esc → exit. Native scroll-snap handles arrows / page keys.
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') window.location.href = 'index.html';
+  });
+
 })();

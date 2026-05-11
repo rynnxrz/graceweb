@@ -94,6 +94,18 @@ MAPPING = {
         ('UL6A3654.JPG',                        'seeds-doc-05'),
         ('poster.JPG',                          'seeds-poster'),
     ],
+    'co-silo-ferry-station': [
+        # Originals re-sorted in v2 (2026-05-08). Skipped from this list:
+        #   - CORAL GRWOTH.ai     (vector — not rasterised here)
+        #   - IMG_0394.jpeg       (51 MB; convertible but too heavy for the
+        #                          MVP set — re-add later if needed)
+        ('Enscape_2022-10-11-22-11-29.png', 'silo-hero-dusk'),
+        ('IMG_00005_1.jpg',                  'silo-interior-program'),
+        ('IMG_0393.jpeg',                    'silo-fab-hero'),
+        ('IMG_0353.jpeg',                    'silo-fab-coral-01'),
+        ('IMG_0358.jpeg',                    'silo-fab-coral-02'),
+        ('IMG_0368.jpeg',                    'silo-fab-coral-03'),
+    ],
 }
 
 SIZES = [

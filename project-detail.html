@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0a0d0a">
-  <meta name="description" content="Specimen dossier — Grace, field notebook of speculative biological architectures.">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Specimen — a project by Grace Yu Shen.">
   <meta name="author" content="Grace">
 
   <title>Specimen — Grace</title>
@@ -15,97 +15,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260507c">
-  <link rel="stylesheet" href="project-detail.css?v=20260508e">
+  <link rel="stylesheet" href="project-detail.css?v=20260510a">
 </head>
-<body class="dossier-page no-halo">
+<body class="story-page">
 
-  <!-- Loading veil — see transitions.js for lifecycle -->
-  <div class="page-veil" data-veil aria-hidden="true">
-    <div class="page-veil-inner">
-      <span class="page-veil-mark">◦</span>
-      <span class="page-veil-line"></span>
-      <span class="page-veil-text">DOSSIER</span>
+  <!-- Persistent UI: project name (chip), exit X, scroll progress -->
+  <div class="story-ui" aria-hidden="false">
+    <a class="story-exit" href="index.html" aria-label="Back to index">
+      <span class="story-exit-glyph" aria-hidden="true">×</span>
+      <span class="story-exit-label">close</span>
+    </a>
+    <div class="story-chip" id="story-chip">
+      <span class="story-chip-no" id="story-chip-no">—</span>
+      <span class="story-chip-name" id="story-chip-name">—</span>
+    </div>
+    <div class="story-progress" aria-hidden="true">
+      <div class="story-progress-fill" id="story-progress-fill"></div>
     </div>
   </div>
 
-  <!-- Background canvas — same drift as the index, just dialed lower -->
-  <canvas id="bg-canvas" aria-hidden="true"></canvas>
-
-  <!-- Leaf header -->
-  <header class="leaf-header" aria-label="Field notebook header">
-    <div class="leaf-row">
-      <a class="leaf-meta" href="index.html">
-        <span class="leaf-mark">←</span> back
-      </a>
-      <span class="leaf-folio" id="dossier-folio">FOLIO / —</span>
-      <span class="leaf-meta" id="dossier-id">spec.— / —</span>
-    </div>
-    <div class="leaf-row leaf-row--right">
-      <nav class="view-toggle" aria-label="View switch">
-        <a href="index.html" class="view-toggle-item">network</a>
-        <span class="view-toggle-sep">·</span>
-        <a href="work.html" class="view-toggle-item">index</a>
-        <span class="view-toggle-sep">·</span>
-        <a href="profile.html" class="view-toggle-item">profile</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero — herbarium label -->
-  <section class="dossier-head">
-    <div class="dossier-rule"></div>
-    <p class="dossier-kind" id="dossier-kind">— · —</p>
-    <h1 class="dossier-name">
-      <span class="dossier-genus" id="dossier-name-text">—</span>
-      <span class="dossier-binomial" id="dossier-binomial">—</span>
-    </h1>
-    <p class="dossier-meta" id="dossier-meta">— · —</p>
-    <p class="dossier-abstract" id="dossier-abstract"></p>
-    <div class="dossier-rule"></div>
-  </section>
-
-  <!-- Plate sequence — vertical reading of the project's pages -->
-  <main class="plates" id="plates" aria-label="Specimen plate sequence">
-    <!-- populated by JS -->
+  <!-- The story itself — JS injects sections here -->
+  <main class="story" id="story" aria-label="Project narrative">
+    <!-- populated by project-detail.js -->
   </main>
 
-  <!-- Prev / next specimens -->
-  <nav class="dossier-nav" aria-label="Adjacent specimens">
-    <a class="dossier-nav-item dossier-nav-prev" id="dossier-prev" href="index.html">
-      <span class="dossier-nav-label">prev. specimen</span>
-      <span class="dossier-nav-name" id="dossier-prev-name">—</span>
-    </a>
-    <a class="dossier-nav-item dossier-nav-next" id="dossier-next" href="index.html">
-      <span class="dossier-nav-label">next specimen</span>
-      <span class="dossier-nav-name" id="dossier-next-name">—</span>
-    </a>
-  </nav>
-
-  <footer class="leaf-footer">
-    <span class="leaf-meta">— end of dossier —</span>
-    <a class="leaf-meta" href="index.html">return to index</a>
-  </footer>
-
-  <div class="cursor-halo" id="cursor-halo" aria-hidden="true"></div>
-
-  <!-- Lightbox — fades over everything when a plate image is clicked -->
-  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Plate viewer">
-    <button class="lb-close" type="button" data-lb-close aria-label="Close">×</button>
-    <button class="lb-nav lb-prev" type="button" data-lb-prev aria-label="Previous plate">‹</button>
-    <button class="lb-nav lb-next" type="button" data-lb-next aria-label="Next plate">›</button>
-    <div class="lb-stage">
-      <img id="lb-img" alt="" decoding="async">
-    </div>
-    <div class="lb-meta">
-      <span class="lb-count" id="lb-count">— / —</span>
-      <span class="lb-cap" id="lb-cap">—</span>
-    </div>
-  </div>
-
-  <script src="cursor.js?v=20260508a" defer></script>
-  <script src="transitions.js?v=20260506a" defer></script>
-  <script src="organic-bg.js?v=20260506a" defer></script>
-  <script src="project-detail.js?v=20260508d" defer></script>
+  <script src="project-detail.js?v=20260510a" defer></script>
 </body>
 </html>

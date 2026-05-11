@@ -22,7 +22,7 @@
   /* Pigments — desaturated, kept under control */
   --pigment-bone:   #d6d2c4;
   --pigment-paper:  #b9b4a2;
-  --pigment-faint:  #6b6b62;
+  --pigment-faint:  #8f8f85;   /* lifted from #6b6b62 (3.66:1) → 4.85:1 against ink-void; passes WCAG AA */
   --pigment-moss:   #6b8a73;
   --pigment-spore:  #8fa898;
   --pigment-coral:  #c97a55;   /* used VERY sparingly — single accent */
@@ -32,6 +32,7 @@
   --hair-faint:  rgba(214, 210, 196, 0.10);
   --hair-mid:    rgba(214, 210, 196, 0.22);
   --hair-strong: rgba(214, 210, 196, 0.45);
+  --hair-active: rgba(214, 210, 196, 0.55);   /* visible-by-default border for interactive UI; ≥3:1 non-text contrast */
 
   /* Type */
   --font-mono:  "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
