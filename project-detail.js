@@ -1342,7 +1342,10 @@
 
     sections.push(outroSection(d, prevId, nextId));
 
-    document.getElementById('story').innerHTML = sections.join('');
+    const storyEl = document.getElementById('story');
+    storyEl.setAttribute('aria-busy', 'true');
+    storyEl.innerHTML = sections.join('');
+    storyEl.setAttribute('aria-busy', 'false');
 
     requestAnimationFrame(() => {
       document.querySelector('.s-intro')?.classList.add('is-loaded');

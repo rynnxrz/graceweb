@@ -6,81 +6,82 @@
 <title>Content Editor — graceweb</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Cormorant Garamond', Georgia, serif; background: #0a0a0a; color: #d6d2c4; line-height: 1.6; }
+  body { font-family: 'Cormorant Garamond', Georgia, serif; background: #fff; color: #222; line-height: 1.6; }
 
   /* ── toolbar ── */
-  .toolbar { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,.95); backdrop-filter: blur(12px); border-bottom: 1px solid #1a1a1a; padding: .45rem 1.5rem; display: flex; align-items: center; gap: .8rem; font-family: 'SF Mono', monospace; }
-  .toolbar h1 { font-size: .7rem; font-weight: 600; color: #666; letter-spacing: .04em; }
-  .proj-tabs { display: flex; gap: 2px; overflow-x: auto; flex: 1; scrollbar-width: none; }
-  .proj-tabs::-webkit-scrollbar { display: none; }
-  .tab { font-family: 'SF Mono', monospace; font-size: .6rem; padding: .3rem .6rem; border: 1px solid transparent; border-radius: 3px; background: none; color: #555; cursor: pointer; white-space: nowrap; transition: all .12s; }
-  .tab:hover { color: #ccc; }
-  .tab.active { color: #f59e0b; border-color: #f59e0b33; background: #f59e0b0a; }
-  .toolbar-gap { width: 1px; height: 16px; background: #222; flex-shrink: 0; }
-  .status { font-size: .6rem; color: #555; white-space: nowrap; }
-  .status.has-changes { color: #f59e0b; }
-  .btn { font-family: 'SF Mono', monospace; font-size: .6rem; padding: .25rem .6rem; border: 1px solid #333; border-radius: 3px; background: #1a1a1a; color: #999; cursor: pointer; transition: all .12s; white-space: nowrap; }
-  .btn:hover { border-color: #555; color: #fff; }
-  .btn-primary { border-color: #f59e0b; color: #f59e0b; }
-  .btn-primary:hover { background: #1a1500; }
-  .btn-save { border-color: #22c55e; color: #22c55e; }
-  .btn-save:hover { background: #052e16; }
-  .btn-save.pulse { animation: savePulse 1s infinite; }
-  @keyframes savePulse { 0%,100%{ box-shadow: none; } 50%{ box-shadow: 0 0 8px #22c55e44; } }
+  .toolbar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.95); backdrop-filter: blur(12px); border-bottom: 1px solid #e0e0e0; padding: .45rem 1rem; display: flex; align-items: center; gap: .5rem; font-family: 'SF Mono', monospace; flex-wrap: wrap; }
+  .toolbar h1 { font-size: .75rem; font-weight: 600; color: #707070; letter-spacing: .04em; }
+  .proj-tabs { display: flex; gap: 2px; overflow-x: auto; flex: 1 1 100%; min-width: 0; order: 2; scrollbar-width: thin; }
+  .tab { font-family: 'SF Mono', monospace; font-size: .75rem; padding: .45rem .7rem; border: 1px solid transparent; border-radius: 3px; background: none; color: #666; cursor: pointer; white-space: nowrap; transition: all .12s; min-height: 32px; }
+  .tab:hover { color: #333; }
+  .tab.active { color: #d97706; border-color: #d9770633; background: #fef3c70a; font-weight: 600; border-bottom: 2px solid #d97706; }
+  .toolbar-gap { width: 1px; height: 16px; background: #ddd; flex-shrink: 0; }
+  .status { font-size: .75rem; color: #707070; white-space: nowrap; }
+  .status.has-changes { color: #d97706; }
+  .btn { font-family: 'SF Mono', monospace; font-size: .75rem; padding: .35rem .7rem; border: 1px solid #ccc; border-radius: 3px; background: #f5f5f5; color: #555; cursor: pointer; transition: all .12s; white-space: nowrap; min-height: 32px; }
+  .btn:hover { border-color: #999; color: #111; background: #eee; }
+  .btn-primary { border-color: #d97706; color: #d97706; background: #fff; }
+  .btn-primary:hover { background: #fffbeb; }
+  .btn.pulse { animation: savePulse 1s infinite; }
+  @keyframes savePulse { 0%,100%{ box-shadow: none; } 50%{ box-shadow: 0 0 8px #d9770644; } }
 
   /* ── page ── */
   .page { max-width: 880px; margin: 0 auto; padding: 3rem 2rem 8rem; }
 
   /* ── project header ── */
-  .proj-no { font-family: 'SF Mono', monospace; font-size: .62rem; color: #555; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .3rem; }
-  .proj-name { font-size: 2.4rem; font-weight: 300; font-style: italic; color: #fff; margin-bottom: .15rem; }
-  .proj-binomial { font-size: .95rem; font-style: italic; color: #8a8577; margin-bottom: .25rem; }
-  .proj-kind { font-family: 'SF Mono', monospace; font-size: .6rem; color: #555; letter-spacing: .04em; margin-bottom: .15rem; }
-  .proj-meta { font-family: 'SF Mono', monospace; font-size: .6rem; color: #444; margin-bottom: 1.2rem; }
-  .proj-abstract { font-size: 1.05rem; color: #b9b4a2; max-width: 640px; margin-bottom: 1.8rem; line-height: 1.75; }
+  .proj-no { font-family: 'SF Mono', monospace; font-size: .75rem; color: #707070; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .3rem; }
+  .proj-name { font-size: 2.4rem; font-weight: 300; font-style: italic; color: #111; margin-bottom: .15rem; }
+  .proj-binomial { font-size: .95rem; font-style: italic; color: #666; margin-bottom: .25rem; }
+  .proj-kind { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; letter-spacing: .04em; margin-bottom: .15rem; }
+  .proj-meta { font-family: 'SF Mono', monospace; font-size: .75rem; color: #707070; margin-bottom: 1.2rem; }
+  .proj-abstract { font-size: 1.05rem; color: #444; max-width: 640px; margin-bottom: 1.8rem; line-height: 1.75; }
 
   /* ── editable ── */
-  [contenteditable] { outline: none; border-bottom: 1px solid transparent; transition: border-color .15s, background .15s; padding: 1px 3px; margin: -1px -3px; border-radius: 2px; }
-  [contenteditable]:hover { border-bottom-color: #333; }
-  [contenteditable]:focus { border-bottom-color: #f59e0b; background: rgba(245,158,11,.04); }
-  [contenteditable].changed { background: rgba(245,158,11,.06); border-bottom-color: #f59e0b44; }
+  [contenteditable] { border-bottom: 1px solid transparent; transition: border-color .15s, background .15s, outline-color .15s; padding: 1px 3px; margin: -1px -3px; border-radius: 2px; outline: 2px solid transparent; outline-offset: 1px; }
+  [contenteditable]:hover { border-bottom-color: #ccc; }
+  [contenteditable]:focus { border-bottom-color: #d97706; background: rgba(217,119,6,.04); outline-color: #d97706; }
+  [contenteditable].changed { background: rgba(217,119,6,.06); border-bottom-color: #d97706; border-bottom-style: dashed; }
+
+  /* ── global focus-visible ring ── */
+  :focus-visible { outline: 2px solid #d97706; outline-offset: 2px; }
+  .tab:focus-visible, .btn:focus-visible, .row-ctrl-btn:focus-visible, .crop-ratio-btn:focus-visible, .crop-reset-btn:focus-visible, .crop-apply-btn:focus-visible, .crop-cancel-btn:focus-visible, .crop-close-btn:focus-visible { outline: 2px solid #d97706; outline-offset: 2px; }
 
   /* ── metadata ── */
-  .meta-table { font-family: 'SF Mono', monospace; font-size: .66rem; margin-bottom: 2rem; border-top: 1px solid #1a1a1a; }
-  .meta-row { display: flex; border-bottom: 1px solid #111; }
-  .meta-key { width: 130px; flex-shrink: 0; padding: .3rem .5rem; color: #555; }
-  .meta-val { flex: 1; padding: .3rem .5rem; color: #999; }
+  .meta-table { font-family: 'SF Mono', monospace; font-size: .75rem; margin-bottom: 2rem; border-top: 1px solid #e5e5e5; }
+  .meta-row { display: flex; border-bottom: 1px solid #f0f0f0; }
+  .meta-key { width: 130px; flex-shrink: 0; padding: .3rem .5rem; color: #666; }
+  .meta-val { flex: 1; padding: .3rem .5rem; color: #444; }
 
-  .section-label { font-family: 'SF Mono', monospace; font-size: .55rem; color: #333; letter-spacing: .06em; text-transform: uppercase; margin-bottom: .3rem; }
-  .intro-prose { font-size: .95rem; color: #a09b8e; max-width: 620px; margin-bottom: 2rem; line-height: 1.75; }
+  .section-label { font-family: 'SF Mono', monospace; font-size: .75rem; color: #767676; letter-spacing: .06em; text-transform: uppercase; margin-bottom: .3rem; }
+  .intro-prose { font-size: .95rem; color: #444; max-width: 620px; margin-bottom: 2rem; line-height: 1.75; }
 
   /* ── hero images ── */
-  .hero-section { margin-bottom: 2.5rem; padding: 1rem; border: 1px solid #1a1a1a; border-radius: 4px; background: #0d0d0d; }
+  .hero-section { margin-bottom: 2.5rem; padding: 1rem; border: 1px solid #e5e5e5; border-radius: 4px; background: #fafafa; }
   .hero-section .section-label { margin-bottom: .8rem; }
   .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   .hero-card { position: relative; }
-  .hero-card-label { font-family: 'SF Mono', monospace; font-size: .55rem; color: #555; margin-bottom: .3rem; }
+  .hero-card-label { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; margin-bottom: .3rem; }
   .hero-card .hero-img-wrap { position: relative; overflow: hidden; border-radius: 2px; }
-  .hero-card img { width: 100%; display: block; background: #111; min-height: 60px; cursor: pointer; transition: opacity .15s; }
+  .hero-card img { width: 100%; display: block; background: #f0f0f0; min-height: 60px; cursor: pointer; transition: opacity .15s; }
   .hero-card img:hover { opacity: .8; }
   .hero-card.crop-active img { cursor: grab; transition: none; }
   .hero-card.crop-active img:active { cursor: grabbing; }
   .hero-card.crop-active img:hover { opacity: 1; }
-  .hero-card.crop-active { outline: 1px solid #f59e0b44; outline-offset: -1px; }
-  .hero-card .replace-hint { position: absolute; top: 22px; right: 4px; font-family: 'SF Mono', monospace; font-size: .5rem; background: rgba(0,0,0,.7); color: #888; padding: 2px 6px; border-radius: 2px; opacity: 0; transition: opacity .15s; pointer-events: none; }
+  .hero-card.crop-active { outline: 1px solid #d9770644; outline-offset: -1px; }
+  .hero-card .replace-hint { position: absolute; top: 22px; right: 4px; font-family: 'SF Mono', monospace; font-size: .75rem; background: rgba(0,0,0,.7); color: #fff; padding: 2px 6px; border-radius: 2px; opacity: 0; transition: opacity .15s; pointer-events: none; }
   .hero-card:hover .replace-hint { opacity: 1; }
-  .hero-card .hero-path { font-family: 'SF Mono', monospace; font-size: .48rem; color: #2a2a2a; margin-top: .15rem; }
+  .hero-card .hero-path { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; margin-top: .15rem; }
 
   /* ── chapter ── */
   .chapter { margin-bottom: 2.8rem; }
-  .ch-note { font-family: 'SF Mono', monospace; font-size: .58rem; color: #444; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .25rem; }
-  .ch-title { font-size: 1.35rem; font-weight: 300; font-style: italic; color: #e8e4d8; margin-bottom: .6rem; }
-  .ch-prose { font-size: .92rem; color: #a09b8e; max-width: 600px; margin-bottom: 1.2rem; line-height: 1.75; }
+  .ch-note { font-family: 'SF Mono', monospace; font-size: .75rem; color: #707070; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .25rem; }
+  .ch-title { font-size: 1.35rem; font-weight: 300; font-style: italic; color: #222; margin-bottom: .6rem; }
+  .ch-prose { font-size: .92rem; color: #444; max-width: 600px; margin-bottom: 1.2rem; line-height: 1.75; }
 
   /* ── images ── */
   .img-row-wrap { margin-bottom: 1.2rem; position: relative; }
-  .img-row-wrap.is-draft { outline: 1px dashed #f59e0b55; outline-offset: 4px; border-radius: 3px; }
-  .draft-badge { position: absolute; top: -8px; right: 8px; font-family: 'SF Mono', monospace; font-size: .48rem; background: #f59e0b; color: #000; padding: 1px 6px; border-radius: 2px; font-weight: 600; z-index: 2; }
+  .img-row-wrap.is-draft { outline: 1px dashed #d9770655; outline-offset: 4px; border-radius: 3px; }
+  .draft-badge { position: absolute; top: -8px; right: 8px; font-family: 'SF Mono', monospace; font-size: .75rem; background: #d97706; color: #fff; padding: 2px 8px; border-radius: 2px; font-weight: 600; z-index: 2; }
   .img-row { margin-bottom: 0; }
   .img-row.fullbleed img { width: 100%; display: block; border-radius: 2px; }
   .img-row.pair { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; align-items: stretch; }
@@ -88,57 +89,95 @@
   .img-row.pair .img-cell img.is-cropped { height: 100%; }
   .img-row.strip { display: grid; gap: .4rem; }
   .img-row.strip img { width: 100%; display: block; border-radius: 2px; }
-  .img-row.portrait { display: flex; justify-content: center; background: #000; padding: 1rem 0; border-radius: 2px; }
+  .img-row.portrait { display: flex; justify-content: center; background: #f5f5f5; padding: 1rem 0; border-radius: 2px; }
   .img-row.portrait img { max-width: 50%; height: auto; display: block; border-radius: 2px; }
   .img-row.scrollable img { width: 80%; display: block; border-radius: 2px; margin: 0 auto; }
   .img-cell { position: relative; overflow: hidden; }
-  .img-cell img { background: #111; min-height: 50px; cursor: pointer; transition: opacity .15s; }
-  .img-cell img:hover { opacity: .8; }
-  .img-cap { font-family: 'SF Mono', monospace; font-size: .58rem; color: #555; margin-top: .2rem; }
-  .img-stem { font-family: 'SF Mono', monospace; font-size: .5rem; color: #2a2a2a; margin-top: .05rem; }
-  .row-cap { font-family: 'SF Mono', monospace; font-size: .6rem; color: #444; margin-top: .35rem; font-style: italic; }
-  .img-missing { background: #1a0000; border: 1px dashed #7f1d1d; border-radius: 2px; display: flex; align-items: center; justify-content: center; min-height: 100px; font-family: 'SF Mono', monospace; font-size: .58rem; color: #7f1d1d; cursor: pointer; }
-  .img-missing:hover { background: #220000; }
-  .img-cell .replace-hint { position: absolute; top: 4px; right: 4px; font-family: 'SF Mono', monospace; font-size: .5rem; background: rgba(0,0,0,.7); color: #888; padding: 2px 6px; border-radius: 2px; opacity: 0; transition: opacity .15s; pointer-events: none; }
-  .img-cell:hover .replace-hint { opacity: 1; }
-  .img-cell.crop-active .replace-hint { opacity: .7; pointer-events: none; }
-  .img-cell .replaced-badge { position: absolute; top: 4px; left: 4px; font-family: 'SF Mono', monospace; font-size: .48rem; background: #f59e0b; color: #000; padding: 1px 5px; border-radius: 2px; font-weight: 600; }
-  .crop-controls { font-family: 'SF Mono', monospace; font-size: .5rem; color: #555; margin-top: .3rem; display: flex; align-items: center; gap: .5rem; }
-  .crop-toggle-row { display: flex; align-items: center; gap: .35rem; cursor: pointer; user-select: none; }
-  .crop-toggle-row input[type="checkbox"] { accent-color: #f59e0b; width: 12px; height: 12px; cursor: pointer; margin: 0; }
-  .crop-toggle-row input:checked + span { color: #f59e0b; }
-  .crop-info { color: #444; font-variant-numeric: tabular-nums; }
-  .crop-reset-btn { background: none; border: 1px solid #222; color: #555; font-family: 'SF Mono', monospace; font-size: .48rem; padding: .1rem .35rem; border-radius: 2px; cursor: pointer; transition: all .12s; }
-  .crop-reset-btn:hover { border-color: #555; color: #ccc; }
-  .img-cell.crop-active { outline: 1px solid #f59e0b44; outline-offset: -1px; }
+  .img-cell img { background: #f0f0f0; min-height: 50px; transition: opacity .15s; }
+  .img-cell:hover img { opacity: .8; }
+  .img-cap { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; margin-top: .2rem; }
+  .img-stem { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; margin-top: .05rem; }
+  .row-cap { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; margin-top: .35rem; font-style: italic; }
+  .img-missing { background: #fef2f2; border: 1px dashed #dc2626; border-radius: 2px; display: flex; align-items: center; justify-content: center; min-height: 100px; font-family: 'SF Mono', monospace; font-size: .75rem; color: #dc2626; cursor: pointer; }
+  .img-missing:hover { background: #fee2e2; }
+  .img-cell .img-toolbar { position: absolute; top: 4px; right: 4px; display: flex; gap: 2px; opacity: 0; transition: opacity .15s; z-index: 5; }
+  .img-cell:hover .img-toolbar { opacity: 1; }
+  .img-cell.crop-active .img-toolbar { opacity: 0; pointer-events: none; }
+  .img-toolbar button { font-family: 'SF Mono', monospace; font-size: .75rem; background: rgba(0,0,0,.7); color: #fff; border: none; padding: 2px 6px; border-radius: 2px; cursor: pointer; transition: background .12s; }
+  .img-toolbar button:hover { background: rgba(0,0,0,.9); }
+  .img-toolbar button.tb-delete:hover { background: rgba(220,38,38,.85); }
+  .img-cell .replaced-badge { position: absolute; top: 4px; left: 4px; font-family: 'SF Mono', monospace; font-size: .75rem; background: #d97706; color: #fff; padding: 1px 5px; border-radius: 2px; font-weight: 600; }
+  .img-cell-deleted { min-height: 60px; display: flex; align-items: center; justify-content: center; background: #f5f5f5; border: 1px dashed #ddd; border-radius: 2px; }
+  .img-cell-deleted span { font-family: 'SF Mono', monospace; font-size: .75rem; color: #999; }
+  .img-cell.crop-active { outline: 1px solid #d9770644; outline-offset: -1px; }
   .img-cell.crop-active img { cursor: grab; transition: none; }
   .img-cell.crop-active img:active { cursor: grabbing; }
   .img-cell.crop-active img:hover { opacity: 1; }
   .img-cell img.is-cropped { object-fit: cover; }
 
+  /* ── crop overlay modal ── */
+  .crop-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(255,255,255,.94); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .crop-close-btn { position: absolute; top: 1rem; right: 1.5rem; font-family: 'SF Mono', monospace; font-size: 1.2rem; background: none; border: none; color: #707070; cursor: pointer; transition: color .12s; line-height: 1; padding: .4rem .6rem; z-index: 3; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+  .crop-close-btn:hover { color: #333; }
+  .crop-canvas { position: relative; max-width: 90vw; max-height: 74vh; user-select: none; line-height: 0; }
+  .crop-canvas > img { display: block; max-width: 90vw; max-height: 74vh; pointer-events: none; border-radius: 3px; box-shadow: 0 2px 20px rgba(0,0,0,.15); }
+  .crop-box { position: absolute; border: 2px solid #d97706; box-shadow: 0 0 0 9999px rgba(255,255,255,.6); cursor: move; z-index: 2; }
+  .crop-handle { position: absolute; width: 14px; height: 14px; background: #d97706; border: 1px solid #fff; z-index: 3; border-radius: 1px; }
+  .crop-handle.nw { top: -7px; left: -7px; cursor: nwse-resize; }
+  .crop-handle.ne { top: -7px; right: -7px; cursor: nesw-resize; }
+  .crop-handle.sw { bottom: -7px; left: -7px; cursor: nesw-resize; }
+  .crop-handle.se { bottom: -7px; right: -7px; cursor: nwse-resize; }
+  .crop-handle.n  { top: -7px; left: 50%; margin-left: -7px; cursor: ns-resize; }
+  .crop-handle.s  { bottom: -7px; left: 50%; margin-left: -7px; cursor: ns-resize; }
+  .crop-handle.w  { top: 50%; margin-top: -7px; left: -7px; cursor: ew-resize; }
+  .crop-handle.e  { top: 50%; margin-top: -7px; right: -7px; cursor: ew-resize; }
+  .crop-toolbar { display: flex; align-items: center; gap: .6rem; margin-top: .8rem; font-family: 'SF Mono', monospace; font-size: .75rem; flex-wrap: wrap; justify-content: center; }
+  .crop-ratio-btn { font-family: 'SF Mono', monospace; font-size: .75rem; padding: .3rem .6rem; border: 1px solid #ccc; border-radius: 3px; background: #fff; color: #555; cursor: pointer; transition: all .12s; min-height: 32px; }
+  .crop-ratio-btn:hover { border-color: #999; color: #333; }
+  .crop-ratio-btn.active { border-color: #d97706; color: #d97706; }
+  .crop-info-display { color: #666; font-variant-numeric: tabular-nums; min-width: 120px; text-align: center; }
+  .crop-toolbar .toolbar-gap { width: 1px; height: 14px; background: #ddd; flex-shrink: 0; }
+  .crop-apply-btn { font-family: 'SF Mono', monospace; font-size: .75rem; padding: .3rem .7rem; border: 1px solid #22c55e; border-radius: 3px; background: #fff; color: #16a34a; cursor: pointer; transition: all .12s; min-height: 32px; }
+  .crop-apply-btn:hover { background: #f0fdf4; }
+  .crop-cancel-btn { font-family: 'SF Mono', monospace; font-size: .75rem; padding: .3rem .7rem; border: 1px solid #ccc; border-radius: 3px; background: #fff; color: #555; cursor: pointer; transition: all .12s; min-height: 32px; }
+  .crop-cancel-btn:hover { border-color: #999; color: #333; }
+
+  /* ── crop preview in editor ── */
+  .crop-preview-wrap { position: relative; overflow: hidden; border-radius: 2px; }
+  .crop-preview-wrap img { position: absolute; top: 0; left: 0; display: block; height: auto; }
+
   /* ── row controls ── */
   .row-controls { display: flex; align-items: center; gap: .4rem; margin-bottom: .4rem; }
-  .row-kind-select { font-family: 'SF Mono', monospace; font-size: .58rem; background: #111; color: #888; border: 1px solid #222; border-radius: 3px; padding: .15rem .4rem; cursor: pointer; appearance: none; -webkit-appearance: none; }
-  .row-kind-select:focus { outline: none; border-color: #f59e0b; }
-  .row-kind-select option { background: #111; color: #ccc; }
-  .row-ctrl-btn { font-family: 'SF Mono', monospace; font-size: .52rem; background: none; border: 1px solid #222; color: #555; border-radius: 3px; padding: .1rem .4rem; cursor: pointer; transition: all .12s; }
-  .row-ctrl-btn:hover { border-color: #555; color: #ccc; }
-  .row-ctrl-btn.danger:hover { border-color: #7f1d1d; color: #fca5a5; }
-  .row-ctrl-label { font-family: 'SF Mono', monospace; font-size: .5rem; color: #333; }
+  .row-kind-select { font-family: 'SF Mono', monospace; font-size: .75rem; background: #fff; color: #555; border: 1px solid #ddd; border-radius: 3px; padding: .3rem .5rem; cursor: pointer; appearance: none; -webkit-appearance: none; min-height: 32px; }
+  .row-kind-select:focus { outline: 2px solid #d97706; outline-offset: 2px; border-color: #d97706; }
+  .row-kind-select option { background: #fff; color: #333; }
+  .row-ctrl-btn { font-family: 'SF Mono', monospace; font-size: .75rem; background: #fff; border: 1px solid #ddd; color: #666; border-radius: 3px; padding: .25rem .5rem; cursor: pointer; transition: all .12s; min-height: 32px; }
+  .row-ctrl-btn:hover { border-color: #999; color: #333; }
+  .row-ctrl-btn.danger:hover { border-color: #dc2626; color: #dc2626; }
+  .row-ctrl-label { font-family: 'SF Mono', monospace; font-size: .75rem; color: #767676; }
+
+  /* ── chapter controls ── */
+  .ch-controls { display: flex; align-items: center; gap: .4rem; margin-bottom: .3rem; padding-bottom: .3rem; border-bottom: 1px solid #e5e5e5; }
+
+  /* ── save toast ── */
+  .save-toast { position: fixed; bottom: 2rem; right: 2rem; z-index: 300; font-family: 'SF Mono', monospace; font-size: .75rem; padding: .5rem 1rem; border-radius: 4px; color: #fff; opacity: 0; transition: opacity .3s; pointer-events: none; }
+  .save-toast.show { opacity: 1; }
+  .save-toast.ok { background: #166534; border: 1px solid #22c55e; }
+  .save-toast.err { background: #7f1d1d; border: 1px solid #f87171; }
 
   /* ── reflection ── */
-  .reflection { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #1a1a1a; max-width: 600px; }
-  .refl-label { font-family: 'SF Mono', monospace; font-size: .58rem; color: #444; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .3rem; }
-  .refl-title { font-size: 1.1rem; font-weight: 300; font-style: italic; color: #e8e4d8; margin-bottom: .5rem; }
-  .refl-para { font-size: .88rem; color: #8a8577; margin-bottom: .6rem; line-height: 1.75; }
+  .reflection { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e5e5; max-width: 600px; }
+  .refl-label { font-family: 'SF Mono', monospace; font-size: .75rem; color: #707070; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .3rem; }
+  .refl-title { font-size: 1.1rem; font-weight: 300; font-style: italic; color: #222; margin-bottom: .5rem; }
+  .refl-para { font-size: .88rem; color: #555; margin-bottom: .6rem; line-height: 1.75; }
 
-  .credits { margin-top: 1.8rem; padding-top: 1rem; border-top: 1px solid #151515; }
-  .credits-label { font-family: 'SF Mono', monospace; font-size: .58rem; color: #444; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .4rem; }
+  .credits { margin-top: 1.8rem; padding-top: 1rem; border-top: 1px solid #e5e5e5; }
+  .credits-label { font-family: 'SF Mono', monospace; font-size: .75rem; color: #707070; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .4rem; }
 
-  .page-nav { display: flex; justify-content: space-between; margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid #1a1a1a; }
-  .page-nav a { font-family: 'SF Mono', monospace; font-size: .65rem; color: #555; text-decoration: none; cursor: pointer; transition: color .12s; }
-  .page-nav a:hover { color: #f59e0b; }
-  .page-nav .nav-name { display: block; font-family: 'Cormorant Garamond', serif; font-size: .9rem; font-style: italic; color: #888; margin-top: .15rem; }
+  .page-nav { display: flex; justify-content: space-between; margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid #e5e5e5; }
+  .page-nav a { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; text-decoration: none; cursor: pointer; transition: color .12s; }
+  .page-nav a:hover { color: #d97706; }
+  .page-nav .nav-name { display: block; font-family: 'Cormorant Garamond', serif; font-size: .9rem; font-style: italic; color: #666; margin-top: .15rem; }
 
   .hidden-input { display: none; }
 </style>
@@ -147,16 +186,16 @@
 
 <div class="toolbar">
   <h1>EDITOR</h1>
-  <div class="proj-tabs" id="tabs"></div>
-  <div class="toolbar-gap"></div>
-  <div class="status" id="status">No changes</div>
+  <div class="proj-tabs" id="tabs" role="tablist" aria-label="Project tabs"></div>
+  <div class="toolbar-gap" aria-hidden="true"></div>
+  <div class="status" id="status" aria-live="polite">No changes</div>
   <button class="btn" id="btn-reset">Reset</button>
-  <button class="btn btn-save" id="btn-save">Save ✓</button>
   <button class="btn" id="btn-preview">Preview ↗</button>
-  <button class="btn btn-primary" id="btn-export">Save ↓</button>
+  <button class="btn btn-primary" id="btn-save-disk">Save</button>
 </div>
 
 <div class="page" id="page"></div>
+<div class="save-toast" id="save-toast" role="alert" aria-live="assertive"></div>
 <input type="file" id="file-input" class="hidden-input" accept="image/*">
 
 <script>
@@ -182,6 +221,9 @@ const layoutDrafts = {};
 
 // crop edits: tracks cell paths where crop was toggled from original
 const cropEdits = new Set();
+
+// deleted images: tracks cell paths where image was deleted
+const deletedImages = new Set();
 
 /* ══════════════════════════════════════════════════════════════════════
    LOAD
@@ -254,7 +296,8 @@ function imgUrl(folder, stem) { return `${IMG_BASE}${folder}/images/webp/${stem}
 
 function ed(text, path) {
   const v = (text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  return `<span contenteditable="true" data-path="${path}" data-orig="${v}">${v}</span>`;
+  const label = path.split('.').pop().replace(/([A-Z])/g, ' $1').replace(/[_-]/g, ' ').trim();
+  return `<span contenteditable="true" data-path="${path}" data-orig="${v}" aria-label="Edit ${label}">${v}</span>`;
 }
 
 function setNested(obj, path, val) {
@@ -278,31 +321,49 @@ function getNested(obj, path) {
    ══════════════════════════════════════════════════════════════════════ */
 
 function renderCell(cell, folder, cp) {
+  if (cell._deleted) return '';
+
   const replaced = replacedImages[cp];
   const src = replaced ? replaced.url : imgUrl(folder, cell.img);
   const badge = replaced ? '<span class="replaced-badge">NEW</span>' : '';
   const cr = cell.crop || null;
   const hasCrop = !!cr;
-  const s = cr ? cr.s : 1, x = cr ? cr.x : 50, y = cr ? cr.y : 50;
-  const cropStyle = hasCrop ? ` style="object-fit:cover;transform:scale(${s});transform-origin:${x}% ${y}%"` : '';
-  const cropCls = hasCrop ? ' is-cropped' : '';
-  const cellCls = hasCrop ? ' crop-active' : '';
+  const newCrop = isNewCrop(cr);
 
-  let cropHtml = `<div class="crop-controls">
-    <label class="crop-toggle-row"><input type="checkbox" data-crop-toggle="${cp}" ${hasCrop ? 'checked' : ''}><span>crop</span></label>`;
-  if (hasCrop) {
-    cropHtml += `<span class="crop-info">${s.toFixed(2)}× · ${x}%, ${y}%</span>`;
-    cropHtml += `<button class="crop-reset-btn" data-crop-reset="${cp}">reset</button>`;
+  let imgHtml;
+  if (newCrop) {
+    const { x, y, w, h, nat } = cr;
+    const [nw, nh] = nat;
+    const ratio = nw && nh ? ((w * nw) / (h * nh)).toFixed(4) : 'auto';
+    const imgW = (100 / w * 100).toFixed(2);
+    const imgL = (-x / w * 100).toFixed(2);
+    const imgT = (-y / h * 100).toFixed(2);
+    imgHtml = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio}">
+      <img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}"
+        style="width:${imgW}%;left:${imgL}%;top:${imgT}%"
+        onerror="this.parentElement.outerHTML='<div class=img-missing tabindex=0 role=button data-cell-path=\\'${cp}\\' data-folder=\\'${folder}\\'>add image: ${cell.img}</div>'">
+    </div>`;
+  } else if (hasCrop) {
+    const s = cr.s, x = cr.x, y = cr.y;
+    imgHtml = `<img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}" class="is-cropped"
+      style="object-fit:cover;transform:scale(${s});transform-origin:${x}% ${y}%"
+      onerror="this.outerHTML='<div class=img-missing tabindex=0 role=button data-cell-path=\\'${cp}\\' data-folder=\\'${folder}\\'>add image: ${cell.img}</div>'">`;
+  } else {
+    imgHtml = `<img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}"
+      onerror="this.outerHTML='<div class=img-missing tabindex=0 role=button data-cell-path=\\'${cp}\\' data-folder=\\'${folder}\\'>add image: ${cell.img}</div>'">`;
   }
-  cropHtml += '</div>';
 
-  return `<div class="img-cell${cellCls}" data-crop-cell="${hasCrop ? cp : ''}">
-    <img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}" class="${cropCls}"${cropStyle}
-      onerror="this.outerHTML='<div class=img-missing data-cell-path=\\'${cp}\\' data-folder=\\'${folder}\\'>click to add: ${cell.img}</div>'">
-    <span class="replace-hint">${hasCrop ? 'drag to pan · scroll to zoom' : 'click to replace'}</span>
+  const toolbarHtml = `<div class="img-toolbar">
+    <button data-tb="edit" data-cell-path="${cp}">edit</button>
+    <button data-tb="replace" data-cell-path="${cp}">replace</button>
+    <button data-tb="delete" data-cell-path="${cp}" class="tb-delete">delete</button>
+  </div>`;
+
+  return `<div class="img-cell" data-crop-cell="${hasCrop ? cp : ''}">
+    ${imgHtml}
+    ${toolbarHtml}
     ${badge}
     <div class="img-cap">${ed(cell.cap, cp+'.cap')}</div>
-    ${cropHtml}
     <div class="img-stem">${cell.img}</div>
   </div>`;
 }
@@ -331,9 +392,14 @@ function renderRow(row, folder, rp) {
   if (isDraft) h += `<button class="row-ctrl-btn" data-action="discard-draft" data-row-path="${rp}">discard</button>`;
   h += `</div>`;
 
-  h += `<div class="img-row ${displayKind}"${style}>`;
-  displayCells.forEach((c, ci) => { h += renderCell(c, folder, rp+'.cells.'+ci); });
-  h += '</div>';
+  const allDeleted = displayCells.every(c => c._deleted);
+  if (allDeleted) {
+    h += `<div class="img-cell-deleted" style="min-height:40px"><span>all images removed</span></div>`;
+  } else {
+    h += `<div class="img-row ${displayKind}"${style}>`;
+    displayCells.forEach((c, ci) => { h += renderCell(c, folder, rp+'.cells.'+ci); });
+    h += '</div>';
+  }
 
   const capVal = draft ? (draft.cap !== undefined ? draft.cap : null) : row.cap;
   if (capVal !== undefined && capVal !== null) h += `<div class="row-cap">${ed(capVal, rp+'.cap')}</div>`;
@@ -356,24 +422,50 @@ function renderHeroSection(id) {
     const cropKey = source + 'Crop';
     const cr = heroes[cropKey] || null;
     const hasCrop = !!cr;
-    const s = cr ? cr.s : 1, x = cr ? cr.x : 50, y = cr ? cr.y : 50;
-    const cropStyle = hasCrop ? ` style="object-fit:cover;transform:scale(${s});transform-origin:${x}% ${y}%"` : '';
+    const newCrop = isNewCrop(cr);
     const hcKey = `hero:${id}:${source}`;
+
+    let heroImgHtml;
+    if (newCrop) {
+      const { x, y, w, h: ch, nat } = cr;
+      const [nw, nh] = nat;
+      const ratio = nw && nh ? ((w * nw) / (ch * nh)).toFixed(4) : 'auto';
+      const imgW = (100 / w * 100).toFixed(2);
+      const imgL = (-x / w * 100).toFixed(2);
+      const imgT = (-y / ch * 100).toFixed(2);
+      heroImgHtml = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio}">
+        <img src="${src}" alt="" loading="lazy" data-hero-id="${id}" data-hero-source="${source}"
+          style="width:${imgW}%;left:${imgL}%;top:${imgT}%"
+          onerror="this.style.minHeight='80px';this.style.border='1px dashed #7f1d1d'">
+      </div>`;
+    } else if (hasCrop) {
+      const s = cr.s, x = cr.x, y = cr.y;
+      heroImgHtml = `<img src="${src}" alt="" loading="lazy" data-hero-id="${id}" data-hero-source="${source}"
+        style="object-fit:cover;transform:scale(${s});transform-origin:${x}% ${y}%"
+        onerror="this.style.minHeight='80px';this.style.border='1px dashed #7f1d1d'">`;
+    } else {
+      heroImgHtml = `<img src="${src}" alt="" loading="lazy" data-hero-id="${id}" data-hero-source="${source}"
+        onerror="this.style.minHeight='80px';this.style.border='1px dashed #7f1d1d'">`;
+    }
 
     let cropHtml = `<div class="crop-controls">
       <label class="crop-toggle-row"><input type="checkbox" data-crop-toggle="${hcKey}" ${hasCrop ? 'checked' : ''}><span>crop</span></label>`;
     if (hasCrop) {
-      cropHtml += `<span class="crop-info">${s.toFixed(2)}× · ${Math.round(x)}%, ${Math.round(y)}%</span>`;
-      cropHtml += `<button class="crop-reset-btn" data-crop-reset="${hcKey}">reset</button>`;
+      if (newCrop) {
+        cropHtml += `<span class="crop-info">${cr.w.toFixed(1)}% × ${cr.h.toFixed(1)}%</span>`;
+      } else {
+        cropHtml += `<span class="crop-info">${cr.s.toFixed(2)}× · ${Math.round(cr.x)}%, ${Math.round(cr.y)}%</span>`;
+      }
+      cropHtml += `<button class="crop-reset-btn" data-crop-edit="${hcKey}">edit</button>`;
+      cropHtml += `<button class="crop-reset-btn" data-crop-reset="${hcKey}">remove</button>`;
     }
     cropHtml += '</div>';
 
-    h += `<div class="hero-card${hasCrop ? ' crop-active' : ''}" data-crop-cell="${hasCrop ? hcKey : ''}" data-hero-crop-key="${hcKey}">
+    h += `<div class="hero-card" data-crop-cell="${hasCrop ? hcKey : ''}" data-hero-crop-key="${hcKey}">
       <div class="hero-card-label">${source}</div>
       <div class="hero-img-wrap">
-        <img src="${src}" alt="" loading="lazy" data-hero-id="${id}" data-hero-source="${source}"${cropStyle}
-          onerror="this.style.minHeight='80px';this.style.border='1px dashed #7f1d1d'">
-        <span class="replace-hint">${hasCrop ? 'drag to pan · scroll to zoom' : 'click to replace'}</span>
+        ${heroImgHtml}
+        <span class="replace-hint">replace image</span>
         ${badge}
       </div>
       ${cropHtml}
@@ -385,14 +477,18 @@ function renderHeroSection(id) {
   return h;
 }
 
-function showProject(id) {
+function showProject(id, preserveScroll) {
   currentId = id;
   const d = data[id], base = id;
   const idx = order.indexOf(id);
   const prevId = idx > 0 ? order[idx-1] : null;
   const nextId = idx < order.length-1 ? order[idx+1] : null;
 
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.id === id));
+  document.querySelectorAll('.tab').forEach(t => {
+    const isActive = t.dataset.id === id;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive);
+  });
 
   let h = '';
   h += `<div class="proj-no">${ed(d.no, base+'.no')}</div>`;
@@ -420,6 +516,10 @@ function showProject(id) {
   (d.chapters||[]).forEach((ch,ci) => {
     const cp = base+'.chapters.'+ci;
     h += '<div class="chapter">';
+    h += `<div class="ch-controls">`;
+    h += `<span class="row-ctrl-label">Chapter ${ci+1}</span>`;
+    h += `<button class="row-ctrl-btn danger" data-action="delete-chapter" data-chapter-idx="${ci}">× delete</button>`;
+    h += `</div>`;
     h += `<div class="ch-note">${ed(ch.note,cp+'.note')}</div>`;
     h += `<div class="ch-title">${ed(ch.title,cp+'.title')}</div>`;
     (ch.prose||[]).forEach((p,pi) => { h += `<div class="ch-prose">${ed(p,cp+'.prose.'+pi)}</div>`; });
@@ -446,7 +546,7 @@ function showProject(id) {
   h += '</div>';
 
   document.getElementById('page').innerHTML = h;
-  window.scrollTo(0, 0);
+  if (!preserveScroll) window.scrollTo(0, 0);
   attachAll();
 }
 
@@ -460,7 +560,8 @@ function attachAll() {
   attachImageClick();
   attachHeroClick();
   attachRowControls();
-  attachCropControls();
+  attachToolbarActions();
+  attachChapterControls();
 }
 
 function getCropObj(key) {
@@ -470,6 +571,7 @@ function getCropObj(key) {
   }
   return getNested(data, key).crop || null;
 }
+function isNewCrop(cr) { return cr && cr.w !== undefined; }
 function setCropObj(key, val) {
   if (key.startsWith('hero:')) {
     const [, id, source] = key.split(':');
@@ -482,93 +584,346 @@ function setCropObj(key, val) {
   }
 }
 
-function attachCropControls() {
-  // toggle crop on/off
-  document.querySelectorAll('[data-crop-toggle]').forEach(cb => {
-    cb.addEventListener('change', () => {
-      const cp = cb.dataset.cropToggle;
-      setCropObj(cp, cb.checked ? { s: 1, x: 50, y: 50 } : null);
-      markCropEdit(cp);
-      const sy = window.scrollY;
-      showProject(currentId);
-      window.scrollTo(0, sy);
-      updateStatus();
-    });
+/* ── crop overlay modal ── */
+
+const CROP_RATIOS = [
+  { label: 'Free', value: null },
+  { label: '1:1', value: 1 },
+  { label: '4:3', value: 4/3 },
+  { label: '3:4', value: 3/4 },
+  { label: '16:9', value: 16/9 },
+  { label: '9:16', value: 9/16 },
+];
+
+function openCropOverlay(cp) {
+  const existing = getCropObj(cp);
+
+  // resolve image src
+  const replaced = replacedImages[cp];
+  let imgSrc;
+  if (replaced) {
+    imgSrc = replaced.url;
+  } else if (cp.startsWith('hero:')) {
+    const [, id, source] = cp.split(':');
+    imgSrc = heroData[id]?.[source] || '';
+  } else {
+    const cell = getNested(data, cp);
+    imgSrc = imgUrl(cell._folder || data[cp.split('.')[0]].folder, cell.img);
+  }
+
+  // state
+  let box = { x: 0, y: 0, w: 100, h: 100 };
+  if (isNewCrop(existing)) {
+    box = { x: existing.x, y: existing.y, w: existing.w, h: existing.h };
+  }
+  let lockedRatio = null; // width/height in image-pixel space
+  let natW = 0, natH = 0;
+
+  // build DOM
+  const overlay = document.createElement('div');
+  overlay.className = 'crop-overlay';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Crop image');
+
+  const canvas = document.createElement('div');
+  canvas.className = 'crop-canvas';
+
+  const img = document.createElement('img');
+  img.src = imgSrc;
+  canvas.appendChild(img);
+
+  const cropBox = document.createElement('div');
+  cropBox.className = 'crop-box';
+  canvas.appendChild(cropBox);
+
+  const dirs = ['nw','n','ne','e','se','s','sw','w'];
+  dirs.forEach(d => {
+    const h = document.createElement('div');
+    h.className = `crop-handle ${d}`;
+    h.dataset.dir = d;
+    cropBox.appendChild(h);
   });
 
-  // reset button
-  document.querySelectorAll('[data-crop-reset]').forEach(btn => {
+  // toolbar
+  const toolbar = document.createElement('div');
+  toolbar.className = 'crop-toolbar';
+
+  const infoEl = document.createElement('span');
+  infoEl.className = 'crop-info-display';
+
+  CROP_RATIOS.forEach((r, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'crop-ratio-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = r.label;
     btn.addEventListener('click', () => {
-      const cp = btn.dataset.cropReset;
-      const cr = getCropObj(cp);
-      if (cr) { cr.s = 1; cr.x = 50; cr.y = 50; }
-      markCropEdit(cp);
-      const sy = window.scrollY;
-      showProject(currentId);
-      window.scrollTo(0, sy);
-      updateStatus();
+      toolbar.querySelectorAll('.crop-ratio-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      lockedRatio = r.value;
+      if (lockedRatio !== null) applyRatioToBox();
+      updateBoxDOM();
     });
+    toolbar.appendChild(btn);
   });
 
-  // drag-to-pan on all crop-active elements (img-cell and hero-card)
-  document.querySelectorAll('.crop-active[data-crop-cell]').forEach(el => {
-    const cp = el.dataset.cropCell;
-    const img = el.querySelector('img');
-    if (!img || !cp) return;
+  const gap1 = document.createElement('div');
+  gap1.className = 'toolbar-gap';
+  toolbar.appendChild(gap1);
+  toolbar.appendChild(infoEl);
 
-    let dragging = false, startX, startY, startOx, startOy;
+  const gap2 = document.createElement('div');
+  gap2.className = 'toolbar-gap';
+  toolbar.appendChild(gap2);
 
-    img.addEventListener('mousedown', e => {
-      e.preventDefault();
-      e.stopPropagation();
-      dragging = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      const cr = getCropObj(cp);
-      startOx = cr.x;
-      startOy = cr.y;
-    });
+  const resetBtn = document.createElement('button');
+  resetBtn.className = 'crop-cancel-btn';
+  resetBtn.textContent = 'reset';
+  resetBtn.addEventListener('click', () => {
+    box = { x: 0, y: 0, w: 100, h: 100 };
+    lockedRatio = null;
+    toolbar.querySelectorAll('.crop-ratio-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+    updateBoxDOM();
+  });
+  toolbar.appendChild(resetBtn);
 
-    window.addEventListener('mousemove', e => {
-      if (!dragging) return;
-      const cr = getCropObj(cp);
-      if (!cr) { dragging = false; return; }
-      const rect = el.getBoundingClientRect();
-      const dx = (e.clientX - startX) / rect.width * 100;
-      const dy = (e.clientY - startY) / rect.height * 100;
-      cr.x = Math.max(0, Math.min(100, startOx - dx));
-      cr.y = Math.max(0, Math.min(100, startOy - dy));
-      img.style.transformOrigin = `${cr.x}% ${cr.y}%`;
-      const info = el.querySelector('.crop-info');
-      if (info) info.textContent = `${cr.s.toFixed(2)}× · ${Math.round(cr.x)}%, ${Math.round(cr.y)}%`;
-    });
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'crop-cancel-btn';
+  cancelBtn.textContent = 'cancel';
+  cancelBtn.addEventListener('click', closeOverlay);
+  toolbar.appendChild(cancelBtn);
 
-    window.addEventListener('mouseup', () => {
-      if (dragging) {
-        dragging = false;
-        const cr = getCropObj(cp);
-        if (cr) { cr.x = +cr.x.toFixed(1); cr.y = +cr.y.toFixed(1); }
-        markCropEdit(cp);
-        updateStatus();
+  const applyBtn = document.createElement('button');
+  applyBtn.className = 'crop-apply-btn';
+  applyBtn.textContent = 'apply';
+  applyBtn.addEventListener('click', () => {
+    const cropVal = {
+      x: +box.x.toFixed(1),
+      y: +box.y.toFixed(1),
+      w: +box.w.toFixed(1),
+      h: +box.h.toFixed(1),
+      nat: [natW, natH]
+    };
+    if (cropVal.x === 0 && cropVal.y === 0 && cropVal.w === 100 && cropVal.h === 100) {
+      setCropObj(cp, null);
+    } else {
+      setCropObj(cp, cropVal);
+    }
+    markCropEdit(cp);
+    closeOverlay();
+    showProject(currentId, true);
+    updateStatus();
+  });
+  toolbar.appendChild(applyBtn);
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'crop-close-btn';
+  closeBtn.textContent = '✕';
+  closeBtn.setAttribute('aria-label', 'Close crop editor');
+  closeBtn.addEventListener('click', closeOverlay);
+  overlay.appendChild(closeBtn);
+
+  overlay.appendChild(canvas);
+  overlay.appendChild(toolbar);
+  document.body.appendChild(overlay);
+
+  const triggerEl = document.activeElement;
+  closeBtn.focus();
+
+  function closeOverlay() {
+    overlay.remove();
+    document.removeEventListener('keydown', onKey);
+    if (triggerEl && triggerEl.focus) triggerEl.focus();
+  }
+
+  function onKey(e) {
+    if (e.key === 'Escape') { closeOverlay(); return; }
+    if (e.key === 'Enter') { applyBtn.click(); return; }
+    if (e.key === 'Tab') {
+      const focusable = overlay.querySelectorAll('button, [tabindex]:not([tabindex="-1"])');
+      if (!focusable.length) return;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }
+  document.addEventListener('keydown', onKey);
+
+  // wait for image to load to get natural dimensions
+  img.onload = () => {
+    natW = img.naturalWidth;
+    natH = img.naturalHeight;
+    updateBoxDOM();
+  };
+  if (img.complete && img.naturalWidth) {
+    natW = img.naturalWidth;
+    natH = img.naturalHeight;
+    updateBoxDOM();
+  }
+
+  function applyRatioToBox() {
+    if (!lockedRatio || !natW) return;
+    // lockedRatio = output width/height in pixels
+    // convert to percentage space: w_pct * natW / (h_pct * natH) = lockedRatio
+    // so w_pct = h_pct * lockedRatio * natH / natW
+    const cx = box.x + box.w / 2;
+    const cy = box.y + box.h / 2;
+    let newW = box.w;
+    let newH = newW * natW / (lockedRatio * natH);
+    if (newH > 100) {
+      newH = 100;
+      newW = newH * lockedRatio * natH / natW;
+    }
+    if (newW > 100) {
+      newW = 100;
+      newH = newW * natW / (lockedRatio * natH);
+    }
+    let newX = cx - newW / 2;
+    let newY = cy - newH / 2;
+    if (newX < 0) newX = 0;
+    if (newY < 0) newY = 0;
+    if (newX + newW > 100) newX = 100 - newW;
+    if (newY + newH > 100) newY = 100 - newH;
+    box = { x: Math.max(0, newX), y: Math.max(0, newY), w: newW, h: newH };
+  }
+
+  function updateBoxDOM() {
+    cropBox.style.left = box.x + '%';
+    cropBox.style.top = box.y + '%';
+    cropBox.style.width = box.w + '%';
+    cropBox.style.height = box.h + '%';
+    // info
+    const rW = natW ? (box.w * natW / 100).toFixed(0) : '?';
+    const rH = natH ? (box.h * natH / 100).toFixed(0) : '?';
+    let ratioStr = 'free';
+    if (lockedRatio !== null) {
+      const found = CROP_RATIOS.find(r => r.value === lockedRatio);
+      ratioStr = found ? found.label : lockedRatio.toFixed(2);
+    }
+    infoEl.textContent = `${box.w.toFixed(1)}% × ${box.h.toFixed(1)}% · ${rW}×${rH}px · ${ratioStr}`;
+  }
+
+  // ── drag & resize interaction ──
+
+  let mode = null; // 'move' | 'resize'
+  let resizeDir = '';
+  let startMX, startMY, startBox;
+
+  cropBox.addEventListener('mousedown', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const handle = e.target.closest('.crop-handle');
+    if (handle) {
+      mode = 'resize';
+      resizeDir = handle.dataset.dir;
+    } else {
+      mode = 'move';
+    }
+    startMX = e.clientX;
+    startMY = e.clientY;
+    startBox = { ...box };
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('mouseup', onDragEnd);
+  });
+
+  function onDrag(e) {
+    const rect = canvas.getBoundingClientRect();
+    const dx = (e.clientX - startMX) / rect.width * 100;
+    const dy = (e.clientY - startMY) / rect.height * 100;
+
+    if (mode === 'move') {
+      let nx = startBox.x + dx;
+      let ny = startBox.y + dy;
+      nx = Math.max(0, Math.min(100 - box.w, nx));
+      ny = Math.max(0, Math.min(100 - box.h, ny));
+      box.x = nx;
+      box.y = ny;
+    } else if (mode === 'resize') {
+      let { x, y, w, h } = startBox;
+      const dir = resizeDir;
+
+      // compute new edges
+      if (dir.includes('w')) { const nx = Math.max(0, Math.min(x + w - 5, x + dx)); w = w - (nx - x); x = nx; }
+      if (dir.includes('e')) { w = Math.max(5, Math.min(100 - x, w + dx)); }
+      if (dir.includes('n')) { const ny = Math.max(0, Math.min(y + h - 5, y + dy)); h = h - (ny - y); y = ny; }
+      if (dir.includes('s')) { h = Math.max(5, Math.min(100 - y, h + dy)); }
+
+      // enforce ratio
+      if (lockedRatio !== null && natW) {
+        const targetPctRatio = lockedRatio * natH / natW; // w_pct / h_pct
+        if (dir === 'n' || dir === 's') {
+          // height changed, adjust width
+          const newW = h * targetPctRatio;
+          const cx = x + w / 2;
+          x = Math.max(0, cx - newW / 2);
+          w = Math.min(100 - x, newW);
+          if (x + w > 100) x = 100 - w;
+        } else if (dir === 'w' || dir === 'e') {
+          // width changed, adjust height
+          const newH = w / targetPctRatio;
+          const cy = y + h / 2;
+          y = Math.max(0, cy - newH / 2);
+          h = Math.min(100 - y, newH);
+          if (y + h > 100) y = 100 - h;
+        } else {
+          // corner: fix ratio based on the dominant axis
+          const newH = w / targetPctRatio;
+          if (dir.includes('n')) { y = startBox.y + startBox.h - newH; y = Math.max(0, y); h = newH; }
+          else { h = newH; }
+          if (y + h > 100) { h = 100 - y; w = h * targetPctRatio; if (dir.includes('w')) x = startBox.x + startBox.w - w; }
+          if (x + w > 100) { w = 100 - x; h = w / targetPctRatio; }
+          if (x < 0) { x = 0; w = Math.min(100, w); h = w / targetPctRatio; }
+          if (y < 0) { y = 0; h = Math.min(100, h); h = w / targetPctRatio; }
+        }
       }
-    });
 
-    // scroll-to-zoom
-    const scrollTarget = el.classList.contains('hero-card') ? el.querySelector('.hero-img-wrap') : el;
-    scrollTarget.addEventListener('wheel', e => {
-      e.preventDefault();
-      const cr = getCropObj(cp);
-      if (!cr) return;
-      const delta = e.deltaY > 0 ? -0.05 : 0.05;
-      cr.s = +Math.max(1, Math.min(3, cr.s + delta)).toFixed(2);
-      img.style.transform = `scale(${cr.s})`;
-      img.style.transformOrigin = `${cr.x}% ${cr.y}%`;
-      const info = el.querySelector('.crop-info');
-      if (info) info.textContent = `${cr.s.toFixed(2)}× · ${Math.round(cr.x)}%, ${Math.round(cr.y)}%`;
-      markCropEdit(cp);
-      updateStatus();
-    }, { passive: false });
-  });
+      box = { x, y, w: Math.max(5, w), h: Math.max(5, h) };
+    }
+    updateBoxDOM();
+  }
+
+  function onDragEnd() {
+    mode = null;
+    window.removeEventListener('mousemove', onDrag);
+    window.removeEventListener('mouseup', onDragEnd);
+  }
+}
+
+function attachToolbarActions() {
+  const page = document.getElementById('page');
+  page.removeEventListener('click', handleToolbarAction);
+  page.addEventListener('click', handleToolbarAction);
+}
+
+function handleToolbarAction(e) {
+  const btn = e.target.closest('[data-tb]');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const action = btn.dataset.tb;
+  const cp = btn.dataset.cellPath;
+
+  if (action === 'edit') {
+    openCropOverlay(cp);
+  } else if (action === 'replace') {
+    pendingReplace = { type: 'cell', path: cp };
+    fileInput.value = '';
+    fileInput.click();
+  } else if (action === 'delete') {
+    deleteImage(cp);
+  }
+}
+
+function deleteImage(cp) {
+  deletedImages.add(cp);
+  if (replacedImages[cp]) {
+    URL.revokeObjectURL(replacedImages[cp].url);
+    delete replacedImages[cp];
+  }
+  cropEdits.delete(cp);
+  const cell = getNested(data, cp);
+  cell._deleted = true;
+  showProject(currentId, true);
+  updateStatus();
 }
 
 function markCropEdit(cp) {
@@ -607,25 +962,55 @@ let pendingReplace = null;
 const fileInput = document.getElementById('file-input');
 
 function attachImageClick() {
-  document.querySelectorAll('.img-cell img, .img-missing').forEach(el => {
-    el.addEventListener('click', e => {
-      if (el.closest('.crop-active')) return;
-      e.preventDefault();
-      pendingReplace = { type: 'cell', path: el.dataset.cellPath };
-      fileInput.value = '';
-      fileInput.click();
-    });
+  document.querySelectorAll('.img-missing').forEach(el => {
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('role', 'button');
+    el.setAttribute('aria-label', 'Add image — click or press Enter');
   });
+
+  const page = document.getElementById('page');
+  page.removeEventListener('click', handleImageDelegation);
+  page.removeEventListener('keydown', handleImageKeyDelegation);
+  page.addEventListener('click', handleImageDelegation);
+  page.addEventListener('keydown', handleImageKeyDelegation);
+}
+
+function handleImageDelegation(e) {
+  const el = e.target.closest('.img-missing');
+  if (!el) return;
+  if (el.closest('.crop-active')) return;
+  e.preventDefault();
+  pendingReplace = { type: 'cell', path: el.dataset.cellPath };
+  fileInput.value = '';
+  fileInput.click();
+}
+
+function handleImageKeyDelegation(e) {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const el = e.target.closest('.img-missing');
+  if (!el) return;
+  if (el.closest('.crop-active')) return;
+  e.preventDefault();
+  pendingReplace = { type: 'cell', path: el.dataset.cellPath };
+  fileInput.value = '';
+  fileInput.click();
 }
 
 function attachHeroClick() {
   document.querySelectorAll('.hero-card img').forEach(el => {
-    el.addEventListener('click', e => {
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('role', 'button');
+    el.setAttribute('aria-label', 'Replace hero image — click or press Enter');
+    function triggerReplace(e) {
       if (el.closest('.crop-active')) return;
       e.preventDefault();
       pendingReplace = { type: 'hero', id: el.dataset.heroId, source: el.dataset.heroSource };
       fileInput.value = '';
       fileInput.click();
+    }
+    el.addEventListener('click', triggerReplace);
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') triggerReplace(e);
     });
   });
 }
@@ -649,9 +1034,8 @@ fileInput.addEventListener('change', () => {
       const folder = missEl.dataset.folder;
       const div = document.createElement('div');
       div.className = 'img-cell';
-      div.innerHTML = `<img src="${url}" alt="" data-cell-path="${cp}" data-folder="${folder}"><span class="replace-hint">click to replace</span><span class="replaced-badge">NEW</span>`;
+      div.innerHTML = `<img src="${url}" alt="" data-cell-path="${cp}" data-folder="${folder}"><div class="img-toolbar"><button data-tb="edit" data-cell-path="${cp}">edit</button><button data-tb="replace" data-cell-path="${cp}">replace</button><button data-tb="delete" data-cell-path="${cp}" class="tb-delete">delete</button></div><span class="replaced-badge">NEW</span>`;
       missEl.replaceWith(div);
-      div.querySelector('img').addEventListener('click', e => { e.preventDefault(); pendingReplace = { type:'cell', path:cp }; fileInput.value=''; fileInput.click(); });
     }
   } else if (pendingReplace.type === 'hero') {
     const key = `hero:${pendingReplace.id}:${pendingReplace.source}`;
@@ -696,7 +1080,7 @@ function attachRowControls() {
         };
       }
 
-      showProject(currentId);
+      showProject(currentId, true);
       updateStatus();
     });
   });
@@ -707,7 +1091,7 @@ function attachRowControls() {
       const draft = layoutDrafts[rp] || { kind: getNested(data, rp).kind, cells: JSON.parse(JSON.stringify(getNested(data, rp).cells)) };
       draft.cells.push({ img: 'new-image', cap: '' });
       layoutDrafts[rp] = draft;
-      showProject(currentId);
+      showProject(currentId, true);
       updateStatus();
     });
   });
@@ -716,27 +1100,67 @@ function attachRowControls() {
     btn.addEventListener('click', () => {
       const rp = btn.dataset.rowPath;
       const draft = layoutDrafts[rp];
-      if (draft && draft.cells.length > 2) { draft.cells.pop(); showProject(currentId); updateStatus(); }
+      if (draft && draft.cells.length > 2) { draft.cells.pop(); showProject(currentId, true); updateStatus(); }
     });
   });
 
   document.querySelectorAll('[data-action="discard-draft"]').forEach(btn => {
     btn.addEventListener('click', () => {
       delete layoutDrafts[btn.dataset.rowPath];
-      showProject(currentId);
+      showProject(currentId, true);
       updateStatus();
     });
   });
 }
 
 /* ══════════════════════════════════════════════════════════════════════
+   CHAPTER CONTROLS
+   ══════════════════════════════════════════════════════════════════════ */
+
+function attachChapterControls() {
+  document.querySelectorAll('[data-action="delete-chapter"]').forEach(btn => {
+    btn.addEventListener('click', () => deleteChapter(+btn.dataset.chapterIdx));
+  });
+}
+
+function cleanupRemovedPaths(prefix) {
+  for (const key of Object.keys(replacedImages)) {
+    if (key.startsWith(prefix)) {
+      URL.revokeObjectURL(replacedImages[key].url);
+      delete replacedImages[key];
+    }
+  }
+  for (const key of Object.keys(layoutDrafts)) {
+    if (key.startsWith(prefix)) delete layoutDrafts[key];
+  }
+  for (const cp of cropEdits) {
+    if (cp.startsWith(prefix)) cropEdits.delete(cp);
+  }
+  for (const cp of deletedImages) {
+    if (cp.startsWith(prefix)) deletedImages.delete(cp);
+  }
+}
+
+function deleteChapter(idx) {
+  const chapters = data[currentId].chapters;
+  if (!chapters || idx < 0 || idx >= chapters.length) return;
+  const ch = chapters[idx];
+  const label = ch.note || ch.title || `Chapter ${idx + 1}`;
+  if (!confirm(`Delete "${label}"?\nThis cannot be undone (until reset).`)) return;
+
+  const prefix = `${currentId}.chapters.${idx}`;
+  cleanupRemovedPaths(prefix);
+  chapters.splice(idx, 1);
+  showProject(currentId);
+  updateStatus();
+}
+
+/* ══════════════════════════════════════════════════════════════════════
    SAVE — commit drafts to data
    ══════════════════════════════════════════════════════════════════════ */
 
-function doSave() {
+function commitDrafts() {
   let saved = 0;
-
-  // commit layout drafts
   for (const [rp, draft] of Object.entries(layoutDrafts)) {
     const row = getNested(data, rp);
     row.kind = draft.kind;
@@ -746,14 +1170,7 @@ function doSave() {
     saved++;
   }
   Object.keys(layoutDrafts).forEach(k => delete layoutDrafts[k]);
-
-  showProject(currentId);
-  updateStatus();
-  if (saved) {
-    const btn = document.getElementById('btn-save');
-    btn.textContent = `Saved ${saved}`;
-    setTimeout(() => { btn.textContent = 'Save ✓'; }, 1500);
-  }
+  return saved;
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -765,18 +1182,20 @@ function updateStatus() {
   const imgChanges = Object.keys(replacedImages).length;
   const draftCount = Object.keys(layoutDrafts).length;
   const cropCount = cropEdits.size;
-  const n = textChanges + imgChanges + draftCount + cropCount;
+  const deleteCount = deletedImages.size;
+  const n = textChanges + imgChanges + draftCount + cropCount + deleteCount;
   const parts = [];
   if (textChanges) parts.push(`${textChanges} text`);
   if (imgChanges)  parts.push(`${imgChanges} img`);
   if (cropCount)   parts.push(`${cropCount} crop`);
+  if (deleteCount) parts.push(`${deleteCount} deleted`);
   if (draftCount)  parts.push(`${draftCount} layout preview`);
   const s = document.getElementById('status');
   s.textContent = n ? parts.join(' · ') : 'No changes';
   s.className = n ? 'status has-changes' : 'status';
 
-  const saveBtn = document.getElementById('btn-save');
-  saveBtn.classList.toggle('pulse', draftCount > 0);
+  const saveBtn = document.getElementById('btn-save-disk');
+  if (saveBtn) saveBtn.classList.toggle('pulse', n > 0);
 }
 
 function hasUnsavedChanges() {
@@ -784,7 +1203,8 @@ function hasUnsavedChanges() {
   const imgChanges = Object.keys(replacedImages).length;
   const draftCount = Object.keys(layoutDrafts).length;
   const cropCount = cropEdits.size;
-  return textChanges + imgChanges + draftCount + cropCount;
+  const deleteCount = deletedImages.size;
+  return textChanges + imgChanges + draftCount + cropCount + deleteCount;
 }
 
 function guardSwitch(targetId) {
@@ -796,9 +1216,11 @@ function guardSwitch(targetId) {
     const ic = Object.keys(replacedImages).length;
     const dc = Object.keys(layoutDrafts).length;
     const cc = cropEdits.size;
+    const delc = deletedImages.size;
     if (tc) parts.push(`${tc} text edit(s)`);
     if (ic) parts.push(`${ic} image replacement(s)`);
     if (cc) parts.push(`${cc} crop change(s)`);
+    if (delc) parts.push(`${delc} image deletion(s)`);
     if (dc) parts.push(`${dc} layout draft(s)`);
     if (!confirm(`You have unsaved changes: ${parts.join(', ')}.\n\nSwitch project anyway? Changes will remain in memory but make sure to export before closing.`)) return;
   }
@@ -807,7 +1229,7 @@ function guardSwitch(targetId) {
 
 function renderTabs() {
   document.getElementById('tabs').innerHTML = order.map(id =>
-    `<button class="tab" data-id="${id}">${data[id].name}</button>`
+    `<button class="tab" role="tab" aria-selected="${id === currentId}" data-id="${id}">${data[id].name}</button>`
   ).join('');
   document.querySelectorAll('.tab').forEach(t => {
     t.addEventListener('click', () => guardSwitch(t.dataset.id));
@@ -837,6 +1259,7 @@ function sa(a,l) {
 }
 function so(o,l) {
   const e=Object.entries(o);
+  if (o.w!==undefined&&o.nat) return `{ x: ${o.x}, y: ${o.y}, w: ${o.w}, h: ${o.h}, nat: [${o.nat[0]}, ${o.nat[1]}] }`;
   if (e.length<=4&&e.every(([,v])=>typeof v==='string'||typeof v==='boolean'||typeof v==='number')) return `{ ${e.map(([k,v])=>`${k}: ${sv(v,0)}`).join(', ')} }`;
   if (o.img!==undefined) { let s=`{ img: ${sv(o.img,0)}, cap: ${sv(o.cap,0)}`; if(o.crop)s+=`, crop: ${sv(o.crop,0)}`; return s+' }'; }
   if (o.kind&&o.cells) { let s=`{ kind: ${sv(o.kind,0)}, cells: ${sv(o.cells,l+1)}`; if(o.cap)s+=`, cap: ${sv(o.cap,0)}`; return s+' }'; }
@@ -857,6 +1280,19 @@ function doPreview() {
     row.cells = draft.cells;
     if (draft.cap !== undefined) row.cap = draft.cap;
     else delete row.cap;
+  }
+
+  // strip deleted cells and empty rows from preview data
+  for (const pid of Object.keys(previewData)) {
+    const p = previewData[pid];
+    if (p.chapters) p.chapters.forEach(ch => {
+      if (ch.rows) {
+        ch.rows.forEach(row => {
+          if (row.cells) row.cells = row.cells.filter(c => !c._deleted);
+        });
+        ch.rows = ch.rows.filter(row => !row.cells || row.cells.length > 0);
+      }
+    });
   }
 
   // inject replaced image blob URLs as _src overrides
@@ -880,12 +1316,25 @@ function doPreview() {
   });
 }
 
+function stripDeleted(obj) {
+  const clone = JSON.parse(JSON.stringify(obj));
+  if (clone.chapters) clone.chapters.forEach(ch => {
+    if (ch.rows) {
+      ch.rows.forEach(row => {
+        if (row.cells) row.cells = row.cells.filter(c => !c._deleted);
+      });
+      ch.rows = ch.rows.filter(row => !row.cells || row.cells.length > 0);
+    }
+  });
+  return clone;
+}
+
 function doExport() {
   const dm = srcText.match(/const DOSSIERS\s*=\s*\{/);
   let depth=0, end=dm.index;
   for (let i=dm.index;i<srcText.length;i++){if(srcText[i]==='{')depth++;else if(srcText[i]==='}'){depth--;if(!depth){end=i+1;break;}}}
   const blocks = order.map(id => {
-    const d=data[id];
+    const d=stripDeleted(data[id]);
     return `\n    /* ================================================================\n       ${(d.name||id).toUpperCase()}\n       ================================================================ */\n    '${id}': ${sv(d,2)},`;
   });
   const out = srcText.slice(0,dm.index)+`const DOSSIERS = {\n${blocks.join('\n')}\n  }`+srcText.slice(end);
@@ -908,7 +1357,9 @@ function injectHeroCrops(src, source) {
   for (const [id, h] of Object.entries(heroData)) {
     const crop = h[source + 'Crop'];
     if (!crop) continue;
-    const cropStr = `{ s: ${crop.s}, x: ${crop.x}, y: ${crop.y} }`;
+    const cropStr = isNewCrop(crop)
+      ? `{ x: ${crop.x}, y: ${crop.y}, w: ${crop.w}, h: ${crop.h}, nat: [${crop.nat[0]}, ${crop.nat[1]}] }`
+      : `{ s: ${crop.s}, x: ${crop.x}, y: ${crop.y} }`;
     const heroLineRe = new RegExp(`(id:\\s*'${id}'[\\s\\S]*?hero:\\s*.+?)([,\\s]*\\}|,\\s*\\n)`);
     out = out.replace(heroLineRe, (match, before, after) => {
       return before + `,\n      heroCrop: ${cropStr}` + after;
@@ -944,6 +1395,122 @@ function dl(content, name, type, href) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
+   SAVE TO DISK — write files directly via dev-server API
+   ══════════════════════════════════════════════════════════════════════ */
+
+function showToast(msg, ok) {
+  const el = document.getElementById('save-toast');
+  el.textContent = msg;
+  el.className = 'save-toast show ' + (ok ? 'ok' : 'err');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => { el.className = 'save-toast'; }, 3500);
+}
+
+function buildExportedJS() {
+  const dm = srcText.match(/const DOSSIERS\s*=\s*\{/);
+  let depth = 0, end = dm.index;
+  for (let i = dm.index; i < srcText.length; i++) {
+    if (srcText[i] === '{') depth++;
+    else if (srcText[i] === '}') { depth--; if (!depth) { end = i + 1; break; } }
+  }
+  const blocks = order.map(id => {
+    const d = data[id];
+    return `\n    /* ================================================================\n       ${(d.name || id).toUpperCase()}\n       ================================================================ */\n    '${id}': ${sv(d, 2)},`;
+  });
+  return srcText.slice(0, dm.index) + `const DOSSIERS = {\n${blocks.join('\n')}\n  }` + srcText.slice(end);
+}
+
+async function doSaveToDisk() {
+  const btn = document.getElementById('btn-save-disk');
+  btn.textContent = 'Saving…';
+  btn.disabled = true;
+
+  try {
+    // 1. Commit layout drafts first
+    commitDrafts();
+
+    // 2. Save project-detail.js
+    const jsContent = buildExportedJS();
+    let resp = await fetch('/api/save-js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: 'project-detail.js', content: jsContent }),
+    });
+    if (!resp.ok) throw new Error('Failed to save project-detail.js: ' + (await resp.text()));
+    srcText = jsContent;
+
+    // 3. Save hero crop changes to network.js / specimens.js
+    const hasHeroCrops = Object.values(heroData).some(h => h.networkCrop || h.specimensCrop);
+    const hadHeroCrops = Object.values(originalHeroData).some(h => h.networkCrop || h.specimensCrop);
+    if (hasHeroCrops || hadHeroCrops) {
+      const netOut = injectHeroCrops(netSrcText, 'network');
+      resp = await fetch('/api/save-js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: 'network.js', content: netOut }),
+      });
+      if (!resp.ok) throw new Error('Failed to save network.js');
+      netSrcText = netOut;
+
+      const specOut = injectHeroCrops(specSrcText, 'specimens');
+      resp = await fetch('/api/save-js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: 'specimens.js', content: specOut }),
+      });
+      if (!resp.ok) throw new Error('Failed to save specimens.js');
+      specSrcText = specOut;
+    }
+
+    // 4. Save replaced images to disk
+    let imgSaved = 0;
+    for (const [key, entry] of Object.entries(replacedImages)) {
+      let targetPath;
+      if (key.startsWith('hero:')) {
+        const [, id, source] = key.split(':');
+        targetPath = heroData[id]?.[source] || '';
+        if (!targetPath) continue;
+      } else {
+        const cell = getNested(data, key);
+        const pid = key.split('.')[0];
+        const ext = entry.name.split('.').pop();
+        targetPath = `${IMG_BASE}${data[pid].folder}/images/webp/${cell.img}.${ext}`;
+      }
+
+      const fd = new FormData();
+      fd.append('file', entry.blob, entry.name);
+      fd.append('path', targetPath);
+      resp = await fetch('/api/save-image', { method: 'POST', body: fd });
+      if (!resp.ok) throw new Error(`Failed to save image: ${targetPath}`);
+      imgSaved++;
+    }
+
+    // 5. Clear state — changes are now persisted
+    Object.keys(replacedImages).forEach(k => {
+      URL.revokeObjectURL(replacedImages[k].url);
+      delete replacedImages[k];
+    });
+    cropEdits.clear();
+    originalData = JSON.parse(JSON.stringify(data));
+    originalHeroData = JSON.parse(JSON.stringify(heroData));
+
+    showProject(currentId);
+    updateStatus();
+
+    const parts = [];
+    parts.push('project-detail.js');
+    if (imgSaved) parts.push(`${imgSaved} image(s)`);
+    showToast('Saved: ' + parts.join(' + '), true);
+  } catch (e) {
+    showToast('Error: ' + e.message, false);
+    console.error('Save to disk failed:', e);
+  } finally {
+    btn.textContent = 'Save to disk';
+    btn.disabled = false;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
    INIT
    ══════════════════════════════════════════════════════════════════════ */
 
@@ -951,8 +1518,7 @@ loadSource().then(() => {
   renderTabs();
   showProject(order[0]);
   document.getElementById('btn-preview').onclick = doPreview;
-  document.getElementById('btn-export').onclick = async () => { doExport(); await doExportImages(); };
-  document.getElementById('btn-save').onclick = doSave;
+  document.getElementById('btn-save-disk').onclick = doSaveToDisk;
   document.getElementById('btn-reset').onclick = () => {
     data = JSON.parse(JSON.stringify(originalData));
     heroData = JSON.parse(JSON.stringify(originalHeroData));

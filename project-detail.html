@@ -19,6 +19,8 @@
 </head>
 <body class="story-page">
 
+  <a href="#story" class="skip-link">Skip to content</a>
+
   <!-- Persistent UI: project name (chip), exit X, scroll progress -->
   <div class="story-ui" aria-hidden="false">
     <a class="story-exit" href="index.html" aria-label="Back to index">
@@ -35,7 +37,7 @@
   </div>
 
   <!-- The story itself — JS injects sections here -->
-  <main class="story" id="story" aria-label="Project narrative">
+  <main class="story" id="story" aria-label="Project narrative" aria-live="polite">
     <!-- populated by project-detail.js -->
   </main>
 

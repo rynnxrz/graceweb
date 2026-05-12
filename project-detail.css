@@ -34,6 +34,31 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  z-index: 9999;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: var(--ink);
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid var(--coral);
+}
+.skip-link:focus {
+  left: 24px;
+  top: 12px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+}
+
 html, body {
   background: var(--void);
   color: var(--bone);
@@ -451,6 +476,26 @@ body { overflow-x: hidden; }
 }
 @media (max-width: 720px) {
   .s-strip .s-strip-media { grid-template-columns: repeat(2, 1fr); padding: 8vh 6vw; }
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Crop-box rendering — new { x, y, w, h, nat } format                */
+/* ------------------------------------------------------------------ */
+
+.s-crop {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+.s-crop img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: auto !important;
+  object-fit: unset !important;
+  object-position: unset !important;
+  display: block;
 }
 
 

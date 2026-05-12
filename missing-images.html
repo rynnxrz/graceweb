@@ -6,32 +6,32 @@
 <title>Missing Images — graceweb audit</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'SF Mono', 'Fira Code', monospace; background: #0a0a0a; color: #e0e0e0; padding: 3rem 2rem; line-height: 1.6; }
-  h1 { font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: .3rem; }
-  .subtitle { font-size: .72rem; color: #555; margin-bottom: 2rem; }
-  .summary { font-size: .8rem; color: #888; margin-bottom: 2rem; padding: 1rem; background: #111; border-radius: 6px; border: 1px solid #222; }
-  .summary strong { color: #fff; }
+  body { font-family: 'SF Mono', 'Fira Code', monospace; background: #fff; color: #333; padding: 3rem 2rem; line-height: 1.6; }
+  h1 { font-size: 1.1rem; font-weight: 600; color: #111; margin-bottom: .3rem; }
+  .subtitle { font-size: .72rem; color: #999; margin-bottom: 2rem; }
+  .summary { font-size: .8rem; color: #555; margin-bottom: 2rem; padding: 1rem; background: #fafafa; border-radius: 6px; border: 1px solid #e5e5e5; }
+  .summary strong { color: #111; }
   .filters { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
-  .filter-btn { font-family: inherit; font-size: .7rem; padding: .3rem .7rem; border: 1px solid #333; border-radius: 4px; background: #111; color: #888; cursor: pointer; transition: all .15s; }
-  .filter-btn:hover { border-color: #555; color: #ccc; }
-  .filter-btn.active { border-color: #f59e0b; color: #f59e0b; background: #1a1500; }
+  .filter-btn { font-family: inherit; font-size: .7rem; padding: .3rem .7rem; border: 1px solid #ccc; border-radius: 4px; background: #f5f5f5; color: #666; cursor: pointer; transition: all .15s; }
+  .filter-btn:hover { border-color: #999; color: #333; }
+  .filter-btn.active { border-color: #d97706; color: #d97706; background: #fffbeb; }
   .section { margin-bottom: 2rem; }
-  .section-title { font-size: .82rem; font-weight: 600; color: #f59e0b; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .8rem; border-bottom: 1px solid #222; padding-bottom: .5rem; }
-  .item { display: flex; gap: 1rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid #1a1a1a; }
+  .section-title { font-size: .82rem; font-weight: 600; color: #d97706; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .8rem; border-bottom: 1px solid #e5e5e5; padding-bottom: .5rem; }
+  .item { display: flex; gap: 1rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid #f0f0f0; }
   .item:last-child { border-bottom: none; }
   .item.is-fixed { opacity: .5; }
   .item-body { flex: 1; }
-  .stem { font-weight: 600; color: #fff; font-size: .85rem; }
-  .caption { color: #999; font-size: .78rem; margin-top: .15rem; }
-  .meta { color: #555; font-size: .7rem; margin-top: .25rem; }
+  .stem { font-weight: 600; color: #111; font-size: .85rem; }
+  .caption { color: #666; font-size: .78rem; margin-top: .15rem; }
+  .meta { color: #999; font-size: .7rem; margin-top: .25rem; }
   .meta span { margin-right: 1.2rem; }
-  .notes { color: #666; font-size: .7rem; margin-top: .3rem; font-style: italic; }
+  .notes { color: #888; font-size: .7rem; margin-top: .3rem; font-style: italic; }
   .tag { display: inline-block; font-size: .62rem; padding: .1rem .4rem; border-radius: 3px; font-weight: 600; margin-right: .3rem; }
-  .tag-missing { background: #7f1d1d; color: #fca5a5; }
-  .tag-fixed { background: #064e3b; color: #6ee7b7; }
-  .tag-project { background: #1e1b4b; color: #a5b4fc; }
-  .empty { color: #444; font-size: .8rem; padding: 2rem 0; text-align: center; }
-  .error { color: #f87171; font-size: .8rem; padding: 2rem; background: #1a0000; border: 1px solid #7f1d1d; border-radius: 6px; }
+  .tag-missing { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .tag-fixed { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+  .tag-project { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
+  .empty { color: #999; font-size: .8rem; padding: 2rem 0; text-align: center; }
+  .error { color: #dc2626; font-size: .8rem; padding: 2rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; }
 </style>
 </head>
 <body>
