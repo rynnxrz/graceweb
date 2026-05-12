@@ -119,8 +119,19 @@
   .crop-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(255,255,255,.94); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .crop-close-btn { position: absolute; top: 1rem; right: 1.5rem; font-family: 'SF Mono', monospace; font-size: 1.2rem; background: none; border: none; color: #707070; cursor: pointer; transition: color .12s; line-height: 1; padding: .4rem .6rem; z-index: 3; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
   .crop-close-btn:hover { color: #333; }
-  .crop-canvas { position: relative; max-width: 90vw; max-height: 74vh; user-select: none; line-height: 0; }
-  .crop-canvas > img { display: block; max-width: 90vw; max-height: 74vh; pointer-events: none; border-radius: 3px; box-shadow: 0 2px 20px rgba(0,0,0,.15); }
+  .crop-canvas { position: relative; max-width: 90vw; max-height: 74vh; user-select: none; line-height: 0; overflow: visible; }
+  .crop-canvas > img { position: relative; z-index: 1; display: block; max-width: 90vw; max-height: 74vh; pointer-events: none; border-radius: 3px; box-shadow: 0 2px 20px rgba(0,0,0,.15); }
+  /* Checkerboard fills the crop-box area; image sits on top, so checker only shows where crop extends past the image (= transparent-fill on render). */
+  .crop-checker { position: absolute; z-index: 0; pointer-events: none;
+    background-color: #f5f5f5;
+    background-image:
+      linear-gradient(45deg, #d4d4d4 25%, transparent 25%),
+      linear-gradient(-45deg, #d4d4d4 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #d4d4d4 75%),
+      linear-gradient(-45deg, transparent 75%, #d4d4d4 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  }
   .crop-box { position: absolute; border: 2px solid #d97706; box-shadow: 0 0 0 9999px rgba(255,255,255,.6); cursor: move; z-index: 2; }
   .crop-handle { position: absolute; width: 14px; height: 14px; background: #d97706; border: 1px solid #fff; z-index: 3; border-radius: 1px; }
   .crop-handle.nw { top: -7px; left: -7px; cursor: nwse-resize; }
@@ -361,7 +372,9 @@ function getFrameAspect(cp) {
 }
 
 function renderCell(cell, folder, cp) {
-  if (cell._deleted) return '';
+  if (cell._deleted) {
+    return `<div class="img-cell"><div class="img-missing" tabindex="0" role="button" data-cell-path="${cp}" data-folder="${folder}">add image: ${cell.img || 'new-image'}</div></div>`;
+  }
 
   const replaced = replacedImages[cp];
   const src = replaced ? replaced.url : imgUrl(folder, cell.img);
@@ -431,21 +444,15 @@ function renderRow(row, folder, rp) {
   h += `<select class="row-kind-select" data-row-path="${rp}" data-orig-kind="${row.kind || 'fullbleed'}">`;
   for (const k of KINDS) h += `<option value="${k}" ${k === displayKind ? 'selected' : ''}>${k}</option>`;
   h += `</select>`;
-  if (displayKind === 'strip') {
+  if (displayKind === 'pair' || displayKind === 'strip') {
     h += `<button class="row-ctrl-btn" data-action="add-cell" data-row-path="${rp}">+ cell</button>`;
-    if (displayCells.length > 2) h += `<button class="row-ctrl-btn danger" data-action="rm-cell" data-row-path="${rp}">− cell</button>`;
   }
   if (isDraft) h += `<button class="row-ctrl-btn" data-action="discard-draft" data-row-path="${rp}">discard</button>`;
   h += `</div>`;
 
-  const allDeleted = displayCells.every(c => c._deleted);
-  if (allDeleted) {
-    h += `<div class="img-cell-deleted" style="min-height:40px"><span>all images removed</span></div>`;
-  } else {
-    h += `<div class="img-row ${displayKind}"${style}>`;
-    displayCells.forEach((c, ci) => { h += renderCell(c, folder, rp+'.cells.'+ci); });
-    h += '</div>';
-  }
+  h += `<div class="img-row ${displayKind}"${style}>`;
+  displayCells.forEach((c, ci) => { h += renderCell(c, folder, rp+'.cells.'+ci); });
+  h += '</div>';
 
   const capVal = draft ? (draft.cap !== undefined ? draft.cap : null) : row.cap;
   if (capVal !== undefined && capVal !== null) h += `<div class="row-cap">${ed(capVal, rp+'.cap')}</div>`;
@@ -802,6 +809,12 @@ function openCropOverlay(cp) {
   const canvas = document.createElement('div');
   canvas.className = 'crop-canvas';
 
+  // Checkerboard sits behind the image; only visible where crop extends past image bounds.
+  const cropChecker = document.createElement('div');
+  cropChecker.className = 'crop-checker';
+  cropChecker.setAttribute('aria-hidden', 'true');
+  canvas.appendChild(cropChecker);
+
   const img = document.createElement('img');
   img.src = imgSrc;
   canvas.appendChild(img);
@@ -971,6 +984,10 @@ function openCropOverlay(cp) {
     cropBox.style.top = box.y + '%';
     cropBox.style.width = box.w + '%';
     cropBox.style.height = box.h + '%';
+    cropChecker.style.left = box.x + '%';
+    cropChecker.style.top = box.y + '%';
+    cropChecker.style.width = box.w + '%';
+    cropChecker.style.height = box.h + '%';
     // info
     const rW = natW ? (box.w * natW / 100).toFixed(0) : '?';
     const rH = natH ? (box.h * natH / 100).toFixed(0) : '?';
@@ -1048,53 +1065,47 @@ function openCropOverlay(cp) {
     const dx = (e.clientX - startMX) / rect.width * 100;
     const dy = (e.clientY - startMY) / rect.height * 100;
 
+    // Crop box may extend past the image edges (transparent-fill margins).
+    // Sanity caps below prevent runaway values but allow values outside [0, 100].
+    const CAP_LO = -200, CAP_HI = 300;
+    const capPos = v => Math.max(CAP_LO, Math.min(CAP_HI, v));
+    const capSize = v => Math.max(5, Math.min(500, v));
+
     if (mode === 'move') {
-      let nx = startBox.x + dx;
-      let ny = startBox.y + dy;
-      nx = Math.max(0, Math.min(100 - box.w, nx));
-      ny = Math.max(0, Math.min(100 - box.h, ny));
-      box.x = nx;
-      box.y = ny;
+      box.x = capPos(startBox.x + dx);
+      box.y = capPos(startBox.y + dy);
     } else if (mode === 'resize') {
       let { x, y, w, h } = startBox;
       const dir = resizeDir;
 
-      // compute new edges
-      if (dir.includes('w')) { const nx = Math.max(0, Math.min(x + w - 5, x + dx)); w = w - (nx - x); x = nx; }
-      if (dir.includes('e')) { w = Math.max(5, Math.min(100 - x, w + dx)); }
-      if (dir.includes('n')) { const ny = Math.max(0, Math.min(y + h - 5, y + dy)); h = h - (ny - y); y = ny; }
-      if (dir.includes('s')) { h = Math.max(5, Math.min(100 - y, h + dy)); }
+      // compute new edges (allow extending past image bounds)
+      if (dir.includes('w')) { const nx = Math.min(x + w - 5, x + dx); w = w - (nx - x); x = nx; }
+      if (dir.includes('e')) { w = Math.max(5, w + dx); }
+      if (dir.includes('n')) { const ny = Math.min(y + h - 5, y + dy); h = h - (ny - y); y = ny; }
+      if (dir.includes('s')) { h = Math.max(5, h + dy); }
 
-      // enforce ratio
+      // enforce ratio (centered or anchored, no edge clamps)
       if (lockedRatio !== null && natW) {
         const targetPctRatio = lockedRatio * natH / natW; // w_pct / h_pct
         if (dir === 'n' || dir === 's') {
-          // height changed, adjust width
           const newW = h * targetPctRatio;
           const cx = x + w / 2;
-          x = Math.max(0, cx - newW / 2);
-          w = Math.min(100 - x, newW);
-          if (x + w > 100) x = 100 - w;
+          x = cx - newW / 2;
+          w = newW;
         } else if (dir === 'w' || dir === 'e') {
-          // width changed, adjust height
           const newH = w / targetPctRatio;
           const cy = y + h / 2;
-          y = Math.max(0, cy - newH / 2);
-          h = Math.min(100 - y, newH);
-          if (y + h > 100) y = 100 - h;
+          y = cy - newH / 2;
+          h = newH;
         } else {
-          // corner: fix ratio based on the dominant axis
+          // corner: derive h from w, anchor opposite corner
           const newH = w / targetPctRatio;
-          if (dir.includes('n')) { y = startBox.y + startBox.h - newH; y = Math.max(0, y); h = newH; }
+          if (dir.includes('n')) { y = startBox.y + startBox.h - newH; h = newH; }
           else { h = newH; }
-          if (y + h > 100) { h = 100 - y; w = h * targetPctRatio; if (dir.includes('w')) x = startBox.x + startBox.w - w; }
-          if (x + w > 100) { w = 100 - x; h = w / targetPctRatio; }
-          if (x < 0) { x = 0; w = Math.min(100, w); h = w / targetPctRatio; }
-          if (y < 0) { y = 0; h = Math.min(100, h); h = w / targetPctRatio; }
         }
       }
 
-      box = { x, y, w: Math.max(5, w), h: Math.max(5, h) };
+      box = { x: capPos(x), y: capPos(y), w: capSize(w), h: capSize(h) };
     }
     updateBoxDOM();
   }
@@ -1278,13 +1289,23 @@ fileInput.addEventListener('change', () => {
   if (pendingReplace.type === 'cell') {
     const cp = pendingReplace.path;
     replacedImages[cp] = { blob: file, url, name: file.name };
+    // Un-delete the cell if it was previously deleted (re-add flow).
+    const cell = getDisplayCell(cp);
+    if (cell && cell._deleted) {
+      delete cell._deleted;
+      deletedImages.delete(cp);
+      showProject(currentId, true);
+      updateStatus();
+      pendingReplace = null;
+      return;
+    }
     const imgEl = document.querySelector(`img[data-cell-path="${cp}"]`);
     const missEl = document.querySelector(`.img-missing[data-cell-path="${cp}"]`);
     if (imgEl) {
       imgEl.src = url;
-      const cell = imgEl.closest('.img-cell');
-      if (cell && !cell.querySelector('.replaced-badge'))
-        cell.insertAdjacentHTML('beforeend', '<span class="replaced-badge">NEW</span>');
+      const cellEl = imgEl.closest('.img-cell');
+      if (cellEl && !cellEl.querySelector('.replaced-badge'))
+        cellEl.insertAdjacentHTML('beforeend', '<span class="replaced-badge">NEW</span>');
     } else if (missEl) {
       const folder = missEl.dataset.folder;
       const div = document.createElement('div');
@@ -1330,9 +1351,11 @@ function attachRowControls() {
       } else {
         const baseCells = layoutDrafts[rp] ? layoutDrafts[rp].cells : JSON.parse(JSON.stringify(origRow.cells || []));
         const singleKinds = ['fullbleed', 'portrait', 'scrollable'];
-        const targetLen = singleKinds.includes(newKind) ? 1 : newKind === 'pair' ? 2 : Math.max(baseCells.length, 3);
-        while (baseCells.length < targetLen) baseCells.push({ img: 'new-image', cap: '' });
-        if (newKind !== 'strip') while (baseCells.length > targetLen) baseCells.pop();
+        // For single-cell kinds, trim to 1 (explicit user choice).
+        // For pair/strip, pad up to the minimum (2 or 3) but don't trim — preserve any extras the user has.
+        const minLen = singleKinds.includes(newKind) ? 1 : newKind === 'pair' ? 2 : 3;
+        while (baseCells.length < minLen) baseCells.push({ img: 'new-image', cap: '' });
+        if (singleKinds.includes(newKind)) while (baseCells.length > 1) baseCells.pop();
 
         layoutDrafts[rp] = {
           kind: newKind,
@@ -1349,19 +1372,24 @@ function attachRowControls() {
   document.querySelectorAll('[data-action="add-cell"]').forEach(btn => {
     btn.addEventListener('click', () => {
       const rp = btn.dataset.rowPath;
-      const draft = layoutDrafts[rp] || { kind: getNested(data, rp).kind, cells: JSON.parse(JSON.stringify(getNested(data, rp).cells)) };
+      const origRow = getNested(data, rp);
+      const draft = layoutDrafts[rp] || {
+        kind: origRow.kind,
+        cells: JSON.parse(JSON.stringify(origRow.cells)),
+        cap: origRow.cap,
+      };
       draft.cells.push({ img: 'new-image', cap: '' });
+      // Auto-promote kind by active (non-deleted) cell count.
+      const active = draft.cells.filter(c => !c._deleted).length;
+      if (active >= 3 && draft.kind !== 'strip') {
+        draft.kind = 'strip';
+        if (draft.cap === undefined) draft.cap = '';
+      } else if (active === 2 && draft.kind !== 'pair' && draft.kind !== 'strip') {
+        draft.kind = 'pair';
+      }
       layoutDrafts[rp] = draft;
       showProject(currentId, true);
       updateStatus();
-    });
-  });
-
-  document.querySelectorAll('[data-action="rm-cell"]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const rp = btn.dataset.rowPath;
-      const draft = layoutDrafts[rp];
-      if (draft && draft.cells.length > 2) { draft.cells.pop(); showProject(currentId, true); updateStatus(); }
     });
   });
 
@@ -1602,6 +1630,19 @@ function stripDeleted(obj) {
     if (ch.rows) {
       ch.rows.forEach(row => {
         if (row.cells) row.cells = row.cells.filter(c => !c._deleted);
+        // Normalize kind to match remaining cell count so renderer invariants hold.
+        if (row.cells && row.cells.length > 0) {
+          const n = row.cells.length;
+          if (n === 1 && (row.kind === 'pair' || row.kind === 'strip')) {
+            row.kind = 'fullbleed';
+            delete row.cap;
+          } else if (n === 2 && row.kind === 'strip') {
+            row.kind = 'pair';
+            delete row.cap;
+          } else if (n >= 3 && row.kind === 'pair') {
+            row.kind = 'strip';
+          }
+        }
       });
       ch.rows = ch.rows.filter(row => !row.cells || row.cells.length > 0);
     }
