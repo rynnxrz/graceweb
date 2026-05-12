@@ -691,11 +691,14 @@
           note: 'Chapter 01 · the threshold',
           title: 'A ferry station that reads as a reef',
           prose: [
-            'The dusk render anchors the proposal — an organic silo opening onto the harbour, the silhouette closer to anemone than industry. The structure is meant to be seen first across water.',
+            'The dusk render anchors the proposal — an organic silo opening onto the harbour, the silhouette closer to anemone than industry. The structure is meant to be seen first across water, then entered through a calcified lattice that doubles as wayfinding.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
               { img: 'silo-hero-dusk', cap: 'Silo at dusk — sculptural organic form on waterfront pier' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-hero-underwater', cap: 'Underwater perspective — the silo meets the reef below the waterline' },
             ]},
             { kind: 'fullbleed', cells: [
               { img: 'silo-hero-glow', cap: 'Night render — glowing translucent shell forms with figures on the pier' },
@@ -703,10 +706,41 @@
           ],
         },
         {
-          note: 'Chapter 02 · programme & section',
+          note: 'Chapter 02 · site & ecology',
+          title: 'Co-habitation: coral, marine, and CO₂',
+          prose: [
+            'The project began with research into coral reef decline under rising CO₂ — bleaching, calcification loss, species displacement. The site at Wynyard Point, a reclaimed fuel-storage peninsula, offered an inversion: use the retired silos to capture what they once released.',
+          ],
+          rows: [
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-co2-site', cap: 'CO-habitation & CO₂e — site analysis and emissions mapping at Wynyard Point' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'silo-coral-ecology', cap: 'Coral structure — physical model and digital simulation' },
+              { img: 'silo-reef-analysis', cap: 'Coral reef life cycle, marine ecology, and environmental analysis' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 03 · coral logic',
+          title: 'Coral growth as design method',
+          prose: [
+            'Coral growth pattern simulations drove the formal logic — iterative branching algorithms producing structural lattices that could be read as both reef and architecture. The design logic translates biological growth into spatial sequence.',
+          ],
+          rows: [
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-coral-sim', cap: 'Coral growth pattern simulation — iterative branching studies and plan evolution' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-design-logic', cap: 'Design logic — from coral growth simulation to architectural envelope' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 04 · programme & section',
           title: 'Programme stitched into the calcified envelope',
           prose: [
-            'Inside, the sequence is set by the ferry day — arrival path, waiting hall, food court, departure hall — each spliced through the coral lattice so that the structure itself becomes wayfinding.',
+            'The ferry-day sequence — arrival, waiting, food court, departure — is spliced through the coral lattice. The structure itself becomes wayfinding; the perspective section reveals how programme nests inside the organic shell.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
@@ -715,13 +749,16 @@
             { kind: 'fullbleed', cells: [
               { img: 'silo-section-dark', cap: 'Section drawing — organic forms, underwater elements, teal accent lighting' },
             ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-perspective-section', cap: 'Perspective section 1:300 — programme, coral structure, and reef below' },
+            ]},
           ],
         },
         {
-          note: 'Chapter 03 · fabrication',
+          note: 'Chapter 05 · fabrication',
           title: 'Coral as a fabrication strategy',
           prose: [
-            'The structural logic was derived from coral-growth simulations, then 3-D printed in clear and white resin to test the lattice at three scales. The lattice resolves into a single curvature net — fragile in the print, structural in aggregate.',
+            'The structural logic was derived from coral-growth simulations, then 3-D printed in clear and white resin at three scales. The lattice resolves into a single curvature net — fragile in the print, structural in aggregate.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
@@ -734,11 +771,46 @@
               { img: 'silo-fab-coral-04', cap: 'branching · detail' },
             ], cap: 'Four scales of the same coral lattice — low cluster, mid section, canopy, and detail.' },
             { kind: 'pair', cells: [
+              { img: 'silo-resin-model', cap: 'Clear resin 3-D prints — internal structure model at three views' },
+              { img: 'silo-render-exterior', cap: 'Exterior render — silo structure on waterfront' },
+            ]},
+            { kind: 'pair', cells: [
               { img: 'silo-preform-slicer', cap: 'PreForm slicer — coral model ready for SLA printing' },
               { img: 'silo-model-topdown', cap: 'Model top-down — resin print on dark surface' },
             ]},
+          ],
+        },
+        {
+          note: 'Chapter 06 · production & evolution',
+          title: 'Coral and building growth production',
+          prose: [
+            'The traveling handbook maps the journey through the station — from the exploded axonometric of programme to the robotic 3-D printing process that would deposit coral-calcium structure on site. Over time, the building evolves as sea level rises and marine life reclaims the submerged lattice.',
+          ],
+          rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'silo-render-exterior', cap: 'Exterior render — silo structure on waterfront' },
+              { img: 'silo-handbook-axo', cap: 'Traveling handbook — exploded axonometric of programme and shell' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-handbook-fab', cap: 'Coral & building growth production — robotic printing and material storage' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-evolution-render', cap: 'Logic of evolution — sea-level rise sequence and elevation render' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 07 · inhabited spaces',
+          title: 'Interior atmospheres',
+          prose: [
+            'The final renders place people inside the coral — food court, waiting hall, departure lounge, lobby. The facade detail reveals the lattice at close range, translucent and veined.',
+          ],
+          rows: [
+            { kind: 'fullbleed', cells: [
+              { img: 'silo-ext-perspective', cap: 'External perspective — passengers approaching at sunset' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'silo-facade-detail', cap: 'Facade detail — coral lattice close-up at golden hour' },
+              { img: 'silo-interiors-strip', cap: 'Interior renders — food court, waiting hall, departure, lobby' },
             ]},
           ],
         },
@@ -787,24 +859,52 @@
           note: 'Chapter 01 · streetscape',
           title: 'A re-skinned street, not a new building',
           prose: [
-            'The proposal works on the existing wall plane: keep the building, change the skin. Moss as architectural element rather than hanging garden.',
+            'The proposal works on the existing wall plane: keep the building, change the skin. The hero collage places the moss-chamber facade onto Oxford Street — dense urban context, zero soil, maximum surface area.',
           ],
           rows: [
             { kind: 'fullbleed', cells: [
-              { img: 'p32-img01', cap: 'Streetscape collage — moss-facade prototype on Oxford Street' },
+              { img: 'eco-hero-collage', cap: 'Streetscape collage — moss-facade prototype on Oxford Street, London' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'eco-moss-structure', cap: 'Central facade structure — water-retaining moss substrate at building scale' },
             ]},
           ],
         },
         {
-          note: 'Chapter 02 · growth · time',
-          title: 'Two stages of the same wall',
+          note: 'Chapter 02 · chamber system',
+          title: 'Facade chamber system',
           prose: [
-            'A facade made of moss is also a facade made of time. The pair below traces a single chamber through two states — early colonisation and mature growth.',
+            'The facade is built from interlocking clay chambers designed to hold moisture and host moss colonisation. Petri-dish studies tested growth rates on different substrates; the exploded axonometric maps how the chamber units aggregate into a continuous skin.',
           ],
           rows: [
             { kind: 'pair', cells: [
-              { img: 'p33-img04', cap: 'Stage 1 — moss-patch perspective, early growth' },
-              { img: 'p33-img16', cap: 'Stage 3 — moss-patch perspective, mature growth' },
+              { img: 'eco-moss-petri', cap: 'Moss growth on various surfaces — petri dish cultivation tests' },
+              { img: 'eco-chamber-exploded', cap: 'Facade chamber system — exploded axonometric and assembly logic' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'eco-chamber-system', cap: 'Full research plate — moss growth studies, chamber typology, and section details' },
+            ]},
+          ],
+        },
+        {
+          note: 'Chapter 03 · growth & erosion',
+          title: 'Long-term evolution: growth and erosion',
+          prose: [
+            'A facade made of moss is also a facade made of time. Wind and water erosion simulations model how the chamber units degrade, while moss colonisation maps their biological succession — two clocks running against the same surface.',
+          ],
+          rows: [
+            { kind: 'fullbleed', cells: [
+              { img: 'eco-moss-patch', cap: 'Stage 2 — front perspective of moss patches, mid-growth' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'eco-moss-stages', cap: 'Moss colonisation stages — from early growth to mature coverage and water mapping' },
+            ]},
+            { kind: 'pair', cells: [
+              { img: 'eco-wind-erosion', cap: 'Wind and water erosion simulation — progressive degradation sequence' },
+              { img: 'eco-rainwater-sim', cap: 'Rainwater flow simulation — eight stages of water distribution' },
+            ]},
+            { kind: 'fullbleed', cells: [
+              { img: 'eco-evolution', cap: 'Long-term evolution — growth and erosion on the full facade system' },
             ]},
           ],
         },
@@ -813,6 +913,7 @@
         title: 'A facade is a substrate before it\'s an aesthetic',
         paragraphs: [
           'The lesson the moss kept teaching: a facade is a substrate before it\'s an aesthetic. Once we treated the wall as something organisms had to colonise, the design questions changed from "what does this look like" to "what does this hold".',
+          'Wind and water don\'t care about the architect\'s intent — they erode on their own schedule. The project learned to design with that timeline, not against it.',
         ],
       },
       credits: [
@@ -857,7 +958,7 @@
             { kind: 'fullbleed', cells: [
               { img: 'ultra-section-comic', cap: 'Perspective section — post-nuclear tower with programme annotations' },
             ]},
-            { kind: 'fullbleed', cells: [
+            { kind: 'scrollable', cells: [
               { img: 'ultra-perspective', cap: 'Narrative perspective — organic building with annotated programme, illustrated elements' },
             ]},
           ],
@@ -1016,13 +1117,13 @@
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
-  function findFirstImageStem(d) {
+  function findFirstImageCell(d) {
     for (const ch of d.chapters || []) {
       for (const row of ch.rows || []) {
         const isShape = !Array.isArray(row);
         const cells  = isShape ? row.cells : row;
         const c = (cells || [])[0];
-        if (c && c.img) return c.img;
+        if (c && c.img) return c;
       }
     }
     return null;
@@ -1036,7 +1137,13 @@
       const poster = cell.poster ? imgSrc(d.folder, cell.poster) : '';
       return `<video src="${vsrc}" ${poster ? `poster="${poster}"` : ''} autoplay loop muted playsinline preload="metadata" aria-label="${escapeHtml(cell.cap || '')}"></video>`;
     }
-    return `<img src="${imgSrc(d.folder, cell.img)}" alt="${escapeHtml(cell.cap || '')}" loading="lazy" decoding="async">`;
+    const src = cell._src || imgSrc(d.folder, cell.img);
+    let cropAttr = '';
+    if (cell.crop) {
+      const s = cell.crop.s || 1, x = cell.crop.x ?? 50, y = cell.crop.y ?? 50;
+      cropAttr = ` class="crop" style="object-fit:cover;transform:scale(${s});transform-origin:${x}% ${y}%"`;
+    }
+    return `<img src="${src}" alt="${escapeHtml(cell.cap || '')}"${cropAttr} loading="lazy" decoding="async">`;
   }
 
   function capHtml(text, plateNo, tag) {
@@ -1076,6 +1183,26 @@
       `;
     }
 
+    if (kind === 'portrait') {
+      const cell = cells[0];
+      return `
+        <section class="s-portrait">
+          <div class="s-portrait-media">${mediaTag(cell, d)}</div>
+          ${cell.cap ? capHtml(cell.cap, plateNo, '[ PORTRAIT ]') : ''}
+        </section>
+      `;
+    }
+
+    if (kind === 'scrollable') {
+      const cell = cells[0];
+      return `
+        <section class="s-scrollable">
+          <div class="s-scrollable-media">${mediaTag(cell, d)}</div>
+          ${cell.cap ? capHtml(cell.cap, plateNo, '[ SCROLL ]') : ''}
+        </section>
+      `;
+    }
+
     const cell = cells[0];
     const tag  = (kind === 'fullbleed' || plateNo === 1)
       ? '[ HERO ]'
@@ -1103,9 +1230,15 @@
     `;
   }
 
-  function introSection(d, firstStem) {
-    const bgUrl = firstStem ? imgSrcLg(d.folder, firstStem) : '';
-    const styleAttr = bgUrl ? `style="--bg-img: url('${bgUrl}');"` : '';
+  function introSection(d, firstCell) {
+    const bgUrl = firstCell ? (firstCell._src || imgSrcLg(d.folder, firstCell.img)) : '';
+    const cr = firstCell?.crop;
+    let cssVars = bgUrl ? `--bg-img: url('${bgUrl}');` : '';
+    if (cr) {
+      cssVars += `--bg-scale: ${cr.s || 1};`;
+      cssVars += `--bg-pos: ${cr.x ?? 50}% ${cr.y ?? 50}%;`;
+    }
+    const styleAttr = cssVars ? `style="${cssVars}"` : '';
     return `
       <section class="s-intro" ${styleAttr}>
         <p class="s-intro-no">${escapeHtml(d.no || '')}</p>
@@ -1118,9 +1251,11 @@
     `;
   }
 
+  let _activeDossiers = DOSSIERS;
+
   function outroSection(d, prevId, nextId) {
-    const prev = DOSSIERS[prevId];
-    const next = DOSSIERS[nextId];
+    const prev = _activeDossiers[prevId];
+    const next = _activeDossiers[nextId];
 
     const reflectionHtml = d.reflection && Array.isArray(d.reflection.paragraphs) && d.reflection.paragraphs.length
       ? `<div class="s-outro-reflection">
@@ -1163,86 +1298,102 @@
 
   /* --- Render ------------------------------------------------------- */
 
-  const id = qs('project') || ORDER[0];
-  const d  = DOSSIERS[id];
+  function renderProject(dossiers, orderArr) {
+    _activeDossiers = dossiers;
+    const id = qs('project') || orderArr[0];
+    const d  = dossiers[id];
 
-  if (!d) {
-    document.body.innerHTML =
-      '<div style="padding:120px 40px;font-family:Cormorant Garamond,serif;color:#d6d2c4">' +
-      '<h1 style="font-style:italic;font-weight:300;font-size:48px;margin-bottom:16px">Specimen not found.</h1>' +
-      '<p style="color:#b9b4a2"><a href="index.html" style="color:inherit;border-bottom:1px solid currentColor;text-decoration:none">return to index</a></p>' +
-      '</div>';
-    return;
-  }
-
-  document.title = `${d.name} — Grace`;
-  const chipNoEl   = document.getElementById('story-chip-no');
-  const chipNameEl = document.getElementById('story-chip-name');
-  if (chipNoEl)   chipNoEl.textContent   = d.no || '';
-  if (chipNameEl) chipNameEl.textContent = d.name;
-
-  const idx = ORDER.indexOf(id);
-  const prevId = ORDER[(idx - 1 + ORDER.length) % ORDER.length];
-  const nextId = ORDER[(idx + 1) % ORDER.length];
-
-  const firstStem = findFirstImageStem(d);
-  const sections = [];
-  sections.push(introSection(d, firstStem));
-
-  let plateNo = 0;
-  d.chapters.forEach((ch) => {
-    if (Array.isArray(ch.prose) && ch.prose.length) {
-      sections.push(proseSection(ch));
+    if (!d) {
+      document.body.innerHTML =
+        '<div style="padding:120px 40px;font-family:Cormorant Garamond,serif;color:#d6d2c4">' +
+        '<h1 style="font-style:italic;font-weight:300;font-size:48px;margin-bottom:16px">Specimen not found.</h1>' +
+        '<p style="color:#b9b4a2"><a href="index.html" style="color:inherit;border-bottom:1px solid currentColor;text-decoration:none">return to index</a></p>' +
+        '</div>';
+      return;
     }
-    (ch.rows || []).forEach((row) => {
-      plateNo += 1;
-      sections.push(rowSection(row, d, plateNo));
-    });
-    if (Array.isArray(ch.proseAfter) && ch.proseAfter.length) {
-      sections.push(proseSection({ note: (ch.note || '') + ' (cont.)', prose: ch.proseAfter }));
-    }
-  });
 
-  sections.push(outroSection(d, prevId, nextId));
+    document.title = `${d.name} — Grace`;
+    const chipNoEl   = document.getElementById('story-chip-no');
+    const chipNameEl = document.getElementById('story-chip-name');
+    if (chipNoEl)   chipNoEl.textContent   = d.no || '';
+    if (chipNameEl) chipNameEl.textContent = d.name;
 
-  document.getElementById('story').innerHTML = sections.join('');
+    const idx = orderArr.indexOf(id);
+    const prevId = orderArr[(idx - 1 + orderArr.length) % orderArr.length];
+    const nextId = orderArr[(idx + 1) % orderArr.length];
 
-  requestAnimationFrame(() => {
-    document.querySelector('.s-intro')?.classList.add('is-loaded');
-  });
+    const firstCell = findFirstImageCell(d);
+    const sections = [];
+    sections.push(introSection(d, firstCell));
 
-  /* --- Scroll: section-active observer + progress fill ------------ */
-
-  const sectionEls = document.querySelectorAll('.story > section');
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting && e.intersectionRatio > 0.55) {
-          e.target.classList.add('is-active');
-        } else if (e.intersectionRatio < 0.2) {
-          e.target.classList.remove('is-active');
-        }
+    let plateNo = 0;
+    d.chapters.forEach((ch) => {
+      if (Array.isArray(ch.prose) && ch.prose.length) {
+        sections.push(proseSection(ch));
+      }
+      (ch.rows || []).forEach((row) => {
+        plateNo += 1;
+        sections.push(rowSection(row, d, plateNo));
       });
-    }, { threshold: [0.2, 0.55, 0.85] });
-    sectionEls.forEach((el) => io.observe(el));
+      if (Array.isArray(ch.proseAfter) && ch.proseAfter.length) {
+        sections.push(proseSection({ note: (ch.note || '') + ' (cont.)', prose: ch.proseAfter }));
+      }
+    });
+
+    sections.push(outroSection(d, prevId, nextId));
+
+    document.getElementById('story').innerHTML = sections.join('');
+
+    requestAnimationFrame(() => {
+      document.querySelector('.s-intro')?.classList.add('is-loaded');
+    });
+
+    /* --- Scroll: section-active observer + progress fill ------------ */
+
+    const sectionEls = document.querySelectorAll('.story > section');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && e.intersectionRatio > 0.55) {
+            e.target.classList.add('is-active');
+          } else if (e.intersectionRatio < 0.2) {
+            e.target.classList.remove('is-active');
+          }
+        });
+      }, { threshold: [0.2, 0.55, 0.85] });
+      sectionEls.forEach((el) => io.observe(el));
+    } else {
+      sectionEls.forEach((el) => el.classList.add('is-active'));
+    }
+
+    const progressFill = document.getElementById('story-progress-fill');
+    if (progressFill) {
+      const updateProgress = () => {
+        const total = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+        const pct = Math.max(0, Math.min(1, window.scrollY / total));
+        progressFill.style.bottom = `${(1 - pct) * 100}%`;
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('resize', updateProgress);
+      updateProgress();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') window.location.href = 'index.html';
+    });
+  }
+
+  const isPreview = qs('preview') === '1';
+  if (isPreview) {
+    if (window.opener) window.opener.postMessage({ type: 'preview-ready' }, '*');
+    window.addEventListener('message', function handler(e) {
+      if (e.data?.type === 'editor-preview') {
+        window.removeEventListener('message', handler);
+        renderProject(e.data.dossiers, e.data.order);
+      }
+    });
   } else {
-    sectionEls.forEach((el) => el.classList.add('is-active'));
+    renderProject(DOSSIERS, ORDER);
   }
-
-  const progressFill = document.getElementById('story-progress-fill');
-  if (progressFill) {
-    const updateProgress = () => {
-      const total = (document.documentElement.scrollHeight - window.innerHeight) || 1;
-      const pct = Math.max(0, Math.min(1, window.scrollY / total));
-      progressFill.style.bottom = `${(1 - pct) * 100}%`;
-    };
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress);
-    updateProgress();
-  }
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') window.location.href = 'index.html';
-  });
 
 })();

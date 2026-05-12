@@ -18,6 +18,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 from PIL import Image, ImageOps
+Image.MAX_IMAGE_PIXELS = None
 
 REPO = Path(__file__).resolve().parents[1]
 PROJECTS = REPO / 'public' / 'images' / 'projects' / 'extracted-portfolio'

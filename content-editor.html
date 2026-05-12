@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Editor — graceweb</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Cormorant Garamond', Georgia, serif; background: #0a0a0a; color: #d6d2c4; line-height: 1.6; }
+
+  /* ── toolbar ── */
+  .toolbar { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,.95); backdrop-filter: blur(12px); border-bottom: 1px solid #1a1a1a; padding: .45rem 1.5rem; display: flex; align-items: center; gap: .8rem; font-family: 'SF Mono', monospace; }
+  .toolbar h1 { font-size: .7rem; font-weight: 600; color: #666; letter-spacing: .04em; }
+  .proj-tabs { display: flex; gap: 2px; overflow-x: auto; flex: 1; scrollbar-width: none; }
+  .proj-tabs::-webkit-scrollbar { display: none; }
+  .tab { font-family: 'SF Mono', monospace; font-size: .6rem; padding: .3rem .6rem; border: 1px solid transparent; border-radius: 3px; background: none; color: #555; cursor: pointer; white-space: nowrap; transition: all .12s; }
+  .tab:hover { color: #ccc; }
+  .tab.active { color: #f59e0b; border-color: #f59e0b33; background: #f59e0b0a; }
+  .toolbar-gap { width: 1px; height: 16px; background: #222; flex-shrink: 0; }
+  .status { font-size: .6rem; color: #555; white-space: nowrap; }
+  .status.has-changes { color: #f59e0b; }
+  .btn { font-family: 'SF Mono', monospace; font-size: .6rem; padding: .25rem .6rem; border: 1px solid #333; border-radius: 3px; background: #1a1a1a; color: #999; cursor: pointer; transition: all .12s; white-space: nowrap; }
+  .btn:hover { border-color: #555; color: #fff; }
+  .btn-primary { border-color: #f59e0b; color: #f59e0b; }
+  .btn-primary:hover { background: #1a1500; }
+  .btn-save { border-color: #22c55e; color: #22c55e; }
+  .btn-save:hover { background: #052e16; }
+  .btn-save.pulse { animation: savePulse 1s infinite; }
+  @keyframes savePulse { 0%,100%{ box-shadow: none; } 50%{ box-shadow: 0 0 8px #22c55e44; } }
+
+  /* ── page ── */
+  .page { max-width: 880px; margin: 0 auto; padding: 3rem 2rem 8rem; }
+
+  /* ── project header ── */
+  .proj-no { font-family: 'SF Mono', monospace; font-size: .62rem; color: #555; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .3rem; }
+  .proj-name { font-size: 2.4rem; font-weight: 300; font-style: italic; color: #fff; margin-bottom: .15rem; }
+  .proj-binomial { font-size: .95rem; font-style: italic; color: #8a8577; margin-bottom: .25rem; }
+  .proj-kind { font-family: 'SF Mono', monospace; font-size: .6rem; color: #555; letter-spacing: .04em; margin-bottom: .15rem; }
+  .proj-meta { font-family: 'SF Mono', monospace; font-size: .6rem; color: #444; margin-bottom: 1.2rem; }
+  .proj-abstract { font-size: 1.05rem; color: #b9b4a2; max-width: 640px; margin-bottom: 1.8rem; line-height: 1.75; }
+
+  /* ── editable ── */
+  [contenteditable] { outline: none; border-bottom: 1px solid transparent; transition: border-color .15s, background .15s; padding: 1px 3px; margin: -1px -3px; border-radius: 2px; }
+  [contenteditable]:hover { border-bottom-color: #333; }
+  [contenteditable]:focus { border-bottom-color: #f59e0b; background: rgba(245,158,11,.04); }
+  [contenteditable].changed { background: rgba(245,158,11,.06); border-bottom-color: #f59e0b44; }
+
+  /* ── metadata ── */
+  .meta-table { font-family: 'SF Mono', monospace; font-size: .66rem; margin-bottom: 2rem; border-top: 1px solid #1a1a1a; }
+  .meta-row { display: flex; border-bottom: 1px solid #111; }
+  .meta-key { width: 130px; flex-shrink: 0; padding: .3rem .5rem; color: #555; }
+  .meta-val { flex: 1; padding: .3rem .5rem; color: #999; }
+
+  .section-label { font-family: 'SF Mono', monospace; font-size: .55rem; color: #333; letter-spacing: .06em; text-transform: uppercase; margin-bottom: .3rem; }
+  .intro-prose { font-size: .95rem; color: #a09b8e; max-width: 620px; margin-bottom: 2rem; line-height: 1.75; }
+
+  /* ── hero images ── */
+  .hero-section { margin-bottom: 2.5rem; padding: 1rem; border: 1px solid #1a1a1a; border-radius: 4px; background: #0d0d0d; }
+  .hero-section .section-label { margin-bottom: .8rem; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .hero-card { position: relative; }
+  .hero-card-label { font-family: 'SF Mono', monospace; font-size: .55rem; color: #555; margin-bottom: .3rem; }
+  .hero-card .hero-img-wrap { position: relative; overflow: hidden; border-radius: 2px; }
+  .hero-card img { width: 100%; display: block; background: #111; min-height: 60px; cursor: pointer; transition: opacity .15s; }
+  .hero-card img:hover { opacity: .8; }
+  .hero-card.crop-active img { cursor: grab; transition: none; }
+  .hero-card.crop-active img:active { cursor: grabbing; }
+  .hero-card.crop-active img:hover { opacity: 1; }
+  .hero-card.crop-active { outline: 1px solid #f59e0b44; outline-offset: -1px; }
+  .hero-card .replace-hint { position: absolute; top: 22px; right: 4px; font-family: 'SF Mono', monospace; font-size: .5rem; background: rgba(0,0,0,.7); color: #888; padding: 2px 6px; border-radius: 2px; opacity: 0; transition: opacity .15s; pointer-events: none; }
+  .hero-card:hover .replace-hint { opacity: 1; }
+  .hero-card .hero-path { font-family: 'SF Mono', monospace; font-size: .48rem; color: #2a2a2a; margin-top: .15rem; }
+
+  /* ── chapter ── */
+  .chapter { margin-bottom: 2.8rem; }
+  .ch-note { font-family: 'SF Mono', monospace; font-size: .58rem; color: #444; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .25rem; }
+  .ch-title { font-size: 1.35rem; font-weight: 300; font-style: italic; color: #e8e4d8; margin-bottom: .6rem; }
+  .ch-prose { font-size: .92rem; color: #a09b8e; max-width: 600px; margin-bottom: 1.2rem; line-height: 1.75; }
+
+  /* ── images ── */
+  .img-row-wrap { margin-bottom: 1.2rem; position: relative; }
+  .img-row-wrap.is-draft { outline: 1px dashed #f59e0b55; outline-offset: 4px; border-radius: 3px; }
+  .draft-badge { position: absolute; top: -8px; right: 8px; font-family: 'SF Mono', monospace; font-size: .48rem; background: #f59e0b; color: #000; padding: 1px 6px; border-radius: 2px; font-weight: 600; z-index: 2; }
+  .img-row { margin-bottom: 0; }
+  .img-row.fullbleed img { width: 100%; display: block; border-radius: 2px; }
+  .img-row.pair { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; align-items: stretch; }
+  .img-row.pair img { width: 100%; display: block; border-radius: 2px; }
+  .img-row.pair .img-cell img.is-cropped { height: 100%; }
+  .img-row.strip { display: grid; gap: .4rem; }
+  .img-row.strip img { width: 100%; display: block; border-radius: 2px; }
+  .img-row.portrait { display: flex; justify-content: center; background: #000; padding: 1rem 0; border-radius: 2px; }
+  .img-row.portrait img { max-width: 50%; height: auto; display: block; border-radius: 2px; }
+  .img-row.scrollable img { width: 80%; display: block; border-radius: 2px; margin: 0 auto; }
+  .img-cell { position: relative; overflow: hidden; }
+  .img-cell img { background: #111; min-height: 50px; cursor: pointer; transition: opacity .15s; }
+  .img-cell img:hover { opacity: .8; }
+  .img-cap { font-family: 'SF Mono', monospace; font-size: .58rem; color: #555; margin-top: .2rem; }
+  .img-stem { font-family: 'SF Mono', monospace; font-size: .5rem; color: #2a2a2a; margin-top: .05rem; }
+  .row-cap { font-family: 'SF Mono', monospace; font-size: .6rem; color: #444; margin-top: .35rem; font-style: italic; }
+  .img-missing { background: #1a0000; border: 1px dashed #7f1d1d; border-radius: 2px; display: flex; align-items: center; justify-content: center; min-height: 100px; font-family: 'SF Mono', monospace; font-size: .58rem; color: #7f1d1d; cursor: pointer; }
+  .img-missing:hover { background: #220000; }
+  .img-cell .replace-hint { position: absolute; top: 4px; right: 4px; font-family: 'SF Mono', monospace; font-size: .5rem; background: rgba(0,0,0,.7); color: #888; padding: 2px 6px; border-radius: 2px; opacity: 0; transition: opacity .15s; pointer-events: none; }
+  .img-cell:hover .replace-hint { opacity: 1; }
+  .img-cell.crop-active .replace-hint { opacity: .7; pointer-events: none; }
+  .img-cell .replaced-badge { position: absolute; top: 4px; left: 4px; font-family: 'SF Mono', monospace; font-size: .48rem; background: #f59e0b; color: #000; padding: 1px 5px; border-radius: 2px; font-weight: 600; }
+  .crop-controls { font-family: 'SF Mono', monospace; font-size: .5rem; color: #555; margin-top: .3rem; display: flex; align-items: center; gap: .5rem; }
+  .crop-toggle-row { display: flex; align-items: center; gap: .35rem; cursor: pointer; user-select: none; }
+  .crop-toggle-row input[type="checkbox"] { accent-color: #f59e0b; width: 12px; height: 12px; cursor: pointer; margin: 0; }
+  .crop-toggle-row input:checked + span { color: #f59e0b; }
+  .crop-info { color: #444; font-variant-numeric: tabular-nums; }
+  .crop-reset-btn { background: none; border: 1px solid #222; color: #555; font-family: 'SF Mono', monospace; font-size: .48rem; padding: .1rem .35rem; border-radius: 2px; cursor: pointer; transition: all .12s; }
+  .crop-reset-btn:hover { border-color: #555; color: #ccc; }
+  .img-cell.crop-active { outline: 1px solid #f59e0b44; outline-offset: -1px; }
+  .img-cell.crop-active img { cursor: grab; transition: none; }
+  .img-cell.crop-active img:active { cursor: grabbing; }
+  .img-cell.crop-active img:hover { opacity: 1; }
+  .img-cell img.is-cropped { object-fit: cover; }
+
+  /* ── row controls ── */
+  .row-controls { display: flex; align-items: center; gap: .4rem; margin-bottom: .4rem; }
+  .row-kind-select { font-family: 'SF Mono', monospace; font-size: .58rem; background: #111; color: #888; border: 1px solid #222; border-radius: 3px; padding: .15rem .4rem; cursor: pointer; appearance: none; -webkit-appearance: none; }
+  .row-kind-select:focus { outline: none; border-color: #f59e0b; }
+  .row-kind-select option { background: #111; color: #ccc; }
+  .row-ctrl-btn { font-family: 'SF Mono', monospace; font-size: .52rem; background: none; border: 1px solid #222; color: #555; border-radius: 3px; padding: .1rem .4rem; cursor: pointer; transition: all .12s; }
+  .row-ctrl-btn:hover { border-color: #555; color: #ccc; }
+  .row-ctrl-btn.danger:hover { border-color: #7f1d1d; color: #fca5a5; }
+  .row-ctrl-label { font-family: 'SF Mono', monospace; font-size: .5rem; color: #333; }
+
+  /* ── reflection ── */
+  .reflection { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #1a1a1a; max-width: 600px; }
+  .refl-label { font-family: 'SF Mono', monospace; font-size: .58rem; color: #444; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .3rem; }
+  .refl-title { font-size: 1.1rem; font-weight: 300; font-style: italic; color: #e8e4d8; margin-bottom: .5rem; }
+  .refl-para { font-size: .88rem; color: #8a8577; margin-bottom: .6rem; line-height: 1.75; }
+
+  .credits { margin-top: 1.8rem; padding-top: 1rem; border-top: 1px solid #151515; }
+  .credits-label { font-family: 'SF Mono', monospace; font-size: .58rem; color: #444; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .4rem; }
+
+  .page-nav { display: flex; justify-content: space-between; margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid #1a1a1a; }
+  .page-nav a { font-family: 'SF Mono', monospace; font-size: .65rem; color: #555; text-decoration: none; cursor: pointer; transition: color .12s; }
+  .page-nav a:hover { color: #f59e0b; }
+  .page-nav .nav-name { display: block; font-family: 'Cormorant Garamond', serif; font-size: .9rem; font-style: italic; color: #888; margin-top: .15rem; }
+
+  .hidden-input { display: none; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>EDITOR</h1>
+  <div class="proj-tabs" id="tabs"></div>
+  <div class="toolbar-gap"></div>
+  <div class="status" id="status">No changes</div>
+  <button class="btn" id="btn-reset">Reset</button>
+  <button class="btn btn-save" id="btn-save">Save ✓</button>
+  <button class="btn" id="btn-preview">Preview ↗</button>
+  <button class="btn btn-primary" id="btn-export">Save ↓</button>
+</div>
+
+<div class="page" id="page"></div>
+<input type="file" id="file-input" class="hidden-input" accept="image/*">
+
+<script>
+const JS_PATH   = 'project-detail.js';
+const NET_PATH  = 'network.js';
+const SPEC_PATH = 'specimens.js';
+const IMG_BASE  = 'public/images/projects/extracted-portfolio/';
+const HERO_BASE = 'public/images/projects/hero image/';
+const KINDS = ['fullbleed', 'pair', 'strip', 'portrait', 'scrollable'];
+
+let srcText = '', netSrcText = '', specSrcText = '';
+let originalData = null, data = null, order = [], currentId = null;
+
+// hero paths keyed by project id: { network: 'path', specimens: 'path' }
+let heroData = {};
+let originalHeroData = {};
+
+// replaced images: { key: { blob, url, name } }
+const replacedImages = {};
+
+// layout drafts: { rowPath: { kind, cells } } — preview only, not yet committed
+const layoutDrafts = {};
+
+// crop edits: tracks cell paths where crop was toggled from original
+const cropEdits = new Set();
+
+/* ══════════════════════════════════════════════════════════════════════
+   LOAD
+   ══════════════════════════════════════════════════════════════════════ */
+
+async function loadSource() {
+  [srcText, netSrcText, specSrcText] = await Promise.all([
+    fetch(JS_PATH).then(r => r.text()),
+    fetch(NET_PATH).then(r => r.text()),
+    fetch(SPEC_PATH).then(r => r.text()),
+  ]);
+
+  // parse DOSSIERS
+  const dm = srcText.match(/const DOSSIERS\s*=\s*\{/);
+  let depth = 0, end = dm.index;
+  for (let i = dm.index; i < srcText.length; i++) {
+    if (srcText[i] === '{') depth++;
+    else if (srcText[i] === '}') { depth--; if (!depth) { end = i + 1; break; } }
+  }
+  data = new Function(srcText.slice(dm.index, end) + '; return DOSSIERS;')();
+  originalData = JSON.parse(JSON.stringify(data));
+
+  const om = srcText.match(/const ORDER\s*=\s*\[([^\]]+)\]/);
+  order = om ? om[1].match(/'([^']+)'/g).map(s => s.replace(/'/g,'')) : Object.keys(data);
+
+  // parse hero paths from network.js
+  parseHeroes(netSrcText, 'network');
+  parseHeroes(specSrcText, 'specimens');
+  originalHeroData = JSON.parse(JSON.stringify(heroData));
+}
+
+function parseHeroes(src, source) {
+  const heroBase = HERO_BASE;
+  const base = IMG_BASE;
+  const re = /id:\s*'([^']+)'[\s\S]*?hero:\s*(.+?)\s*[,\n}]/g;
+  let m;
+  while ((m = re.exec(src))) {
+    const id = m[1];
+    let expr = m[2].trim();
+    let path;
+    if (expr.startsWith('HERO_BASE')) {
+      path = heroBase + expr.replace(/HERO_BASE\s*\+\s*/, '').replace(/^['"]|['"]$/g,'').trim();
+    } else if (expr.startsWith('BASE')) {
+      path = base + expr.replace(/BASE\s*\+\s*/, '').replace(/^['"]|['"]$/g,'').trim();
+    } else {
+      path = expr.replace(/^['"]|['"]$/g,'').trim();
+      if (!path.startsWith('public/')) path = base + path;
+    }
+    if (!heroData[id]) heroData[id] = {};
+    heroData[id][source] = path;
+  }
+  // parse heroCrop objects
+  const cropRe = /id:\s*'([^']+)'[\s\S]*?heroCrop:\s*(\{[^}]+\})/g;
+  let cm;
+  while ((cm = cropRe.exec(src))) {
+    const id = cm[1];
+    try {
+      const crop = new Function('return ' + cm[2])();
+      if (!heroData[id]) heroData[id] = {};
+      heroData[id][source + 'Crop'] = crop;
+    } catch(e) {}
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   HELPERS
+   ══════════════════════════════════════════════════════════════════════ */
+
+function imgUrl(folder, stem) { return `${IMG_BASE}${folder}/images/webp/${stem}.webp`; }
+
+function ed(text, path) {
+  const v = (text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return `<span contenteditable="true" data-path="${path}" data-orig="${v}">${v}</span>`;
+}
+
+function setNested(obj, path, val) {
+  const parts = path.split('.');
+  const pid = parts.shift();
+  let t = obj[pid];
+  for (let i = 0; i < parts.length - 1; i++) t = t[isNaN(parts[i]) ? parts[i] : +parts[i]];
+  t[isNaN(parts.at(-1)) ? parts.at(-1) : +parts.at(-1)] = val;
+}
+
+function getNested(obj, path) {
+  const parts = path.split('.');
+  const pid = parts.shift();
+  let t = obj[pid];
+  for (const k of parts) t = t[isNaN(k) ? k : +k];
+  return t;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   RENDER
+   ══════════════════════════════════════════════════════════════════════ */
+
+function renderCell(cell, folder, cp) {
+  const replaced = replacedImages[cp];
+  const src = replaced ? replaced.url : imgUrl(folder, cell.img);
+  const badge = replaced ? '<span class="replaced-badge">NEW</span>' : '';
+  const cr = cell.crop || null;
+  const hasCrop = !!cr;
+  const s = cr ? cr.s : 1, x = cr ? cr.x : 50, y = cr ? cr.y : 50;
+  const cropStyle = hasCrop ? ` style="object-fit:cover;transform:scale(${s});transform-origin:${x}% ${y}%"` : '';
+  const cropCls = hasCrop ? ' is-cropped' : '';
+  const cellCls = hasCrop ? ' crop-active' : '';
+
+  let cropHtml = `<div class="crop-controls">
+    <label class="crop-toggle-row"><input type="checkbox" data-crop-toggle="${cp}" ${hasCrop ? 'checked' : ''}><span>crop</span></label>`;
+  if (hasCrop) {
+    cropHtml += `<span class="crop-info">${s.toFixed(2)}× · ${x}%, ${y}%</span>`;
+    cropHtml += `<button class="crop-reset-btn" data-crop-reset="${cp}">reset</button>`;
+  }
+  cropHtml += '</div>';
+
+  return `<div class="img-cell${cellCls}" data-crop-cell="${hasCrop ? cp : ''}">
+    <img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}" class="${cropCls}"${cropStyle}
+      onerror="this.outerHTML='<div class=img-missing data-cell-path=\\'${cp}\\' data-folder=\\'${folder}\\'>click to add: ${cell.img}</div>'">
+    <span class="replace-hint">${hasCrop ? 'drag to pan · scroll to zoom' : 'click to replace'}</span>
+    ${badge}
+    <div class="img-cap">${ed(cell.cap, cp+'.cap')}</div>
+    ${cropHtml}
+    <div class="img-stem">${cell.img}</div>
+  </div>`;
+}
+
+function renderRow(row, folder, rp) {
+  const draft = layoutDrafts[rp];
+  const displayKind = draft ? draft.kind : (row.kind || 'fullbleed');
+  const displayCells = draft ? draft.cells : (row.cells || []);
+  const isDraft = !!draft;
+  const cols = displayKind === 'strip' ? displayCells.length : 1;
+  const style = displayKind === 'strip' ? ` style="grid-template-columns:repeat(${cols},1fr)"` : '';
+
+  let h = `<div class="img-row-wrap ${isDraft ? 'is-draft' : ''}">`;
+  if (isDraft) h += '<span class="draft-badge">PREVIEW</span>';
+
+  // controls
+  h += `<div class="row-controls">`;
+  h += `<span class="row-ctrl-label">Layout:</span>`;
+  h += `<select class="row-kind-select" data-row-path="${rp}" data-orig-kind="${row.kind || 'fullbleed'}">`;
+  for (const k of KINDS) h += `<option value="${k}" ${k === displayKind ? 'selected' : ''}>${k}</option>`;
+  h += `</select>`;
+  if (displayKind === 'strip') {
+    h += `<button class="row-ctrl-btn" data-action="add-cell" data-row-path="${rp}">+ cell</button>`;
+    if (displayCells.length > 2) h += `<button class="row-ctrl-btn danger" data-action="rm-cell" data-row-path="${rp}">− cell</button>`;
+  }
+  if (isDraft) h += `<button class="row-ctrl-btn" data-action="discard-draft" data-row-path="${rp}">discard</button>`;
+  h += `</div>`;
+
+  h += `<div class="img-row ${displayKind}"${style}>`;
+  displayCells.forEach((c, ci) => { h += renderCell(c, folder, rp+'.cells.'+ci); });
+  h += '</div>';
+
+  const capVal = draft ? (draft.cap !== undefined ? draft.cap : null) : row.cap;
+  if (capVal !== undefined && capVal !== null) h += `<div class="row-cap">${ed(capVal, rp+'.cap')}</div>`;
+  h += '</div>';
+  return h;
+}
+
+function renderHeroSection(id) {
+  const heroes = heroData[id];
+  if (!heroes) return '';
+
+  let h = '<div class="hero-section"><div class="section-label">Cover Images (network & specimens)</div><div class="hero-grid">';
+
+  for (const source of ['network', 'specimens']) {
+    const path = heroes[source];
+    if (!path) continue;
+    const replaced = replacedImages[`hero:${id}:${source}`];
+    const src = replaced ? replaced.url : path;
+    const badge = replaced ? '<span class="replaced-badge" style="position:absolute;top:22px;left:4px">NEW</span>' : '';
+    const cropKey = source + 'Crop';
+    const cr = heroes[cropKey] || null;
+    const hasCrop = !!cr;
+    const s = cr ? cr.s : 1, x = cr ? cr.x : 50, y = cr ? cr.y : 50;
+    const cropStyle = hasCrop ? ` style="object-fit:cover;transform:scale(${s});transform-origin:${x}% ${y}%"` : '';
+    const hcKey = `hero:${id}:${source}`;
+
+    let cropHtml = `<div class="crop-controls">
+      <label class="crop-toggle-row"><input type="checkbox" data-crop-toggle="${hcKey}" ${hasCrop ? 'checked' : ''}><span>crop</span></label>`;
+    if (hasCrop) {
+      cropHtml += `<span class="crop-info">${s.toFixed(2)}× · ${Math.round(x)}%, ${Math.round(y)}%</span>`;
+      cropHtml += `<button class="crop-reset-btn" data-crop-reset="${hcKey}">reset</button>`;
+    }
+    cropHtml += '</div>';
+
+    h += `<div class="hero-card${hasCrop ? ' crop-active' : ''}" data-crop-cell="${hasCrop ? hcKey : ''}" data-hero-crop-key="${hcKey}">
+      <div class="hero-card-label">${source}</div>
+      <div class="hero-img-wrap">
+        <img src="${src}" alt="" loading="lazy" data-hero-id="${id}" data-hero-source="${source}"${cropStyle}
+          onerror="this.style.minHeight='80px';this.style.border='1px dashed #7f1d1d'">
+        <span class="replace-hint">${hasCrop ? 'drag to pan · scroll to zoom' : 'click to replace'}</span>
+        ${badge}
+      </div>
+      ${cropHtml}
+      <div class="hero-path">${path}</div>
+    </div>`;
+  }
+
+  h += '</div></div>';
+  return h;
+}
+
+function showProject(id) {
+  currentId = id;
+  const d = data[id], base = id;
+  const idx = order.indexOf(id);
+  const prevId = idx > 0 ? order[idx-1] : null;
+  const nextId = idx < order.length-1 ? order[idx+1] : null;
+
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.id === id));
+
+  let h = '';
+  h += `<div class="proj-no">${ed(d.no, base+'.no')}</div>`;
+  h += `<div class="proj-name">${ed(d.name, base+'.name')}</div>`;
+  h += `<div class="proj-binomial">${ed(d.binomial, base+'.binomial')}</div>`;
+  h += `<div class="proj-kind">${ed(d.kind, base+'.kind')}</div>`;
+  h += `<div class="proj-meta">${ed(d.meta, base+'.meta')}</div>`;
+  h += `<div class="proj-abstract">${ed(d.abstract, base+'.abstract')}</div>`;
+
+  // hero images
+  h += renderHeroSection(id);
+
+  // metadata
+  if (d.metadata?.length) {
+    h += '<div class="meta-table">';
+    d.metadata.forEach(([k,v],i) => { h += `<div class="meta-row"><div class="meta-key">${ed(k,base+'.metadata.'+i+'.0')}</div><div class="meta-val">${ed(v,base+'.metadata.'+i+'.1')}</div></div>`; });
+    h += '</div>';
+  }
+
+  if (d.intro?.length) {
+    h += '<div class="section-label">Intro</div>';
+    d.intro.forEach((p,i) => { h += `<div class="intro-prose">${ed(p,base+'.intro.'+i)}</div>`; });
+  }
+
+  (d.chapters||[]).forEach((ch,ci) => {
+    const cp = base+'.chapters.'+ci;
+    h += '<div class="chapter">';
+    h += `<div class="ch-note">${ed(ch.note,cp+'.note')}</div>`;
+    h += `<div class="ch-title">${ed(ch.title,cp+'.title')}</div>`;
+    (ch.prose||[]).forEach((p,pi) => { h += `<div class="ch-prose">${ed(p,cp+'.prose.'+pi)}</div>`; });
+    (ch.rows||[]).forEach((row,ri) => { h += renderRow(row, d.folder, cp+'.rows.'+ri); });
+    h += '</div>';
+  });
+
+  if (d.reflection) {
+    h += '<div class="reflection"><div class="refl-label">Reflection</div>';
+    h += `<div class="refl-title">${ed(d.reflection.title,base+'.reflection.title')}</div>`;
+    (d.reflection.paragraphs||[]).forEach((p,i) => { h += `<div class="refl-para">${ed(p,base+'.reflection.paragraphs.'+i)}</div>`; });
+    h += '</div>';
+  }
+
+  if (d.credits?.length) {
+    h += '<div class="credits"><div class="credits-label">Credits</div><div class="meta-table">';
+    d.credits.forEach(([k,v],i) => { h += `<div class="meta-row"><div class="meta-key">${ed(k,base+'.credits.'+i+'.0')}</div><div class="meta-val">${ed(v,base+'.credits.'+i+'.1')}</div></div>`; });
+    h += '</div></div>';
+  }
+
+  h += '<div class="page-nav">';
+  h += prevId ? `<a data-nav="${prevId}">← prev<span class="nav-name">${data[prevId].name}</span></a>` : '<span></span>';
+  h += nextId ? `<a data-nav="${nextId}">next →<span class="nav-name">${data[nextId].name}</span></a>` : '<span></span>';
+  h += '</div>';
+
+  document.getElementById('page').innerHTML = h;
+  window.scrollTo(0, 0);
+  attachAll();
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EVENT BINDING
+   ══════════════════════════════════════════════════════════════════════ */
+
+function attachAll() {
+  attachEditable();
+  attachNav();
+  attachImageClick();
+  attachHeroClick();
+  attachRowControls();
+  attachCropControls();
+}
+
+function getCropObj(key) {
+  if (key.startsWith('hero:')) {
+    const [, id, source] = key.split(':');
+    return heroData[id]?.[source + 'Crop'] || null;
+  }
+  return getNested(data, key).crop || null;
+}
+function setCropObj(key, val) {
+  if (key.startsWith('hero:')) {
+    const [, id, source] = key.split(':');
+    if (val) heroData[id][source + 'Crop'] = val;
+    else delete heroData[id][source + 'Crop'];
+  } else {
+    const cell = getNested(data, key);
+    if (val) cell.crop = val;
+    else delete cell.crop;
+  }
+}
+
+function attachCropControls() {
+  // toggle crop on/off
+  document.querySelectorAll('[data-crop-toggle]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const cp = cb.dataset.cropToggle;
+      setCropObj(cp, cb.checked ? { s: 1, x: 50, y: 50 } : null);
+      markCropEdit(cp);
+      const sy = window.scrollY;
+      showProject(currentId);
+      window.scrollTo(0, sy);
+      updateStatus();
+    });
+  });
+
+  // reset button
+  document.querySelectorAll('[data-crop-reset]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cp = btn.dataset.cropReset;
+      const cr = getCropObj(cp);
+      if (cr) { cr.s = 1; cr.x = 50; cr.y = 50; }
+      markCropEdit(cp);
+      const sy = window.scrollY;
+      showProject(currentId);
+      window.scrollTo(0, sy);
+      updateStatus();
+    });
+  });
+
+  // drag-to-pan on all crop-active elements (img-cell and hero-card)
+  document.querySelectorAll('.crop-active[data-crop-cell]').forEach(el => {
+    const cp = el.dataset.cropCell;
+    const img = el.querySelector('img');
+    if (!img || !cp) return;
+
+    let dragging = false, startX, startY, startOx, startOy;
+
+    img.addEventListener('mousedown', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      dragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      const cr = getCropObj(cp);
+      startOx = cr.x;
+      startOy = cr.y;
+    });
+
+    window.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const cr = getCropObj(cp);
+      if (!cr) { dragging = false; return; }
+      const rect = el.getBoundingClientRect();
+      const dx = (e.clientX - startX) / rect.width * 100;
+      const dy = (e.clientY - startY) / rect.height * 100;
+      cr.x = Math.max(0, Math.min(100, startOx - dx));
+      cr.y = Math.max(0, Math.min(100, startOy - dy));
+      img.style.transformOrigin = `${cr.x}% ${cr.y}%`;
+      const info = el.querySelector('.crop-info');
+      if (info) info.textContent = `${cr.s.toFixed(2)}× · ${Math.round(cr.x)}%, ${Math.round(cr.y)}%`;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (dragging) {
+        dragging = false;
+        const cr = getCropObj(cp);
+        if (cr) { cr.x = +cr.x.toFixed(1); cr.y = +cr.y.toFixed(1); }
+        markCropEdit(cp);
+        updateStatus();
+      }
+    });
+
+    // scroll-to-zoom
+    const scrollTarget = el.classList.contains('hero-card') ? el.querySelector('.hero-img-wrap') : el;
+    scrollTarget.addEventListener('wheel', e => {
+      e.preventDefault();
+      const cr = getCropObj(cp);
+      if (!cr) return;
+      const delta = e.deltaY > 0 ? -0.05 : 0.05;
+      cr.s = +Math.max(1, Math.min(3, cr.s + delta)).toFixed(2);
+      img.style.transform = `scale(${cr.s})`;
+      img.style.transformOrigin = `${cr.x}% ${cr.y}%`;
+      const info = el.querySelector('.crop-info');
+      if (info) info.textContent = `${cr.s.toFixed(2)}× · ${Math.round(cr.x)}%, ${Math.round(cr.y)}%`;
+      markCropEdit(cp);
+      updateStatus();
+    }, { passive: false });
+  });
+}
+
+function markCropEdit(cp) {
+  let cur, orig;
+  if (cp.startsWith('hero:')) {
+    const [, id, source] = cp.split(':');
+    cur = heroData[id]?.[source + 'Crop'] || null;
+    orig = originalHeroData[id]?.[source + 'Crop'] || null;
+  } else {
+    cur = getNested(data, cp).crop || null;
+    orig = getNested(originalData, cp).crop || null;
+  }
+  const changed = JSON.stringify(cur) !== JSON.stringify(orig);
+  if (changed) cropEdits.add(cp);
+  else cropEdits.delete(cp);
+}
+
+function attachEditable() {
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    el.addEventListener('input', () => {
+      setNested(data, el.dataset.path, el.textContent);
+      el.classList.toggle('changed', el.textContent !== el.dataset.orig);
+      updateStatus();
+    });
+  });
+}
+
+function attachNav() {
+  document.querySelectorAll('[data-nav]').forEach(a => {
+    a.addEventListener('click', () => guardSwitch(a.dataset.nav));
+  });
+}
+
+/* ── image replacement ── */
+let pendingReplace = null;
+const fileInput = document.getElementById('file-input');
+
+function attachImageClick() {
+  document.querySelectorAll('.img-cell img, .img-missing').forEach(el => {
+    el.addEventListener('click', e => {
+      if (el.closest('.crop-active')) return;
+      e.preventDefault();
+      pendingReplace = { type: 'cell', path: el.dataset.cellPath };
+      fileInput.value = '';
+      fileInput.click();
+    });
+  });
+}
+
+function attachHeroClick() {
+  document.querySelectorAll('.hero-card img').forEach(el => {
+    el.addEventListener('click', e => {
+      if (el.closest('.crop-active')) return;
+      e.preventDefault();
+      pendingReplace = { type: 'hero', id: el.dataset.heroId, source: el.dataset.heroSource };
+      fileInput.value = '';
+      fileInput.click();
+    });
+  });
+}
+
+fileInput.addEventListener('change', () => {
+  if (!fileInput.files.length || !pendingReplace) return;
+  const file = fileInput.files[0];
+  const url = URL.createObjectURL(file);
+
+  if (pendingReplace.type === 'cell') {
+    const cp = pendingReplace.path;
+    replacedImages[cp] = { blob: file, url, name: file.name };
+    const imgEl = document.querySelector(`img[data-cell-path="${cp}"]`);
+    const missEl = document.querySelector(`.img-missing[data-cell-path="${cp}"]`);
+    if (imgEl) {
+      imgEl.src = url;
+      const cell = imgEl.closest('.img-cell');
+      if (cell && !cell.querySelector('.replaced-badge'))
+        cell.insertAdjacentHTML('beforeend', '<span class="replaced-badge">NEW</span>');
+    } else if (missEl) {
+      const folder = missEl.dataset.folder;
+      const div = document.createElement('div');
+      div.className = 'img-cell';
+      div.innerHTML = `<img src="${url}" alt="" data-cell-path="${cp}" data-folder="${folder}"><span class="replace-hint">click to replace</span><span class="replaced-badge">NEW</span>`;
+      missEl.replaceWith(div);
+      div.querySelector('img').addEventListener('click', e => { e.preventDefault(); pendingReplace = { type:'cell', path:cp }; fileInput.value=''; fileInput.click(); });
+    }
+  } else if (pendingReplace.type === 'hero') {
+    const key = `hero:${pendingReplace.id}:${pendingReplace.source}`;
+    replacedImages[key] = { blob: file, url, name: file.name };
+    const imgEl = document.querySelector(`img[data-hero-id="${pendingReplace.id}"][data-hero-source="${pendingReplace.source}"]`);
+    if (imgEl) {
+      imgEl.src = url;
+      const card = imgEl.closest('.hero-card');
+      if (card && !card.querySelector('.replaced-badge'))
+        card.insertAdjacentHTML('beforeend', '<span class="replaced-badge" style="position:absolute;top:22px;left:4px">NEW</span>');
+    }
+  }
+
+  updateStatus();
+  pendingReplace = null;
+});
+
+/* ── row layout controls (draft system) ── */
+function attachRowControls() {
+  document.querySelectorAll('.row-kind-select').forEach(sel => {
+    sel.addEventListener('change', () => {
+      const rp = sel.dataset.rowPath;
+      const newKind = sel.value;
+      const origRow = getNested(data, rp);
+      const origKind = origRow.kind || 'fullbleed';
+
+      if (newKind === origKind && !layoutDrafts[rp]) return;
+
+      if (newKind === origKind) {
+        delete layoutDrafts[rp];
+      } else {
+        const baseCells = layoutDrafts[rp] ? layoutDrafts[rp].cells : JSON.parse(JSON.stringify(origRow.cells || []));
+        const singleKinds = ['fullbleed', 'portrait', 'scrollable'];
+        const targetLen = singleKinds.includes(newKind) ? 1 : newKind === 'pair' ? 2 : Math.max(baseCells.length, 3);
+        while (baseCells.length < targetLen) baseCells.push({ img: 'new-image', cap: '' });
+        if (newKind !== 'strip') while (baseCells.length > targetLen) baseCells.pop();
+
+        layoutDrafts[rp] = {
+          kind: newKind,
+          cells: baseCells,
+          cap: newKind === 'strip' ? (origRow.cap || '') : undefined,
+        };
+      }
+
+      showProject(currentId);
+      updateStatus();
+    });
+  });
+
+  document.querySelectorAll('[data-action="add-cell"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rp = btn.dataset.rowPath;
+      const draft = layoutDrafts[rp] || { kind: getNested(data, rp).kind, cells: JSON.parse(JSON.stringify(getNested(data, rp).cells)) };
+      draft.cells.push({ img: 'new-image', cap: '' });
+      layoutDrafts[rp] = draft;
+      showProject(currentId);
+      updateStatus();
+    });
+  });
+
+  document.querySelectorAll('[data-action="rm-cell"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rp = btn.dataset.rowPath;
+      const draft = layoutDrafts[rp];
+      if (draft && draft.cells.length > 2) { draft.cells.pop(); showProject(currentId); updateStatus(); }
+    });
+  });
+
+  document.querySelectorAll('[data-action="discard-draft"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      delete layoutDrafts[btn.dataset.rowPath];
+      showProject(currentId);
+      updateStatus();
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SAVE — commit drafts to data
+   ══════════════════════════════════════════════════════════════════════ */
+
+function doSave() {
+  let saved = 0;
+
+  // commit layout drafts
+  for (const [rp, draft] of Object.entries(layoutDrafts)) {
+    const row = getNested(data, rp);
+    row.kind = draft.kind;
+    row.cells = draft.cells;
+    if (draft.cap !== undefined) row.cap = draft.cap;
+    else delete row.cap;
+    saved++;
+  }
+  Object.keys(layoutDrafts).forEach(k => delete layoutDrafts[k]);
+
+  showProject(currentId);
+  updateStatus();
+  if (saved) {
+    const btn = document.getElementById('btn-save');
+    btn.textContent = `Saved ${saved}`;
+    setTimeout(() => { btn.textContent = 'Save ✓'; }, 1500);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATUS
+   ══════════════════════════════════════════════════════════════════════ */
+
+function updateStatus() {
+  const textChanges = document.querySelectorAll('.changed').length;
+  const imgChanges = Object.keys(replacedImages).length;
+  const draftCount = Object.keys(layoutDrafts).length;
+  const cropCount = cropEdits.size;
+  const n = textChanges + imgChanges + draftCount + cropCount;
+  const parts = [];
+  if (textChanges) parts.push(`${textChanges} text`);
+  if (imgChanges)  parts.push(`${imgChanges} img`);
+  if (cropCount)   parts.push(`${cropCount} crop`);
+  if (draftCount)  parts.push(`${draftCount} layout preview`);
+  const s = document.getElementById('status');
+  s.textContent = n ? parts.join(' · ') : 'No changes';
+  s.className = n ? 'status has-changes' : 'status';
+
+  const saveBtn = document.getElementById('btn-save');
+  saveBtn.classList.toggle('pulse', draftCount > 0);
+}
+
+function hasUnsavedChanges() {
+  const textChanges = document.querySelectorAll('.changed').length;
+  const imgChanges = Object.keys(replacedImages).length;
+  const draftCount = Object.keys(layoutDrafts).length;
+  const cropCount = cropEdits.size;
+  return textChanges + imgChanges + draftCount + cropCount;
+}
+
+function guardSwitch(targetId) {
+  if (targetId === currentId) return;
+  const n = hasUnsavedChanges();
+  if (n > 0) {
+    const parts = [];
+    const tc = document.querySelectorAll('.changed').length;
+    const ic = Object.keys(replacedImages).length;
+    const dc = Object.keys(layoutDrafts).length;
+    const cc = cropEdits.size;
+    if (tc) parts.push(`${tc} text edit(s)`);
+    if (ic) parts.push(`${ic} image replacement(s)`);
+    if (cc) parts.push(`${cc} crop change(s)`);
+    if (dc) parts.push(`${dc} layout draft(s)`);
+    if (!confirm(`You have unsaved changes: ${parts.join(', ')}.\n\nSwitch project anyway? Changes will remain in memory but make sure to export before closing.`)) return;
+  }
+  showProject(targetId);
+}
+
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = order.map(id =>
+    `<button class="tab" data-id="${id}">${data[id].name}</button>`
+  ).join('');
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => guardSwitch(t.dataset.id));
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EXPORT
+   ══════════════════════════════════════════════════════════════════════ */
+
+function esc(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n'); }
+function pad(n) { return '  '.repeat(n); }
+function sv(v,l) {
+  if (v==null) return 'null';
+  if (typeof v==='string') return `'${esc(v)}'`;
+  if (typeof v==='number'||typeof v==='boolean') return String(v);
+  if (Array.isArray(v)) return sa(v,l);
+  return so(v,l);
+}
+function sa(a,l) {
+  if (!a.length) return '[]';
+  if (a.length<=2&&a.every(x=>typeof x==='string'||typeof x==='number')) return `[${a.map(x=>sv(x,0)).join(', ')}]`;
+  if (Array.isArray(a[0])&&a[0].length===2&&typeof a[0][0]==='string')
+    return `[\n${a.map(p=>pad(l+1)+`[${sv(p[0],0)},${' '.repeat(Math.max(1,12-p[0].length))}${sv(p[1],0)}],`).join('\n')}\n${pad(l)}]`;
+  if (a.every(x=>typeof x==='string')) return `[\n${a.map(x=>pad(l+1)+sv(x,l+1)+',').join('\n')}\n${pad(l)}]`;
+  return `[\n${a.map(x=>pad(l+1)+sv(x,l+1)+',').join('\n')}\n${pad(l)}]`;
+}
+function so(o,l) {
+  const e=Object.entries(o);
+  if (e.length<=4&&e.every(([,v])=>typeof v==='string'||typeof v==='boolean'||typeof v==='number')) return `{ ${e.map(([k,v])=>`${k}: ${sv(v,0)}`).join(', ')} }`;
+  if (o.img!==undefined) { let s=`{ img: ${sv(o.img,0)}, cap: ${sv(o.cap,0)}`; if(o.crop)s+=`, crop: ${sv(o.crop,0)}`; return s+' }'; }
+  if (o.kind&&o.cells) { let s=`{ kind: ${sv(o.kind,0)}, cells: ${sv(o.cells,l+1)}`; if(o.cap)s+=`, cap: ${sv(o.cap,0)}`; return s+' }'; }
+  return `{\n${e.map(([k,v])=>pad(l+1)+`${k}: ${sv(v,l+1)},`).join('\n')}\n${pad(l)}}`;
+}
+
+function doPreview() {
+  const previewData = JSON.parse(JSON.stringify(data));
+
+  // apply uncommitted layout drafts
+  for (const [rp, draft] of Object.entries(layoutDrafts)) {
+    const parts = rp.split('.');
+    const pid = parts.shift();
+    let target = previewData[pid];
+    for (let i = 0; i < parts.length - 1; i++) target = target[isNaN(parts[i]) ? parts[i] : +parts[i]];
+    const row = target[isNaN(parts.at(-1)) ? parts.at(-1) : +parts.at(-1)];
+    row.kind = draft.kind;
+    row.cells = draft.cells;
+    if (draft.cap !== undefined) row.cap = draft.cap;
+    else delete row.cap;
+  }
+
+  // inject replaced image blob URLs as _src overrides
+  for (const [key, entry] of Object.entries(replacedImages)) {
+    if (key.startsWith('hero:')) continue;
+    try {
+      const parts = key.split('.');
+      const pid = parts.shift();
+      let target = previewData[pid];
+      for (const k of parts) target = target[isNaN(k) ? k : +k];
+      target._src = entry.url;
+    } catch(e) {}
+  }
+
+  const win = window.open(`project-detail.html?project=${currentId}&preview=1`, '_blank');
+  window.addEventListener('message', function handler(e) {
+    if (e.data?.type === 'preview-ready') {
+      win.postMessage({ type: 'editor-preview', dossiers: previewData, order: order }, '*');
+      window.removeEventListener('message', handler);
+    }
+  });
+}
+
+function doExport() {
+  const dm = srcText.match(/const DOSSIERS\s*=\s*\{/);
+  let depth=0, end=dm.index;
+  for (let i=dm.index;i<srcText.length;i++){if(srcText[i]==='{')depth++;else if(srcText[i]==='}'){depth--;if(!depth){end=i+1;break;}}}
+  const blocks = order.map(id => {
+    const d=data[id];
+    return `\n    /* ================================================================\n       ${(d.name||id).toUpperCase()}\n       ================================================================ */\n    '${id}': ${sv(d,2)},`;
+  });
+  const out = srcText.slice(0,dm.index)+`const DOSSIERS = {\n${blocks.join('\n')}\n  }`+srcText.slice(end);
+  dl(out, 'project-detail.js', 'text/javascript');
+
+  // export network.js / specimens.js if any hero crops changed
+  const hasHeroCrops = Object.values(heroData).some(h => h.networkCrop || h.specimensCrop);
+  const hadHeroCrops = Object.values(originalHeroData).some(h => h.networkCrop || h.specimensCrop);
+  if (hasHeroCrops || hadHeroCrops) {
+    dl(injectHeroCrops(netSrcText, 'network'), 'network.js', 'text/javascript');
+    dl(injectHeroCrops(specSrcText, 'specimens'), 'specimens.js', 'text/javascript');
+  }
+}
+
+function injectHeroCrops(src, source) {
+  let out = src;
+  // remove existing heroCrop lines
+  out = out.replace(/\s*heroCrop:\s*\{[^}]*\},?\s*\n?/g, '\n');
+  // inject heroCrop after hero: lines for each project that has one
+  for (const [id, h] of Object.entries(heroData)) {
+    const crop = h[source + 'Crop'];
+    if (!crop) continue;
+    const cropStr = `{ s: ${crop.s}, x: ${crop.x}, y: ${crop.y} }`;
+    const heroLineRe = new RegExp(`(id:\\s*'${id}'[\\s\\S]*?hero:\\s*.+?)([,\\s]*\\}|,\\s*\\n)`);
+    out = out.replace(heroLineRe, (match, before, after) => {
+      return before + `,\n      heroCrop: ${cropStr}` + after;
+    });
+  }
+  return out;
+}
+
+async function doExportImages() {
+  const keys = Object.keys(replacedImages);
+  if (!keys.length) return;
+  for (const key of keys) {
+    const entry = replacedImages[key];
+    let filename;
+    if (key.startsWith('hero:')) {
+      const [, id, source] = key.split(':');
+      const origPath = heroData[id]?.[source] || '';
+      filename = origPath.split('/').pop() || `hero-${id}-${source}.${entry.name.split('.').pop()}`;
+    } else {
+      const cell = getNested(data, key);
+      filename = `${cell.img}.${entry.name.split('.').pop()}`;
+    }
+    dl(null, filename, null, entry.url);
+    await new Promise(r => setTimeout(r, 300));
+  }
+}
+
+function dl(content, name, type, href) {
+  const a = document.createElement('a');
+  a.href = href || URL.createObjectURL(new Blob([content], {type}));
+  a.download = name;
+  a.click();
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════════════════════════════ */
+
+loadSource().then(() => {
+  renderTabs();
+  showProject(order[0]);
+  document.getElementById('btn-preview').onclick = doPreview;
+  document.getElementById('btn-export').onclick = async () => { doExport(); await doExportImages(); };
+  document.getElementById('btn-save').onclick = doSave;
+  document.getElementById('btn-reset').onclick = () => {
+    data = JSON.parse(JSON.stringify(originalData));
+    heroData = JSON.parse(JSON.stringify(originalHeroData));
+    Object.keys(replacedImages).forEach(k => { URL.revokeObjectURL(replacedImages[k].url); delete replacedImages[k]; });
+    Object.keys(layoutDrafts).forEach(k => delete layoutDrafts[k]);
+    cropEdits.clear();
+    showProject(currentId);
+    updateStatus();
+  };
+}).catch(e => {
+  document.getElementById('page').innerHTML = `<p style="color:#f87171;padding:3rem;font-family:monospace">${e.message}</p>`;
+});
+</script>
+
+</body>
+</html>

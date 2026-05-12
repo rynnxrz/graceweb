@@ -48,63 +48,63 @@
       kind: 'BIO-INTEGRATED RESEARCH',
       abstract: 'Architecture as participant in ecological cycle — mycelium and earth, computationally tuned for airflow and humidity.',
       xPct: 32, yPct: 11, peak: 'lg',
-      hero: 'mycoterra/images/webp/p19-img01.webp' },
+      hero: 'mycoterra/images/webp/myco-hero-render.webp' },
 
     { id: 'tide-rewoven',          name: 'Tide-ReWoven',          binomial: 'Marina contexta',
       year: '2025', site: 'Hong Kong',
       kind: 'BIO-INTEGRATED RESEARCH',
       abstract: 'Aberdeen waterfront re-imagined as a floating market that breathes with the tide. Algae-trained, GAN-driven membranes.',
       xPct: 70, yPct: 14, peak: 'lg',
-      hero: HERO_BASE + 'tide rewoven.jpeg' },
+      hero: HERO_BASE + 'tide-rewoven.webp' },
 
     { id: 'project-ecoflow',       name: 'Project EcoFlow',       binomial: 'Bryophyta aedicula',
       year: '2023', site: 'London · UK',
       kind: 'BIO-INTEGRATED RESEARCH',
       abstract: 'A water-retaining moss façade — tested against the heat-island of Oxford Street.',
       xPct: 84, yPct: 30, peak: 'md',
-      hero: HERO_BASE + 'project ecoflow.png' },
+      hero: HERO_BASE + 'project-ecoflow.webp' },
 
     { id: 'project-ultra-plant',   name: 'Project Ultra-Plant',   binomial: 'Symbiosis postnuclearis',
       year: '2022', site: 'Auckland · NZ',
       kind: 'SPECULATIVE ARCHITECTURE',
       abstract: 'A modular living organism. Humans and plants share habitat whose vein networks slowly restore the surrounding ecology.',
       xPct: 14, yPct: 32, peak: 'md',
-      hero: HERO_BASE + 'project ultra plant 2.png' },
+      hero: HERO_BASE + 'project-ultra-plant.webp' },
 
     { id: 'co-silo-ferry-station', name: 'Co-Silo Ferry Station', binomial: 'Silo coralinus',
       year: '2022', site: 'Auckland · NZ',
       kind: 'CIVIC ARCHITECTURE',
       abstract: 'Six fuel silos reversed — the ferry threshold becomes a meeting between human and reef.',
       xPct: 50, yPct: 48, peak: 'lg',
-      hero: HERO_BASE + 'co-slio ferry station.png' },
+      hero: HERO_BASE + 'co-silo-ferry-station.webp' },
 
     { id: 'heishui-river-resort',  name: 'Heishui River Resort',  binomial: 'Aquaria nigra',
       year: '2023', site: 'Guangxi · CN',
       kind: 'HOSPITALITY · PRACTICE',
       abstract: 'Hospitality grafted to the Blackwater. Concept stage with the design team; under construction.',
       xPct: 16, yPct: 64, peak: 'sm',
-      hero: HERO_BASE + 'herishui river resort.JPG' },
+      hero: HERO_BASE + 'heishui-river-resort.webp' },
 
     { id: 'les-chardonneuses',     name: 'Les-Chardonneuses',     binomial: 'Cardus couture',
       year: '2026', site: 'Paris · FR',
       kind: 'COUTURE · COLLABORATION',
       abstract: 'A couture headpiece for Germanier SS26 — the lifecycle of a flower as a runway-ready micro-structure.',
       xPct: 42, yPct: 70, peak: 'md',
-      hero: 'les-chardonneuses/images/webp/p08-img02.webp' },
+      hero: 'les-chardonneuses/images/webp/lc-hero-thistle.webp' },
 
     { id: 'seeds-of-change',       name: 'Seeds of Change',       binomial: 'Semina mutabilis',
       year: '2025', site: 'London · UK',
       kind: 'EXHIBITION · CURATION',
       abstract: 'Spatial and material setup of an immersive exhibition on the transformative power of nature.',
       xPct: 76, yPct: 65, peak: 'sm',
-      hero: HERO_BASE + 'seeds of change.JPG' },
+      hero: HERO_BASE + 'seeds-of-change.webp' },
 
     { id: 'neptunes-dawn',         name: "Neptune's Dawn",        binomial: 'Neptuni aurora',
       year: '2024', site: 'Shanghai · CN',
       kind: 'COMPETITION · GROUP',
       abstract: 'A submerged sunrise — Shanghai competition entry, designed with Muze Ouyang and Xinning Yu.',
       xPct: 60, yPct: 88, peak: 'sm',
-      hero: HERO_BASE + "neptune's dawn.png" },
+      hero: HERO_BASE + 'neptunes-dawn.webp' },
   ];
 
   /* --- Edges (kinship) -------------------------------------------- */
@@ -254,7 +254,7 @@
         <span class="net-mark-abstract">${n.abstract}</span>
       </span>
       <span class="net-mark-thumb" aria-hidden="true">
-        <img src="${heroSrc(n.hero)}" alt="" loading="${idx < 3 ? 'eager' : 'lazy'}" decoding="async">
+        <img src="${heroSrc(n.hero)}" alt="" loading="${idx < 3 ? 'eager' : 'lazy'}" decoding="async"${n.heroCrop ? ` style="transform:scale(${n.heroCrop.s||1});transform-origin:${n.heroCrop.x??50}% ${n.heroCrop.y??50}%"` : ''}>
       </span>
     `;
     root.appendChild(el);

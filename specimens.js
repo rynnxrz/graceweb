@@ -25,7 +25,7 @@
       aspect: '4-5',
       stagger: 0,
       tick: 'pl. 04 — riverine substrate',
-      hero: HERO_BASE + 'herishui river resort.JPG',
+      hero: HERO_BASE + 'heishui-river-resort.webp',
       abstract:
         'Hospitality grafted to the Blackwater. Dark stone, mountain-form, native vegetation — seasonal rooms set into the riparian edge.',
     },
@@ -40,7 +40,7 @@
       aspect: '3-4',
       stagger: 1,
       tick: 'pl. 08 — wearable micro-structure',
-      hero: BASE + 'les-chardonneuses/images/webp/p08-img02.webp',
+      hero: BASE + 'les-chardonneuses/images/webp/lc-hero-thistle.webp',
       abstract:
         'Headpiece for Germanier SS26. A wearable lifecycle — growth, collapse, decay — translated into a structurally stable, lightweight construction.',
     },
@@ -55,7 +55,7 @@
       aspect: '4-3',
       stagger: 2,
       tick: 'pl. 11 — display ecology',
-      hero: HERO_BASE + 'seeds of change.JPG',
+      hero: HERO_BASE + 'seeds-of-change.webp',
       abstract:
         'Spatial and material setup of an immersive environment — wall display layouts, mounting, and sourced organic materials co-developed with the curatorial team.',
     },
@@ -70,7 +70,7 @@
       aspect: '4-5',
       stagger: 1,
       tick: 'pl. 15 — chitosan membrane study',
-      hero: HERO_BASE + 'tide rewoven.jpeg',
+      hero: HERO_BASE + 'tide-rewoven.webp',
       abstract:
         'Aberdeen waterfront re-imagined as a floating market that breathes with the tide. Fishnet-chitosan composites, indexed to Micrasterias, shift in porosity through the day.',
     },
@@ -85,7 +85,7 @@
       aspect: '3-4',
       stagger: 2,
       tick: 'pl. 19 — mycelial substrate',
-      hero: BASE + 'mycoterra/images/webp/p19-img01.webp',
+      hero: BASE + 'mycoterra/images/webp/myco-hero-render.webp',
       abstract:
         'Architecture as participant in ecological cycle. Mycelium and earth, computationally tuned for airflow and humidity, sized to grow into the building.',
     },
@@ -100,7 +100,7 @@
       aspect: '4-3',
       stagger: 0,
       tick: 'pl. 27 — reef–quay interface',
-      hero: HERO_BASE + 'co-slio ferry station.png',
+      hero: HERO_BASE + 'co-silo-ferry-station.webp',
       abstract:
         'Reclaimed fuel silos translated into a ferry threshold between human and reef. CO₂-driven acidification taught the form: porous, decaying, slowly opening to the bay.',
     },
@@ -115,7 +115,7 @@
       aspect: '3-4',
       stagger: 1,
       tick: 'pl. 33 — moss-vault detail',
-      hero: HERO_BASE + 'project ecoflow.png',
+      hero: HERO_BASE + 'project-ecoflow.webp',
       abstract:
         'A water-retaining moss façade for dense urban skin — tested against the heat-island of Oxford Street. Surface area, not floor area, becomes the unit.',
     },
@@ -130,7 +130,7 @@
       aspect: '4-5',
       stagger: 2,
       tick: 'pl. 36 — modular living organism',
-      hero: HERO_BASE + 'project ultra plant 2.png',
+      hero: HERO_BASE + 'project-ultra-plant.webp',
       abstract:
         'Buildings as living organisms. Humans and plants share a modular system that grows and dies; survivors of nuclear loss find a quieter, symbiotic role.',
     },
@@ -145,7 +145,7 @@
       aspect: '4-5',
       stagger: 0,
       tick: 'pl. 38 — submerged dawn',
-      hero: HERO_BASE + "neptune's dawn.png",
+      hero: HERO_BASE + 'neptunes-dawn.webp',
       abstract:
         'A Shanghai competition entry — a quieter, marine-rooted sunrise. With Muze Ouyang and Xinning Yu.',
     },
@@ -165,7 +165,7 @@
        aria-label="${s.name} — open dossier">
       <div class="specimen-plate">
         <div class="specimen-plate-inner">
-          <img src="${s.hero}" alt="${s.name}" loading="${i < 3 ? 'eager' : 'lazy'}" decoding="async">
+          <img src="${s.hero}" alt="${s.name}" loading="${i < 3 ? 'eager' : 'lazy'}" decoding="async"${s.heroCrop ? ` style="transform:scale(${s.heroCrop.s||1});transform-origin:${s.heroCrop.x??50}% ${s.heroCrop.y??50}%"` : ''}>
           <canvas aria-hidden="true"></canvas>
           <span class="plate-corner tl"></span>
           <span class="plate-corner tr"></span>

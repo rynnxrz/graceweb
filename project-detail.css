@@ -158,13 +158,13 @@ body { overflow-x: hidden; }
   background: var(--ink);
 }
 .s-intro::before {
-  /* Background image (hero) sits behind, dimmed. Filled in by JS. */
   content: "";
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
+  background-position: var(--bg-pos, center);
   background-image: var(--bg-img, none);
+  transform: scale(var(--bg-scale, 1));
   opacity: 0;
   filter: brightness(0.42) saturate(0.92);
   transition: opacity 1.6s var(--ease);
@@ -264,6 +264,9 @@ body { overflow-x: hidden; }
   object-position: center;
   display: block;
 }
+.s-image .s-image-media {
+  overflow: hidden;
+}
 
 .s-image .s-cap,
 .s-pair  .s-cap,
@@ -308,6 +311,82 @@ body { overflow-x: hidden; }
   font-size: 15px;
   letter-spacing: normal;
   line-height: 1.45;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Portrait section — tall image centred in a narrow column            */
+/* ------------------------------------------------------------------ */
+
+.s-portrait {
+  background: var(--void);
+}
+.s-portrait .s-portrait-media {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 0;
+  overflow: hidden;
+}
+.s-portrait img,
+.s-portrait video {
+  max-height: 92vh;
+  max-width: 50vw;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+@media (max-width: 720px) {
+  .s-portrait img,
+  .s-portrait video {
+    max-width: 85vw;
+  }
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Scrollable section — tall image at natural aspect, free scroll      */
+/* ------------------------------------------------------------------ */
+
+.s-scrollable {
+  min-height: auto;
+  height: auto;
+  overflow: visible;
+  padding: 6vh 0;
+  flex-direction: column;
+  align-items: center;
+  background: var(--void);
+}
+.s-scrollable .s-scrollable-media {
+  position: relative;
+  width: 80vw;
+  max-width: 1100px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.s-scrollable img,
+.s-scrollable video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+.s-scrollable .s-cap {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  margin-top: 1.5rem;
+  opacity: 1;
+  transform: none;
+  max-width: 80vw;
+}
+@media (max-width: 720px) {
+  .s-scrollable .s-scrollable-media { width: 92vw; }
+  .s-scrollable .s-cap { max-width: 92vw; }
 }
 
 

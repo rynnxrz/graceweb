@@ -1,0 +1,62 @@
+[
+  {
+    "id": "eco-001",
+    "status": "missing",
+    "project": "project-ecoflow",
+    "stem": "p32-img01",
+    "caption": "Streetscape collage — moss-facade prototype on Oxford Street",
+    "source_file": "project-detail.js",
+    "source_line": 794,
+    "expected_path": "public/images/projects/extracted-portfolio/project-ecoflow/images/webp/p32-img01.webp",
+    "notes": "Originals are PDFs (graceshen_designportfolio_compress-*.pdf), not images. Need to identify which PDF page contains this image and extract as PNG.",
+    "fix_date": null
+  },
+  {
+    "id": "eco-002",
+    "status": "missing",
+    "project": "project-ecoflow",
+    "stem": "p33-img04",
+    "caption": "Stage 1 — moss-patch perspective, early growth",
+    "source_file": "project-detail.js",
+    "source_line": 806,
+    "expected_path": "public/images/projects/extracted-portfolio/project-ecoflow/images/webp/p33-img04.webp",
+    "notes": "Same PDF source issue as eco-001.",
+    "fix_date": null
+  },
+  {
+    "id": "eco-003",
+    "status": "missing",
+    "project": "project-ecoflow",
+    "stem": "p33-img16",
+    "caption": "Stage 3 — moss-patch perspective, mature growth",
+    "source_file": "project-detail.js",
+    "source_line": 807,
+    "expected_path": "public/images/projects/extracted-portfolio/project-ecoflow/images/webp/p33-img16.webp",
+    "notes": "Same PDF source issue as eco-001.",
+    "fix_date": null
+  },
+  {
+    "id": "myco-hero-fix",
+    "status": "fixed",
+    "project": "mycoterra",
+    "stem": "p19-img01 → myco-hero-render",
+    "caption": "Network + specimens hero thumbnail",
+    "source_file": "network.js, specimens.js",
+    "source_line": null,
+    "expected_path": "public/images/projects/extracted-portfolio/mycoterra/images/webp/myco-hero-render.webp",
+    "notes": "Old stem p19-img01 replaced with myco-hero-render after webp regeneration.",
+    "fix_date": "2026-05-11"
+  },
+  {
+    "id": "lc-hero-fix",
+    "status": "fixed",
+    "project": "les-chardonneuses",
+    "stem": "p08-img02 → lc-hero-thistle",
+    "caption": "Network + specimens hero thumbnail",
+    "source_file": "network.js, specimens.js",
+    "source_line": null,
+    "expected_path": "public/images/projects/extracted-portfolio/les-chardonneuses/images/webp/lc-hero-thistle.webp",
+    "notes": "Old stem p08-img02 replaced with lc-hero-thistle after webp regeneration.",
+    "fix_date": "2026-05-11"
+  }
+]
