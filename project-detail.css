@@ -186,7 +186,7 @@ body { overflow-x: hidden; }
   content: "";
   position: absolute;
   inset: 0;
-  background-size: cover;
+  background-size: var(--bg-size, cover);
   background-position: var(--bg-pos, center);
   background-image: var(--bg-img, none);
   transform: scale(var(--bg-scale, 1));

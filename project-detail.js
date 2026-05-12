@@ -39,7 +39,7 @@
                 { img: 'heishui-hero-resort', cap: 'Resort across the Blackwater — slate roofs into mountain' },
               ] },
             { kind: 'pair', cells: [
-                { img: 'heishui-axo-zone', cap: 'Site axonometric — zone analysis, river substrate' },
+                { img: 'heishui-axo-zone', cap: 'Site axonometric — zone analysis, river substrate', crop: { x: 50.7, y: 0, w: 49.3, h: 100, nat: [1400, 990] } },
                 { img: 'heishui-site-map', cap: 'Master plan — Blackwater watershed' },
               ] },
           ],
@@ -55,8 +55,9 @@
             { kind: 'strip', cells: [
                 { img: 'heishui-render-01', cap: 'glass pavilions, riverbank' },
                 { img: 'heishui-render-02', cap: 'pathway through trees' },
-                { img: 'heishui-render-04', cap: 'aerial, valley scatter' },
-              ], cap: 'Three postures of the same architecture — from the river, from the path, from above.' },
+                { img: '20250621153337', cap: '', _src: 'blob:http://localhost:8080/369e907f-8000-4cbe-9638-dc0328cece1f' },
+                { img: 'new-image', cap: '' },
+              ] },
           ],
         },
         {
@@ -1008,9 +1009,20 @@
       return `<video src="${vsrc}" ${poster ? `poster="${poster}"` : ''} autoplay loop muted playsinline preload="metadata" aria-label="${escapeHtml(cell.cap || '')}"></video>`;
     }
     const src = cell._src || imgSrc(d.folder, cell.img);
+    const cr = cell.crop;
+
+    if (cr && cr.w !== undefined) {
+      const [nw, nh] = cr.nat || [];
+      const ratio = nw && nh ? ((cr.w * nw) / (cr.h * nh)).toFixed(4) : 'auto';
+      const imgW = (100 / cr.w * 100).toFixed(2);
+      const imgL = (-cr.x / cr.w * 100).toFixed(2);
+      const imgT = (-cr.y / cr.h * 100).toFixed(2);
+      return `<div class="s-crop" style="aspect-ratio:${ratio}"><img src="${src}" alt="${escapeHtml(cell.cap || '')}" style="width:${imgW}%;left:${imgL}%;top:${imgT}%" loading="lazy" decoding="async"></div>`;
+    }
+
     let cropAttr = '';
-    if (cell.crop) {
-      const s = cell.crop.s || 1, x = cell.crop.x ?? 50, y = cell.crop.y ?? 50;
+    if (cr) {
+      const s = cr.s || 1, x = cr.x ?? 50, y = cr.y ?? 50;
       cropAttr = ` class="crop" style="object-fit:cover;transform:scale(${s});transform-origin:${x}% ${y}%"`;
     }
     return `<img src="${src}" alt="${escapeHtml(cell.cap || '')}"${cropAttr} loading="lazy" decoding="async">`;
@@ -1105,8 +1117,16 @@
     const cr = firstCell?.crop;
     let cssVars = bgUrl ? `--bg-img: url('${bgUrl}');` : '';
     if (cr) {
-      cssVars += `--bg-scale: ${cr.s || 1};`;
-      cssVars += `--bg-pos: ${cr.x ?? 50}% ${cr.y ?? 50}%;`;
+      if (cr.w !== undefined) {
+        const sizeW = (100 / cr.w * 100).toFixed(2);
+        const sizeH = (100 / cr.h * 100).toFixed(2);
+        const posX  = cr.w < 100 ? (cr.x / (100 - cr.w) * 100).toFixed(2) : 50;
+        const posY  = cr.h < 100 ? (cr.y / (100 - cr.h) * 100).toFixed(2) : 50;
+        cssVars += `--bg-scale: 1; --bg-pos: ${posX}% ${posY}%; --bg-size: ${sizeW}% ${sizeH}%;`;
+      } else {
+        cssVars += `--bg-scale: ${cr.s || 1};`;
+        cssVars += `--bg-pos: ${cr.x ?? 50}% ${cr.y ?? 50}%;`;
+      }
     }
     const styleAttr = cssVars ? `style="${cssVars}"` : '';
     return `
