@@ -1118,11 +1118,9 @@
     let cssVars = bgUrl ? `--bg-img: url('${bgUrl}');` : '';
     if (cr) {
       if (cr.w !== undefined) {
-        const sizeW = (100 / cr.w * 100).toFixed(2);
-        const sizeH = (100 / cr.h * 100).toFixed(2);
-        const posX  = cr.w < 100 ? (cr.x / (100 - cr.w) * 100).toFixed(2) : 50;
-        const posY  = cr.h < 100 ? (cr.y / (100 - cr.h) * 100).toFixed(2) : 50;
-        cssVars += `--bg-scale: 1; --bg-pos: ${posX}% ${posY}%; --bg-size: ${sizeW}% ${sizeH}%;`;
+        const cx = (cr.x + cr.w / 2).toFixed(2);
+        const cy = (cr.y + cr.h / 2).toFixed(2);
+        cssVars += `--bg-scale: 1; --bg-pos: ${cx}% ${cy}%; --bg-size: cover;`;
       } else {
         cssVars += `--bg-scale: ${cr.s || 1};`;
         cssVars += `--bg-pos: ${cr.x ?? 50}% ${cr.y ?? 50}%;`;
@@ -1212,7 +1210,9 @@
     const prevId = orderArr[(idx - 1 + orderArr.length) % orderArr.length];
     const nextId = orderArr[(idx + 1) % orderArr.length];
 
-    const firstCell = findFirstImageCell(d);
+    const firstCell = d.intro?.img
+      ? { img: d.intro.img, crop: d.intro.crop, _src: d.intro._src }
+      : findFirstImageCell(d);
     const sections = [];
     sections.push(introSection(d, firstCell));
 

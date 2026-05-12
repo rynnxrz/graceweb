@@ -487,6 +487,8 @@ body { overflow-x: hidden; }
   position: relative;
   overflow: hidden;
   width: 100%;
+  flex: 0 0 auto;
+  align-self: center;
 }
 .s-crop img {
   position: absolute;

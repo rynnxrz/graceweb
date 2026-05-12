@@ -146,6 +146,16 @@
   .crop-preview-wrap { position: relative; overflow: hidden; border-radius: 2px; }
   .crop-preview-wrap img { position: absolute; top: 0; left: 0; display: block; height: auto; }
 
+  /* ── visible-area dashed outline inside crop box ── */
+  .crop-visible-outline { position: absolute; border: 1.5px dashed #ffffff; outline: 1px solid rgba(0,0,0,.45); pointer-events: none; z-index: 1; display: none; box-sizing: border-box; }
+  .crop-visible-outline.show { display: block; }
+  .crop-visible-outline::after { content: attr(data-label); position: absolute; top: -20px; left: 0; font-family: 'SF Mono', monospace; font-size: 10px; background: rgba(0,0,0,.72); color: #fff; padding: 1px 5px; border-radius: 2px; white-space: nowrap; pointer-events: none; }
+
+  /* ── cell-frame: wraps crop preview with parent-context aspect ratio ── */
+  .cell-frame { position: relative; overflow: hidden; width: 100%; background: #000; }
+  .cell-frame > .crop-preview-wrap { width: 100%; flex: 0 0 auto; align-self: center; }
+  .cell-frame .frame-hint { position: absolute; bottom: 4px; left: 4px; font-family: 'SF Mono', monospace; font-size: 10px; background: rgba(0,0,0,.6); color: #fff; padding: 1px 5px; border-radius: 2px; pointer-events: none; }
+
   /* ── row controls ── */
   .row-controls { display: flex; align-items: center; gap: .4rem; margin-bottom: .4rem; }
   .row-kind-select { font-family: 'SF Mono', monospace; font-size: .75rem; background: #fff; color: #555; border: 1px solid #ddd; border-radius: 3px; padding: .3rem .5rem; cursor: pointer; appearance: none; -webkit-appearance: none; min-height: 32px; }
@@ -336,6 +346,20 @@ function getDisplayCell(cp) {
    RENDER
    ══════════════════════════════════════════════════════════════════════ */
 
+function getFrameAspect(cp) {
+  const rp = rowPathOf(cp);
+  if (!rp) return null;
+  const draft = layoutDrafts[rp];
+  let kind;
+  if (draft) kind = draft.kind;
+  else { try { kind = getNested(data, rp).kind; } catch { kind = null; } }
+  const vpAR = window.innerWidth / window.innerHeight;
+  if (kind === 'strip') return { ar: 3/2, label: 'strip 3:2' };
+  if (kind === 'pair')  return { ar: vpAR/2, label: 'pair half-viewport' };
+  if (kind === 'fullbleed' || kind == null) return { ar: vpAR, label: 'fullbleed viewport' };
+  return null;
+}
+
 function renderCell(cell, folder, cp) {
   if (cell._deleted) return '';
 
@@ -354,11 +378,17 @@ function renderCell(cell, folder, cp) {
     const imgW = (100 / w * 100).toFixed(2);
     const imgL = (-x / w * 100).toFixed(2);
     const imgT = (-y / h * 100).toFixed(2);
-    imgHtml = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio}">
+    const inner = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio}">
       <img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}"
         style="width:${imgW}%;left:${imgL}%;top:${imgT}%"
         onerror="this.parentElement.outerHTML='<div class=img-missing tabindex=0 role=button data-cell-path=\\'${cp}\\' data-folder=\\'${folder}\\'>add image: ${cell.img}</div>'">
     </div>`;
+    const frame = getFrameAspect(cp);
+    if (frame) {
+      imgHtml = `<div class="cell-frame" style="aspect-ratio:${frame.ar.toFixed(4)};display:flex;align-items:center;justify-content:center;overflow:hidden">${inner}</div>`;
+    } else {
+      imgHtml = inner;
+    }
   } else if (hasCrop) {
     const s = cr.s, x = cr.x, y = cr.y;
     imgHtml = `<img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}" class="is-cropped"
@@ -493,6 +523,82 @@ function renderHeroSection(id) {
   return h;
 }
 
+function findFirstImageCellInData(d) {
+  for (const ch of d.chapters || []) {
+    for (const row of ch.rows || []) {
+      const cells = Array.isArray(row) ? row : row.cells;
+      const c = (cells || [])[0];
+      if (c && c.img) return c;
+    }
+  }
+  return null;
+}
+
+function renderIntroHeroSection(d, id) {
+  const introCfg = d.intro || null;
+  const usingCustom = !!(introCfg && introCfg.img);
+  const fallbackCell = !usingCustom ? findFirstImageCellInData(d) : null;
+  const cp = `intro:${id}`;
+  const stem = usingCustom ? introCfg.img : (fallbackCell?.img || '');
+  const replaced = replacedImages[cp];
+  const src = replaced ? replaced.url : (stem ? imgUrl(d.folder, stem) : '');
+  const cr = usingCustom ? (introCfg.crop || null) : (fallbackCell?.crop || null);
+  const hasCrop = !!cr;
+  const newCrop = isNewCrop(cr);
+
+  let imgHtml;
+  if (src && newCrop) {
+    const { x, y, w, h: ch, nat } = cr;
+    const [nw, nh] = nat;
+    const ratio = nw && nh ? ((w * nw) / (ch * nh)).toFixed(4) : 'auto';
+    const imgW = (100 / w * 100).toFixed(2);
+    const imgL = (-x / w * 100).toFixed(2);
+    const imgT = (-y / ch * 100).toFixed(2);
+    imgHtml = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio}">
+      <img src="${src}" alt="" loading="lazy" data-intro-id="${id}"
+        style="width:${imgW}%;left:${imgL}%;top:${imgT}%">
+    </div>`;
+  } else if (src && hasCrop) {
+    imgHtml = `<img src="${src}" alt="" loading="lazy" data-intro-id="${id}"
+      style="object-fit:cover;transform:scale(${cr.s});transform-origin:${cr.x}% ${cr.y}%">`;
+  } else if (src) {
+    imgHtml = `<img src="${src}" alt="" loading="lazy" data-intro-id="${id}">`;
+  } else {
+    imgHtml = `<div class="img-missing" data-cell-path="${cp}" tabindex="0" role="button">add hero image</div>`;
+  }
+
+  const badge = replaced ? '<span class="replaced-badge" style="position:absolute;top:22px;left:4px">NEW</span>' : '';
+  const sourceLabel = usingCustom
+    ? (replaced ? `custom · ${replaced.name}` : `custom · ${stem}`)
+    : `fallback · chapter 1 / cell 1 (${stem || 'none'})`;
+
+  const editBtn = src ? `<button class="row-ctrl-btn" data-tb="edit" data-cell-path="${cp}">crop</button>` : '';
+  const replaceBtn = `<button class="row-ctrl-btn" data-tb="replace" data-cell-path="${cp}">${usingCustom || replaced ? 'replace' : 'use custom image'}</button>`;
+  const clearBtn = (usingCustom || replaced) ? `<button class="row-ctrl-btn" data-tb="intro-clear" data-cell-path="${cp}">revert to fallback</button>` : '';
+  const cropResetBtn = (usingCustom && hasCrop) ? `<button class="row-ctrl-btn" data-tb="intro-reset-crop" data-cell-path="${cp}">remove crop</button>` : '';
+
+  let cropInfo = '';
+  if (hasCrop) {
+    if (newCrop) cropInfo = `<span class="crop-info">${cr.w.toFixed(1)}% × ${cr.h.toFixed(1)}%</span>`;
+    else cropInfo = `<span class="crop-info">${cr.s.toFixed(2)}× · ${Math.round(cr.x)}%, ${Math.round(cr.y)}%</span>`;
+  }
+
+  return `<div class="hero-section"><div class="section-label">Hero (intro section)</div>
+    <div class="hero-grid" style="grid-template-columns:1fr">
+      <div class="hero-card" data-crop-cell="${hasCrop ? cp : ''}">
+        <div class="hero-card-label">${sourceLabel}</div>
+        <div class="hero-img-wrap" style="max-width:380px">
+          ${imgHtml}
+          ${badge}
+        </div>
+        <div class="crop-controls" style="margin-top:.4rem;display:flex;gap:.4rem;align-items:center;flex-wrap:wrap">
+          ${editBtn}${replaceBtn}${cropResetBtn}${clearBtn}${cropInfo}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
 function showProject(id, preserveScroll) {
   currentId = id;
   const d = data[id], base = id;
@@ -516,6 +622,7 @@ function showProject(id, preserveScroll) {
 
   // hero images
   h += renderHeroSection(id);
+  h += renderIntroHeroSection(d, id);
 
   // metadata
   if (d.metadata?.length) {
@@ -585,6 +692,10 @@ function getCropObj(key) {
     const [, id, source] = key.split(':');
     return heroData[id]?.[source + 'Crop'] || null;
   }
+  if (key.startsWith('intro:')) {
+    const id = key.slice('intro:'.length);
+    return data[id]?.intro?.crop || null;
+  }
   return getDisplayCell(key).crop || null;
 }
 function isNewCrop(cr) { return cr && cr.w !== undefined; }
@@ -593,11 +704,39 @@ function setCropObj(key, val) {
     const [, id, source] = key.split(':');
     if (val) heroData[id][source + 'Crop'] = val;
     else delete heroData[id][source + 'Crop'];
+  } else if (key.startsWith('intro:')) {
+    const id = key.slice('intro:'.length);
+    if (!data[id].intro) data[id].intro = { img: '' };
+    if (val) data[id].intro.crop = val;
+    else delete data[id].intro.crop;
   } else {
     const cell = getDisplayCell(key);
     if (val) cell.crop = val;
     else delete cell.crop;
   }
+}
+
+function getTargetContext(cp) {
+  const vpAR = window.innerWidth / window.innerHeight;
+  if (cp.startsWith('intro:')) {
+    return { ar: vpAR, mode: 'cover', label: `viewport ${vpAR.toFixed(2)}:1` };
+  }
+  if (cp.startsWith('hero:')) {
+    return null;
+  }
+  const rp = rowPathOf(cp);
+  if (!rp) return null;
+  const draft = layoutDrafts[rp];
+  let kind;
+  if (draft) {
+    kind = draft.kind;
+  } else {
+    try { kind = getNested(data, rp).kind; } catch { kind = null; }
+  }
+  if (kind === 'strip') return { ar: 3 / 2, mode: 'contain', label: '3:2 strip pane' };
+  if (kind === 'pair')  return { ar: vpAR / 2, mode: 'contain', label: `pair pane ${(vpAR/2).toFixed(2)}:1` };
+  if (kind === 'fullbleed' || kind == null) return { ar: vpAR, mode: 'contain', label: `viewport ${vpAR.toFixed(2)}:1` };
+  return null;
 }
 
 /* ── crop overlay modal ── */
@@ -622,6 +761,24 @@ function openCropOverlay(cp) {
   } else if (cp.startsWith('hero:')) {
     const [, id, source] = cp.split(':');
     imgSrc = heroData[id]?.[source] || '';
+  } else if (cp.startsWith('intro:')) {
+    const id = cp.slice('intro:'.length);
+    const introCfg = data[id]?.intro;
+    if (introCfg?.img) {
+      imgSrc = imgUrl(data[id].folder, introCfg.img);
+    } else {
+      const fc = (function findFirst() {
+        for (const ch of data[id].chapters || []) {
+          for (const row of ch.rows || []) {
+            const cells = Array.isArray(row) ? row : row.cells;
+            const c = (cells || [])[0];
+            if (c && c.img) return c;
+          }
+        }
+        return null;
+      })();
+      imgSrc = fc ? imgUrl(data[id].folder, fc.img) : '';
+    }
   } else {
     const cell = getDisplayCell(cp);
     imgSrc = imgUrl(cell._folder || data[cp.split('.')[0]].folder, cell.img);
@@ -652,6 +809,13 @@ function openCropOverlay(cp) {
   const cropBox = document.createElement('div');
   cropBox.className = 'crop-box';
   canvas.appendChild(cropBox);
+
+  const visibleOutline = document.createElement('div');
+  visibleOutline.className = 'crop-visible-outline';
+  visibleOutline.setAttribute('aria-hidden', 'true');
+  cropBox.appendChild(visibleOutline);
+
+  const targetCtx = getTargetContext(cp);
 
   const dirs = ['nw','n','ne','e','se','s','sw','w'];
   dirs.forEach(d => {
@@ -816,6 +980,44 @@ function openCropOverlay(cp) {
       ratioStr = found ? found.label : lockedRatio.toFixed(2);
     }
     infoEl.textContent = `${box.w.toFixed(1)}% × ${box.h.toFixed(1)}% · ${rW}×${rH}px · ${ratioStr}`;
+    updateVisibleOutline();
+  }
+
+  function updateVisibleOutline() {
+    if (!targetCtx || !natW) { visibleOutline.classList.remove('show'); return; }
+    const cropPxW = box.w * natW / 100;
+    const cropPxH = box.h * natH / 100;
+    if (cropPxW <= 0 || cropPxH <= 0) { visibleOutline.classList.remove('show'); return; }
+    const cropAR = cropPxW / cropPxH;
+    const { ar: targetAR, mode, label } = targetCtx;
+
+    let visPxW, visPxH;
+    if (mode === 'contain') {
+      if (cropAR >= targetAR - 0.001) {
+        // crop is at least as wide as target → full crop visible (letterboxed)
+        visibleOutline.classList.remove('show');
+        return;
+      }
+      // crop is narrower (taller) → height clipped to width/targetAR
+      visPxW = cropPxW;
+      visPxH = cropPxW / targetAR;
+    } else {
+      // cover: always crop to target aspect, centered
+      if (Math.abs(cropAR - targetAR) < 0.001) {
+        visibleOutline.classList.remove('show');
+        return;
+      }
+      if (targetAR > cropAR) { visPxW = cropPxW; visPxH = cropPxW / targetAR; }
+      else { visPxH = cropPxH; visPxW = cropPxH * targetAR; }
+    }
+    const wPct = Math.min(100, (visPxW / cropPxW) * 100);
+    const hPct = Math.min(100, (visPxH / cropPxH) * 100);
+    visibleOutline.style.width = wPct + '%';
+    visibleOutline.style.height = hPct + '%';
+    visibleOutline.style.left = ((100 - wPct) / 2) + '%';
+    visibleOutline.style.top = ((100 - hPct) / 2) + '%';
+    visibleOutline.setAttribute('data-label', `visible on page (${label})`);
+    visibleOutline.classList.add('show');
   }
 
   // ── drag & resize interaction ──
@@ -921,11 +1123,31 @@ function handleToolbarAction(e) {
   if (action === 'edit') {
     openCropOverlay(cp);
   } else if (action === 'replace') {
-    pendingReplace = { type: 'cell', path: cp };
+    if (cp.startsWith('intro:')) {
+      pendingReplace = { type: 'intro', id: cp.slice('intro:'.length) };
+    } else {
+      pendingReplace = { type: 'cell', path: cp };
+    }
     fileInput.value = '';
     fileInput.click();
   } else if (action === 'delete') {
     deleteImage(cp);
+  } else if (action === 'intro-clear') {
+    const id = cp.slice('intro:'.length);
+    delete data[id].intro;
+    if (replacedImages[cp]) {
+      URL.revokeObjectURL(replacedImages[cp].url);
+      delete replacedImages[cp];
+    }
+    cropEdits.delete(cp);
+    markCropEdit(cp);
+    showProject(currentId, true);
+    updateStatus();
+  } else if (action === 'intro-reset-crop') {
+    setCropObj(cp, null);
+    markCropEdit(cp);
+    showProject(currentId, true);
+    updateStatus();
   }
 }
 
@@ -947,6 +1169,14 @@ function markCropEdit(cp) {
     const [, id, source] = cp.split(':');
     const cur = heroData[id]?.[source + 'Crop'] || null;
     const orig = originalHeroData[id]?.[source + 'Crop'] || null;
+    if (JSON.stringify(cur) !== JSON.stringify(orig)) cropEdits.add(cp);
+    else cropEdits.delete(cp);
+    return;
+  }
+  if (cp.startsWith('intro:')) {
+    const id = cp.slice('intro:'.length);
+    const cur = data[id]?.intro?.crop || null;
+    const orig = originalData[id]?.intro?.crop || null;
     if (JSON.stringify(cur) !== JSON.stringify(orig)) cropEdits.add(cp);
     else cropEdits.delete(cp);
     return;
@@ -1025,7 +1255,11 @@ function attachHeroClick() {
     function triggerReplace(e) {
       if (el.closest('.crop-active')) return;
       e.preventDefault();
-      pendingReplace = { type: 'hero', id: el.dataset.heroId, source: el.dataset.heroSource };
+      if (el.dataset.introId) {
+        pendingReplace = { type: 'intro', id: el.dataset.introId };
+      } else {
+        pendingReplace = { type: 'hero', id: el.dataset.heroId, source: el.dataset.heroSource };
+      }
       fileInput.value = '';
       fileInput.click();
     }
@@ -1068,6 +1302,12 @@ fileInput.addEventListener('change', () => {
       if (card && !card.querySelector('.replaced-badge'))
         card.insertAdjacentHTML('beforeend', '<span class="replaced-badge" style="position:absolute;top:22px;left:4px">NEW</span>');
     }
+  } else if (pendingReplace.type === 'intro') {
+    const id = pendingReplace.id;
+    const key = `intro:${id}`;
+    replacedImages[key] = { blob: file, url, name: file.name };
+    if (!data[id].intro || !data[id].intro.img) data[id].intro = { img: 'new-image' };
+    showProject(currentId, true);
   }
 
   updateStatus();
@@ -1285,7 +1525,7 @@ function so(o,l) {
   const e=Object.entries(o);
   if (o.w!==undefined&&o.nat) return `{ x: ${o.x}, y: ${o.y}, w: ${o.w}, h: ${o.h}, nat: [${o.nat[0]}, ${o.nat[1]}] }`;
   if (e.length<=4&&e.every(([,v])=>typeof v==='string'||typeof v==='boolean'||typeof v==='number')) return `{ ${e.map(([k,v])=>`${k}: ${sv(v,0)}`).join(', ')} }`;
-  if (o.img!==undefined) { let s=`{ img: ${sv(o.img,0)}, cap: ${sv(o.cap,0)}`; if(o.crop)s+=`, crop: ${sv(o.crop,0)}`; return s+' }'; }
+  if (o.img!==undefined) { let s=`{ img: ${sv(o.img,0)}`; if(o.cap!==undefined)s+=`, cap: ${sv(o.cap,0)}`; if(o.crop)s+=`, crop: ${sv(o.crop,0)}`; return s+' }'; }
   if (o.kind&&o.cells) { let s=`{ kind: ${sv(o.kind,0)}, cells: ${sv(o.cells,l+1)}`; if(o.cap)s+=`, cap: ${sv(o.cap,0)}`; return s+' }'; }
   return `{\n${e.map(([k,v])=>pad(l+1)+`${k}: ${sv(v,l+1)},`).join('\n')}\n${pad(l)}}`;
 }
@@ -1322,6 +1562,14 @@ function doPreview() {
   // inject replaced image blob URLs as _src overrides
   for (const [key, entry] of Object.entries(replacedImages)) {
     if (key.startsWith('hero:')) continue;
+    if (key.startsWith('intro:')) {
+      const id = key.slice('intro:'.length);
+      if (previewData[id]) {
+        if (!previewData[id].intro) previewData[id].intro = { img: '' };
+        previewData[id].intro._src = entry.url;
+      }
+      continue;
+    }
     try {
       const parts = key.split('.');
       const pid = parts.shift();
@@ -1477,6 +1725,20 @@ async function doSaveToDisk() {
       .slice(0, 60) || 'image';
     for (const [key, entry] of Object.entries(replacedImages)) {
       if (key.startsWith('hero:')) continue;
+      if (key.startsWith('intro:')) {
+        const id = key.slice('intro:'.length);
+        const cfg = data[id]?.intro;
+        if (!cfg) continue;
+        if (cfg.img && cfg.img !== 'new-image' && cfg.img !== '') {
+          usedStems.add(`${id}/${cfg.img}`);
+          continue;
+        }
+        let stem = slugify(entry.name), candidate = stem, n = 2;
+        while (usedStems.has(`${id}/${candidate}`)) candidate = `${stem}-${n++}`;
+        cfg.img = candidate;
+        usedStems.add(`${id}/${candidate}`);
+        continue;
+      }
       const cell = getNested(data, key);
       if (!cell || (cell.img && cell.img !== 'new-image')) continue;
       const pid = key.split('.')[0];
@@ -1527,6 +1789,21 @@ async function doSaveToDisk() {
         const [, id, source] = key.split(':');
         targetPath = heroData[id]?.[source] || '';
         if (!targetPath) continue;
+      } else if (key.startsWith('intro:')) {
+        const id = key.slice('intro:'.length);
+        const cfg = data[id]?.intro;
+        if (!cfg || !cfg.img) continue;
+        const ext = (entry.name.split('.').pop() || 'webp').toLowerCase();
+        targetPath = `${IMG_BASE}${data[id].folder}/images/webp/${cfg.img}.${ext}`;
+
+        // Also save an `${stem}-lg.${ext}` copy because introSection uses imgSrcLg.
+        const lgPath = `${IMG_BASE}${data[id].folder}/images/webp/${cfg.img}-lg.${ext}`;
+        const lgFd = new FormData();
+        lgFd.append('file', entry.blob, entry.name);
+        lgFd.append('path', lgPath);
+        const lgResp = await fetch('/api/save-image', { method: 'POST', body: lgFd });
+        if (!lgResp.ok) throw new Error(`Failed to save image: ${lgPath}`);
+        imgSaved++;
       } else {
         const cell = getNested(data, key);
         const pid = key.split('.')[0];
