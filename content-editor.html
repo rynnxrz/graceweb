@@ -316,6 +316,22 @@ function getNested(obj, path) {
   return t;
 }
 
+// For a cell path like 'pid.chapters.0.rows.1.cells.3', return its row path 'pid.chapters.0.rows.1'
+function rowPathOf(cp) {
+  const i = cp.lastIndexOf('.cells.');
+  return i === -1 ? null : cp.slice(0, i);
+}
+
+// Returns the cell object the user currently sees, whether it lives in a layout draft or in `data`.
+function getDisplayCell(cp) {
+  const rp = rowPathOf(cp);
+  if (rp && layoutDrafts[rp]) {
+    const idx = +cp.slice(rp.length + '.cells.'.length);
+    return layoutDrafts[rp].cells[idx];
+  }
+  return getNested(data, cp);
+}
+
 /* ══════════════════════════════════════════════════════════════════════
    RENDER
    ══════════════════════════════════════════════════════════════════════ */
@@ -569,7 +585,7 @@ function getCropObj(key) {
     const [, id, source] = key.split(':');
     return heroData[id]?.[source + 'Crop'] || null;
   }
-  return getNested(data, key).crop || null;
+  return getDisplayCell(key).crop || null;
 }
 function isNewCrop(cr) { return cr && cr.w !== undefined; }
 function setCropObj(key, val) {
@@ -578,7 +594,7 @@ function setCropObj(key, val) {
     if (val) heroData[id][source + 'Crop'] = val;
     else delete heroData[id][source + 'Crop'];
   } else {
-    const cell = getNested(data, key);
+    const cell = getDisplayCell(key);
     if (val) cell.crop = val;
     else delete cell.crop;
   }
@@ -607,7 +623,7 @@ function openCropOverlay(cp) {
     const [, id, source] = cp.split(':');
     imgSrc = heroData[id]?.[source] || '';
   } else {
-    const cell = getNested(data, cp);
+    const cell = getDisplayCell(cp);
     imgSrc = imgUrl(cell._folder || data[cp.split('.')[0]].folder, cell.img);
   }
 
@@ -920,24 +936,29 @@ function deleteImage(cp) {
     delete replacedImages[cp];
   }
   cropEdits.delete(cp);
-  const cell = getNested(data, cp);
-  cell._deleted = true;
+  const cell = getDisplayCell(cp);
+  if (cell) cell._deleted = true;
   showProject(currentId, true);
   updateStatus();
 }
 
 function markCropEdit(cp) {
-  let cur, orig;
   if (cp.startsWith('hero:')) {
     const [, id, source] = cp.split(':');
-    cur = heroData[id]?.[source + 'Crop'] || null;
-    orig = originalHeroData[id]?.[source + 'Crop'] || null;
-  } else {
-    cur = getNested(data, cp).crop || null;
-    orig = getNested(originalData, cp).crop || null;
+    const cur = heroData[id]?.[source + 'Crop'] || null;
+    const orig = originalHeroData[id]?.[source + 'Crop'] || null;
+    if (JSON.stringify(cur) !== JSON.stringify(orig)) cropEdits.add(cp);
+    else cropEdits.delete(cp);
+    return;
   }
-  const changed = JSON.stringify(cur) !== JSON.stringify(orig);
-  if (changed) cropEdits.add(cp);
+  // Cell crop. Draft-added cells have no originalData entry — any crop counts as a change.
+  const rp = rowPathOf(cp);
+  const isDraftCell = !!(rp && layoutDrafts[rp]);
+  const cur = getDisplayCell(cp)?.crop || null;
+  let origCell;
+  try { origCell = isDraftCell ? null : getNested(originalData, cp); } catch { origCell = null; }
+  const orig = origCell?.crop || null;
+  if (JSON.stringify(cur) !== JSON.stringify(orig)) cropEdits.add(cp);
   else cropEdits.delete(cp);
 }
 
@@ -1106,7 +1127,10 @@ function attachRowControls() {
 
   document.querySelectorAll('[data-action="discard-draft"]').forEach(btn => {
     btn.addEventListener('click', () => {
-      delete layoutDrafts[btn.dataset.rowPath];
+      const rp = btn.dataset.rowPath;
+      // Drop any in-progress edits that target cells inside the draft we're throwing away.
+      cleanupRemovedPaths(rp + '.cells.');
+      delete layoutDrafts[rp];
       showProject(currentId, true);
       updateStatus();
     });
@@ -1308,13 +1332,21 @@ function doPreview() {
   }
 
   const win = window.open(`project-detail.html?project=${currentId}&preview=1`, '_blank');
-  window.addEventListener('message', function handler(e) {
-    if (e.data?.type === 'preview-ready') {
-      win.postMessage({ type: 'editor-preview', dossiers: previewData, order: order }, '*');
-      window.removeEventListener('message', handler);
-    }
-  });
+  if (!win) {
+    showToast('Preview blocked — allow popups for this site', false);
+    return;
+  }
+  window._latestPreviewPayload = { win, dossiers: previewData, order };
 }
+
+// One persistent listener — always sends the most recent payload to its window.
+// Replaces the per-call listener that could leave stale handlers around.
+window.addEventListener('message', e => {
+  if (e.data?.type !== 'preview-ready') return;
+  const p = window._latestPreviewPayload;
+  if (!p || !p.win || p.win.closed) return;
+  p.win.postMessage({ type: 'editor-preview', dossiers: p.dossiers, order: p.order }, '*');
+});
 
 function stripDeleted(obj) {
   const clone = JSON.parse(JSON.stringify(obj));
@@ -1414,7 +1446,7 @@ function buildExportedJS() {
     else if (srcText[i] === '}') { depth--; if (!depth) { end = i + 1; break; } }
   }
   const blocks = order.map(id => {
-    const d = data[id];
+    const d = stripDeleted(data[id]);
     return `\n    /* ================================================================\n       ${(d.name || id).toUpperCase()}\n       ================================================================ */\n    '${id}': ${sv(d, 2)},`;
   });
   return srcText.slice(0, dm.index) + `const DOSSIERS = {\n${blocks.join('\n')}\n  }` + srcText.slice(end);
@@ -1429,7 +1461,32 @@ async function doSaveToDisk() {
     // 1. Commit layout drafts first
     commitDrafts();
 
-    // 2. Save project-detail.js
+    // 2. Rename any 'new-image' placeholder cells to a unique slug derived from the upload filename,
+    //    so the JS we save in step 3 already references the final stems.
+    const usedStems = new Set();
+    for (const pid of Object.keys(data)) {
+      (data[pid].chapters || []).forEach(ch => (ch.rows || []).forEach(row => {
+        (row.cells || []).forEach(c => { if (c.img && c.img !== 'new-image') usedStems.add(`${pid}/${c.img}`); });
+      }));
+    }
+    const slugify = s => (s || 'image')
+      .toLowerCase()
+      .replace(/\.[a-z0-9]+$/i, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60) || 'image';
+    for (const [key, entry] of Object.entries(replacedImages)) {
+      if (key.startsWith('hero:')) continue;
+      const cell = getNested(data, key);
+      if (!cell || (cell.img && cell.img !== 'new-image')) continue;
+      const pid = key.split('.')[0];
+      let stem = slugify(entry.name), candidate = stem, n = 2;
+      while (usedStems.has(`${pid}/${candidate}`)) candidate = `${stem}-${n++}`;
+      cell.img = candidate;
+      usedStems.add(`${pid}/${candidate}`);
+    }
+
+    // 3. Save project-detail.js
     const jsContent = buildExportedJS();
     let resp = await fetch('/api/save-js', {
       method: 'POST',
@@ -1439,7 +1496,7 @@ async function doSaveToDisk() {
     if (!resp.ok) throw new Error('Failed to save project-detail.js: ' + (await resp.text()));
     srcText = jsContent;
 
-    // 3. Save hero crop changes to network.js / specimens.js
+    // 4. Save hero crop changes to network.js / specimens.js
     const hasHeroCrops = Object.values(heroData).some(h => h.networkCrop || h.specimensCrop);
     const hadHeroCrops = Object.values(originalHeroData).some(h => h.networkCrop || h.specimensCrop);
     if (hasHeroCrops || hadHeroCrops) {
@@ -1462,7 +1519,7 @@ async function doSaveToDisk() {
       specSrcText = specOut;
     }
 
-    // 4. Save replaced images to disk
+    // 5. Save replaced images to disk
     let imgSaved = 0;
     for (const [key, entry] of Object.entries(replacedImages)) {
       let targetPath;
@@ -1473,7 +1530,7 @@ async function doSaveToDisk() {
       } else {
         const cell = getNested(data, key);
         const pid = key.split('.')[0];
-        const ext = entry.name.split('.').pop();
+        const ext = (entry.name.split('.').pop() || 'webp').toLowerCase();
         targetPath = `${IMG_BASE}${data[pid].folder}/images/webp/${cell.img}.${ext}`;
       }
 
