@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0d0a">
+  <meta name="description" content="Grace — A network of speculative biological architectures.">
+  <meta name="author" content="Grace">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Grace — Network">
+  <meta property="og:description" content="A field of nine specimens, connected by kinship of material, site, and era.">
+
+  <title>Grace — Network</title>
+
+  <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1727381403497-JUk88dYVSc6TzOJ2rhIArjrVSRvDab.jpeg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css?v=20260506a">
+</head>
+<body class="page-network no-halo">
+
+  <!-- Loading veil — covers the page on first paint with a thin
+       herbarium mark, then lifts. transitions.js runs the lifecycle
+       and finally removes the element. -->
+  <div class="page-veil" data-veil aria-hidden="true">
+    <div class="page-veil-inner">
+      <span class="page-veil-mark">◦</span>
+      <span class="page-veil-line"></span>
+      <span class="page-veil-text">FOLIO</span>
+    </div>
+  </div>
+
+  <!-- Mycelium / curl-noise background — same drift as elsewhere -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Field notebook leaf header -->
+  <header class="leaf-header" aria-label="Field notebook header">
+    <div class="leaf-row">
+      <span class="leaf-mark">◦</span>
+      <span class="leaf-folio">FOLIO / MYCELIAL FIELD</span>
+      <span class="leaf-coord" id="leaf-coord">— · —</span>
+    </div>
+    <div class="leaf-row leaf-row--right">
+      <nav class="view-toggle" aria-label="View switch">
+        <a href="index.html" class="view-toggle-item is-current" aria-current="page">network</a>
+        <span class="view-toggle-sep">·</span>
+        <a href="work.html" class="view-toggle-item">index</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Network — gravity field of specimens with mycelial connection threads -->
+  <main class="network" id="network" aria-label="Specimen network">
+
+    <!-- Small introduction tucked top-left, like a herbarium key -->
+    <section class="net-intro">
+      <p class="net-intro-eyebrow">— sheet 01 / mycelial field · n=09 · thirteen filaments</p>
+      <h1 class="net-intro-title">
+        <em>Grace</em>
+        <span>multidisciplinary practitioner — between architecture, biology, and machine vision.</span>
+      </h1>
+      <p class="net-intro-abstract">
+        Each specimen radiates a mycelial field. Filaments grow between
+        kindred work — same material, site, method, era. Move your cursor
+        to feed the colony; rest, and the strands creep on their own.
+        Click any specimen to open its dossier.
+      </p>
+    </section>
+
+    <!-- Legend — tells you what the line colours mean -->
+    <aside class="net-legend" aria-hidden="true">
+      <div class="net-legend-row"><span class="net-legend-line" data-group="bio-fabric"></span><span>bio-fabric</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="marine"></span><span>marine</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="speculative"></span><span>speculative</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="site"></span><span>shared site</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="method"></span><span>shared method</span></div>
+      <div class="net-legend-row"><span class="net-legend-line" data-group="practice"></span><span>practice cluster</span></div>
+    </aside>
+
+    <!-- Nodes + threads injected by network.js -->
+
+  </main>
+
+  <footer class="leaf-footer">
+    <span class="leaf-meta">— end of folio —</span>
+    <a class="leaf-meta" href="mailto:hello@grace.studio">correspondence</a>
+  </footer>
+
+  <div class="cursor-halo" id="cursor-halo" aria-hidden="true"></div>
+
+  <!-- network.js renders the kinship threads directly to #bg-canvas
+       so we don't load organic-bg.js on the homepage. -->
+  <script src="cursor.js?v=20260506a" defer></script>
+  <script src="transitions.js?v=20260506a" defer></script>
+  <script src="network.js?v=20260506c" defer></script>
+</body>
+</html>
