@@ -15,10 +15,10 @@
     'heishui-river-resort': {
       no: 'spec.001 / 2023',
       name: 'Heishui River Resort',
-      binomial: 'Aquaria nigra',
-      kind: 'Hospitality · Practice — Concept stage, design team',
+      binomial: 'Aqua Nigra',
+      kind: 'Hospitality · Practice — Concept stage, design team, Under Construction',
       meta: 'Guangxi, China · 03–08 / 2023 · ≈100 rooms, 50 homestays',
-      abstract: 'Hospitality grafted to the Blackwater River. Slate roofs, dark tones, native vegetation — the architecture retreats into the karst valley rather than imposing on it.',
+      abstract: 'A riverside resort that withdraws into the karst valley, allowing water, mountain and vegetation to remain the primary architecture. ',
       folder: 'heishui-river-resort',
       metadata: [
         ['Released',    '08 / 2023'],
@@ -28,72 +28,61 @@
         ['Programme',   '≈100 rooms · 50 homestays'],
         ['Status',      'Construction underway'],
       ],
-      intro: ['The Blackwater River runs through bamboo karst country, dark and slow, with public-house architecture from a now-vanished riverboat trade lining its banks. The brief: graft a 100-room resort and 50 homestays into this landscape without dominating it. The architecture borrows the slate roof, the courtyard tea house, the dim interior — and lets the river decide where buildings sit.'],
+      intro: { img: 'heishui-river-resort' },
       chapters: [
         {
           note: 'Chapter 01 · site & landscape',
-          title: 'A masterplan that reads the river first',
-          prose: ['The masterplan is read as a riverine substrate first, building stock second. Each cluster sits inside a fold of the karst valley, oriented to the river bend, set behind native bamboo and slate retaining walls.'],
+          title: 'A resort masterplan shaped by river and terrain',
+          prose: ['Located along the Heishui River in Guangxi, the site is defined by karst mountains, dense vegetation and a sequence of river views. The masterplan arranges villas, homestays and public facilities as low-rise courtyard clusters, following the natural terrain rather than imposing a singular landmark. Each cluster is positioned in response to topography, daylight, ventilation and proximity to water, creating a resort embedded within the valley landscape.'],
           rows: [
             { cells: [
-                { img: 'heishui-hero-resort', cap: 'Resort across the Blackwater — slate roofs into mountain' },
+                { img: 'heishui-hero-resort', cap: 'Resort across the Blackwater — slate roofs into mountain', crop: { x: 0, y: 11.7, w: 99.7, h: 75.2, nat: [1400, 1045] } },
               ] },
             { cells: [
-                { img: 'heishui-axo-zone', cap: 'Site axonometric — zone analysis, river substrate', crop: { x: 51.9, y: 1.2, w: 40.5, h: 96.2, nat: [1400, 990] } },
+                { img: 'heishui-axo-zone', cap: 'Site axonometric — zone analysis, river substrate', crop: { x: -4.7, y: -5.9, w: 111.8, h: 113.1, nat: [1390, 1400] } },
+                { img: 'heishui-axo-zone-2', cap: '', crop: { x: 0.1, y: 10.4, w: 98.7, h: 83.5, nat: [1185, 1400] } },
               ] },
           ],
         },
         {
-          note: 'Chapter 02 · public houses',
-          title: 'Anchors for the visitor\'s day',
-          prose: ['The public buildings — courtyard tea house, pool house, central reception — work as anchors for the visitor\'s day. Each is a quiet inversion of a Wuyuan public-house: black slate roof, deep eaves, courtyard with single tree, inward gaze toward the river.'],
+          note: 'Chapter 02 · public FACILITIES',
+          title: 'Shared anchors within the resort landscape',
+          prose: ['The public facilities are positioned as shared anchors within the resort, connecting arrival, dining, tea, leisure and river-view experiences. Rather than standing as isolated objects, each building is arranged around courtyards, shaded thresholds and framed views, creating a sequence of social spaces embedded in the landscape.'],
           rows: [
             { cells: [
-                { img: 'heishui-render-waterfall', cap: 'Angular stone buildings with waterfall feature, karst mountains beyond' },
+                { img: 'heishui-render-waterfall', cap: 'Angular stone buildings with waterfall feature, karst mountains beyond', crop: { x: 7.5, y: 0.5, w: 86.9, h: 86.9, nat: [1063, 1064] } },
+                { img: 'img-4257', cap: '', crop: { x: 4.9, y: 0, w: 82.4, h: 100, nat: [1274, 1400] } },
               ] },
             { cells: [
-                { img: 'heishui-render-01', cap: 'glass pavilions, riverbank' },
-                { img: 'heishui-render-02', cap: 'pathway through trees' },
-                { img: 'rca', cap: '' },
+                { img: 'heishui-render-01', cap: 'glass pavilions, riverbank', crop: { x: 0, y: 6, w: 100, h: 90, nat: [1400, 875] } },
+                { img: 'heishui-render-02', cap: 'pathway through trees', crop: { x: 8.9, y: 6.1, w: 80.4, h: 68.1, nat: [1400, 930] } },
               ] },
           ],
         },
         {
-          note: 'Chapter 03 · atmosphere',
-          title: 'The architecture disappears at dusk',
-          prose: ['The render set traces the resort\'s posture across hours — dawn at the tea house, midday over the pool, dusk along the river path. The brief was to test whether the architecture could disappear into the dusk.'],
+          note: 'Chapter 03 · STAY EXPERIENCE',
+          title: 'Room typologies shaped by terrain, privacy and light',
+          prose: ['The accommodation is developed through one-, two- and four-bedroom villa typologies that adjust courtyard proportion, room depth and orientation according to terrain, privacy and river views. Rendered scenes test how these spaces are experienced across the day, using shaded interiors, low rooflines and warm lighting to soften the buildings into the valley landscape.'],
           rows: [
             { cells: [
-                { img: 'heishui-render-05', cap: 'Courtyard, dark angular roof, karst behind' },
-                { img: 'heishui-render-06', cap: 'Guest pavilion — garden path, wooden deck bridge' },
+                { img: 'heishui-render-05', cap: 'Courtyard, dark angular roof, karst behind', crop: { x: 0.7, y: 6.3, w: 79.6, h: 81.2, nat: [1400, 772] } },
+                { img: 'heishui-render-06', cap: 'Guest pavilion — garden path, wooden deck bridge', crop: { x: 12.6, y: 0, w: 69.4, h: 84.6, nat: [1280, 1400] } },
               ] },
             { cells: [
                 { img: 'heishui-render-03', cap: 'Two pavilions, mountain mist' },
               ] },
             { cells: [
-                { img: 'heishui-interior', cap: 'Interior — dramatic stone opening with pool and mountain view' },
-              ] },
-          ],
-        },
-        {
-          note: 'Chapter 04 · plans',
-          title: 'Room typologies modulate density',
-          prose: ['Room typologies — one-, two-, four-bedroom — modulate density without changing the roofscape rhythm. Every block reads as a piece of the river\'s edge.'],
-          rows: [
-            { cells: [
-                { img: 'heishui-plan-villa', cap: 'Guest villa cluster — ground floor plan' },
-                { img: 'heishui-plan-villa-detail', cap: 'Villa detail — room layouts with spiral stair' },
-              ] },
-            { cells: [
-                { img: 'heishui-plan-hotel', cap: 'Main hotel — reception and guest room wing' },
-                { img: 'heishui-screenshot-old', cap: 'Early study — design iteration screenshot' },
+                { img: 'heishui-interior', cap: 'Interior — dramatic stone opening with pool and mountain view', crop: { x: 4.7, y: -0.4, w: 99.8, h: 100.4, nat: [1400, 1044] } },
+                { img: '2025-10-09-11-13-31', cap: '', crop: { x: 1.5, y: 0, w: 102.6, h: 90.5, nat: [1400, 1190] } },
+                { img: '2025-10-09-11-14-00', cap: '', crop: { x: 0.9, y: 0.3, w: 88.9, h: 100, nat: [1400, 933] } },
+                { img: '2023-03-27-3-06-51', cap: '', crop: { x: -3, y: 0.2, w: 90.6, h: 100, nat: [1400, 951] } },
               ] },
           ],
         },
       ],
       reflection: {
-        title: 'The masterplan is the project',
-        paragraphs: ['The competition winning condition was not innovation but restraint. The brief asked for a resort, the site asked for a retreat, and the architecture had to make both legible at once.', 'What I learned working as part of the design team: the masterplan IS the project. The pictures are evidence; the plan is the argument.'],
+        title: 'From site attitude to design coordination',
+        paragraphs: ['The project began with a simple design position: architecture should respect the scale of the river valley and recede into the surrounding landscape. This attitude informed the masterplan, roof language, courtyard organisation, public routes and accommodation layouts, allowing each design decision to reinforce a quieter relationship between resort, terrain and vegetation.', 'My role sat within the early design development process. I contributed to massing studies, villa typology layouts, public building arrangements, roof form exploration, environmental considerations and presentation material for client reporting. The fast iteration process required each option to be translated quickly into plans, diagrams, models and visuals, then adjusted through feedback without losing the central concept of restraint..'],
       },
       credits: [
         ['Role',        'Architectural Designer (concept stage)'],
@@ -101,7 +90,7 @@
         ['Site',        'Guangxi, China'],
         ['Phase',       'Concept design'],
         ['Status',      'Construction underway'],
-        ['Renders',     'Dan Lah'],
+        ['Renders',     'Dan Lab'],
         ['Year',        '2023'],
       ],
     },
