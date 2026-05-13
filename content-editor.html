@@ -80,18 +80,9 @@
 
   /* ── images ── */
   .img-row-wrap { margin-bottom: 1.2rem; position: relative; }
-  .img-row-wrap.is-draft { outline: 1px dashed #d9770655; outline-offset: 4px; border-radius: 3px; }
-  .draft-badge { position: absolute; top: -8px; right: 8px; font-family: 'SF Mono', monospace; font-size: .75rem; background: #d97706; color: #fff; padding: 2px 8px; border-radius: 2px; font-weight: 600; z-index: 2; }
-  .img-row { margin-bottom: 0; }
-  .img-row.fullbleed img { width: 100%; display: block; border-radius: 2px; }
-  .img-row.pair { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; align-items: stretch; }
-  .img-row.pair img { width: 100%; display: block; border-radius: 2px; }
-  .img-row.pair .img-cell img.is-cropped { height: 100%; }
-  .img-row.strip { display: grid; gap: .4rem; }
-  .img-row.strip img { width: 100%; display: block; border-radius: 2px; }
-  .img-row.portrait { display: flex; justify-content: center; background: #f5f5f5; padding: 1rem 0; border-radius: 2px; }
-  .img-row.portrait img { max-width: 50%; height: auto; display: block; border-radius: 2px; }
-  .img-row.scrollable img { width: 80%; display: block; border-radius: 2px; margin: 0 auto; }
+  .img-row { margin-bottom: 0; display: grid; gap: .5rem; align-items: stretch; }
+  .img-row img { width: 100%; display: block; border-radius: 2px; }
+  .img-row .img-cell img.is-cropped { height: 100%; }
   .img-cell { position: relative; overflow: hidden; }
   .img-cell img { background: #f0f0f0; min-height: 50px; transition: opacity .15s; }
   .img-cell:hover img { opacity: .8; }
@@ -158,20 +149,14 @@
   .crop-preview-wrap img { position: absolute; top: 0; left: 0; display: block; height: auto; }
 
   /* ── visible-area dashed outline inside crop box ── */
-  .crop-visible-outline { position: absolute; border: 1.5px dashed #ffffff; outline: 1px solid rgba(0,0,0,.45); pointer-events: none; z-index: 1; display: none; box-sizing: border-box; }
-  .crop-visible-outline.show { display: block; }
-  .crop-visible-outline::after { content: attr(data-label); position: absolute; top: -20px; left: 0; font-family: 'SF Mono', monospace; font-size: 10px; background: rgba(0,0,0,.72); color: #fff; padding: 1px 5px; border-radius: 2px; white-space: nowrap; pointer-events: none; }
 
   /* ── cell-frame: wraps crop preview with parent-context aspect ratio ── */
-  .cell-frame { position: relative; overflow: hidden; width: 100%; background: #000; }
-  .cell-frame > .crop-preview-wrap { width: 100%; flex: 0 0 auto; align-self: center; }
+  .cell-frame { position: relative; overflow: hidden; width: 100%; container-type: size; }
+  .cell-frame > .crop-preview-wrap { height: min(100cqh, calc(100cqw / var(--ar, 1))); aspect-ratio: var(--ar, 1); margin: auto; }
   .cell-frame .frame-hint { position: absolute; bottom: 4px; left: 4px; font-family: 'SF Mono', monospace; font-size: 10px; background: rgba(0,0,0,.6); color: #fff; padding: 1px 5px; border-radius: 2px; pointer-events: none; }
 
   /* ── row controls ── */
   .row-controls { display: flex; align-items: center; gap: .4rem; margin-bottom: .4rem; }
-  .row-kind-select { font-family: 'SF Mono', monospace; font-size: .75rem; background: #fff; color: #555; border: 1px solid #ddd; border-radius: 3px; padding: .3rem .5rem; cursor: pointer; appearance: none; -webkit-appearance: none; min-height: 32px; }
-  .row-kind-select:focus { outline: 2px solid #d97706; outline-offset: 2px; border-color: #d97706; }
-  .row-kind-select option { background: #fff; color: #333; }
   .row-ctrl-btn { font-family: 'SF Mono', monospace; font-size: .75rem; background: #fff; border: 1px solid #ddd; color: #666; border-radius: 3px; padding: .25rem .5rem; cursor: pointer; transition: all .12s; min-height: 32px; }
   .row-ctrl-btn:hover { border-color: #999; color: #333; }
   .row-ctrl-btn.danger:hover { border-color: #dc2626; color: #dc2626; }
@@ -212,7 +197,7 @@
   <div class="status" id="status" aria-live="polite">No changes</div>
   <button class="btn" id="btn-reset">Reset</button>
   <button class="btn" id="btn-preview">Preview ↗</button>
-  <button class="btn btn-primary" id="btn-save-disk">Save</button>
+  <button class="btn btn-primary" id="btn-save-disk">Save to project</button>
 </div>
 
 <div class="page" id="page"></div>
@@ -225,7 +210,6 @@ const NET_PATH  = 'network.js';
 const SPEC_PATH = 'specimens.js';
 const IMG_BASE  = 'public/images/projects/extracted-portfolio/';
 const HERO_BASE = 'public/images/projects/hero image/';
-const KINDS = ['fullbleed', 'pair', 'strip', 'portrait', 'scrollable'];
 
 let srcText = '', netSrcText = '', specSrcText = '';
 let originalData = null, data = null, order = [], currentId = null;
@@ -236,9 +220,6 @@ let originalHeroData = {};
 
 // replaced images: { key: { blob, url, name } }
 const replacedImages = {};
-
-// layout drafts: { rowPath: { kind, cells } } — preview only, not yet committed
-const layoutDrafts = {};
 
 // crop edits: tracks cell paths where crop was toggled from original
 const cropEdits = new Set();
@@ -343,14 +324,17 @@ function rowPathOf(cp) {
   return i === -1 ? null : cp.slice(0, i);
 }
 
-// Returns the cell object the user currently sees, whether it lives in a layout draft or in `data`.
+// Returns the cell object the user currently sees.
 function getDisplayCell(cp) {
-  const rp = rowPathOf(cp);
-  if (rp && layoutDrafts[rp]) {
-    const idx = +cp.slice(rp.length + '.cells.'.length);
-    return layoutDrafts[rp].cells[idx];
-  }
   return getNested(data, cp);
+}
+
+// Returns the count of (non-deleted) cells in the row at the given row path.
+function rowCellCount(rp) {
+  try {
+    const row = getNested(data, rp);
+    return (row.cells || []).filter(c => !c._deleted).length;
+  } catch { return 0; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -360,15 +344,10 @@ function getDisplayCell(cp) {
 function getFrameAspect(cp) {
   const rp = rowPathOf(cp);
   if (!rp) return null;
-  const draft = layoutDrafts[rp];
-  let kind;
-  if (draft) kind = draft.kind;
-  else { try { kind = getNested(data, rp).kind; } catch { kind = null; } }
+  const n = rowCellCount(rp);
   const vpAR = window.innerWidth / window.innerHeight;
-  if (kind === 'strip') return { ar: 3/2, label: 'strip 3:2' };
-  if (kind === 'pair')  return { ar: vpAR/2, label: 'pair half-viewport' };
-  if (kind === 'fullbleed' || kind == null) return { ar: vpAR, label: 'fullbleed viewport' };
-  return null;
+  if (n <= 1) return { ar: vpAR, label: 'fullbleed viewport' };
+  return { ar: vpAR / n, label: `${n}-up pane` };
 }
 
 function renderCell(cell, folder, cp) {
@@ -391,7 +370,7 @@ function renderCell(cell, folder, cp) {
     const imgW = (100 / w * 100).toFixed(2);
     const imgL = (-x / w * 100).toFixed(2);
     const imgT = (-y / h * 100).toFixed(2);
-    const inner = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio}">
+    const inner = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio};--ar:${ratio}">
       <img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}"
         style="width:${imgW}%;left:${imgL}%;top:${imgT}%"
         onerror="this.parentElement.outerHTML='<div class=img-missing tabindex=0 role=button data-cell-path=\\'${cp}\\' data-folder=\\'${folder}\\'>add image: ${cell.img}</div>'">
@@ -428,34 +407,26 @@ function renderCell(cell, folder, cp) {
 }
 
 function renderRow(row, folder, rp) {
-  const draft = layoutDrafts[rp];
-  const displayKind = draft ? draft.kind : (row.kind || 'fullbleed');
-  const displayCells = draft ? draft.cells : (row.cells || []);
-  const isDraft = !!draft;
-  const cols = displayKind === 'strip' ? displayCells.length : 1;
-  const style = displayKind === 'strip' ? ` style="grid-template-columns:repeat(${cols},1fr)"` : '';
+  const cells = row.cells || [];
+  const activeCount = cells.filter(c => !c._deleted).length;
+  const cols = Math.max(activeCount, 1);
+  const style = cols > 1 ? ` style="grid-template-columns:repeat(${cols},1fr)"` : '';
+  const layoutLabel = activeCount <= 1 ? '1 image · fullbleed'
+                    : `${activeCount} images · split ${activeCount}-up`;
 
-  let h = `<div class="img-row-wrap ${isDraft ? 'is-draft' : ''}">`;
-  if (isDraft) h += '<span class="draft-badge">PREVIEW</span>';
+  let h = `<div class="img-row-wrap">`;
 
   // controls
   h += `<div class="row-controls">`;
-  h += `<span class="row-ctrl-label">Layout:</span>`;
-  h += `<select class="row-kind-select" data-row-path="${rp}" data-orig-kind="${row.kind || 'fullbleed'}">`;
-  for (const k of KINDS) h += `<option value="${k}" ${k === displayKind ? 'selected' : ''}>${k}</option>`;
-  h += `</select>`;
-  if (displayKind === 'pair' || displayKind === 'strip') {
-    h += `<button class="row-ctrl-btn" data-action="add-cell" data-row-path="${rp}">+ cell</button>`;
-  }
-  if (isDraft) h += `<button class="row-ctrl-btn" data-action="discard-draft" data-row-path="${rp}">discard</button>`;
+  h += `<span class="row-ctrl-label">${layoutLabel}</span>`;
+  h += `<button class="row-ctrl-btn" data-action="add-cell" data-row-path="${rp}">+ cell</button>`;
   h += `</div>`;
 
-  h += `<div class="img-row ${displayKind}"${style}>`;
-  displayCells.forEach((c, ci) => { h += renderCell(c, folder, rp+'.cells.'+ci); });
+  h += `<div class="img-row"${style}>`;
+  cells.forEach((c, ci) => { h += renderCell(c, folder, rp+'.cells.'+ci); });
   h += '</div>';
 
-  const capVal = draft ? (draft.cap !== undefined ? draft.cap : null) : row.cap;
-  if (capVal !== undefined && capVal !== null) h += `<div class="row-cap">${ed(capVal, rp+'.cap')}</div>`;
+  if (row.cap !== undefined && row.cap !== null) h += `<div class="row-cap">${ed(row.cap, rp+'.cap')}</div>`;
   h += '</div>';
   return h;
 }
@@ -723,29 +694,6 @@ function setCropObj(key, val) {
   }
 }
 
-function getTargetContext(cp) {
-  const vpAR = window.innerWidth / window.innerHeight;
-  if (cp.startsWith('intro:')) {
-    return { ar: vpAR, mode: 'cover', label: `viewport ${vpAR.toFixed(2)}:1` };
-  }
-  if (cp.startsWith('hero:')) {
-    return null;
-  }
-  const rp = rowPathOf(cp);
-  if (!rp) return null;
-  const draft = layoutDrafts[rp];
-  let kind;
-  if (draft) {
-    kind = draft.kind;
-  } else {
-    try { kind = getNested(data, rp).kind; } catch { kind = null; }
-  }
-  if (kind === 'strip') return { ar: 3 / 2, mode: 'contain', label: '3:2 strip pane' };
-  if (kind === 'pair')  return { ar: vpAR / 2, mode: 'contain', label: `pair pane ${(vpAR/2).toFixed(2)}:1` };
-  if (kind === 'fullbleed' || kind == null) return { ar: vpAR, mode: 'contain', label: `viewport ${vpAR.toFixed(2)}:1` };
-  return null;
-}
-
 /* ── crop overlay modal ── */
 
 const CROP_RATIOS = [
@@ -822,13 +770,6 @@ function openCropOverlay(cp) {
   const cropBox = document.createElement('div');
   cropBox.className = 'crop-box';
   canvas.appendChild(cropBox);
-
-  const visibleOutline = document.createElement('div');
-  visibleOutline.className = 'crop-visible-outline';
-  visibleOutline.setAttribute('aria-hidden', 'true');
-  cropBox.appendChild(visibleOutline);
-
-  const targetCtx = getTargetContext(cp);
 
   const dirs = ['nw','n','ne','e','se','s','sw','w'];
   dirs.forEach(d => {
@@ -997,44 +938,6 @@ function openCropOverlay(cp) {
       ratioStr = found ? found.label : lockedRatio.toFixed(2);
     }
     infoEl.textContent = `${box.w.toFixed(1)}% × ${box.h.toFixed(1)}% · ${rW}×${rH}px · ${ratioStr}`;
-    updateVisibleOutline();
-  }
-
-  function updateVisibleOutline() {
-    if (!targetCtx || !natW) { visibleOutline.classList.remove('show'); return; }
-    const cropPxW = box.w * natW / 100;
-    const cropPxH = box.h * natH / 100;
-    if (cropPxW <= 0 || cropPxH <= 0) { visibleOutline.classList.remove('show'); return; }
-    const cropAR = cropPxW / cropPxH;
-    const { ar: targetAR, mode, label } = targetCtx;
-
-    let visPxW, visPxH;
-    if (mode === 'contain') {
-      if (cropAR >= targetAR - 0.001) {
-        // crop is at least as wide as target → full crop visible (letterboxed)
-        visibleOutline.classList.remove('show');
-        return;
-      }
-      // crop is narrower (taller) → height clipped to width/targetAR
-      visPxW = cropPxW;
-      visPxH = cropPxW / targetAR;
-    } else {
-      // cover: always crop to target aspect, centered
-      if (Math.abs(cropAR - targetAR) < 0.001) {
-        visibleOutline.classList.remove('show');
-        return;
-      }
-      if (targetAR > cropAR) { visPxW = cropPxW; visPxH = cropPxW / targetAR; }
-      else { visPxH = cropPxH; visPxW = cropPxH * targetAR; }
-    }
-    const wPct = Math.min(100, (visPxW / cropPxW) * 100);
-    const hPct = Math.min(100, (visPxH / cropPxH) * 100);
-    visibleOutline.style.width = wPct + '%';
-    visibleOutline.style.height = hPct + '%';
-    visibleOutline.style.left = ((100 - wPct) / 2) + '%';
-    visibleOutline.style.top = ((100 - hPct) / 2) + '%';
-    visibleOutline.setAttribute('data-label', `visible on page (${label})`);
-    visibleOutline.classList.add('show');
   }
 
   // ── drag & resize interaction ──
@@ -1192,12 +1095,10 @@ function markCropEdit(cp) {
     else cropEdits.delete(cp);
     return;
   }
-  // Cell crop. Draft-added cells have no originalData entry — any crop counts as a change.
-  const rp = rowPathOf(cp);
-  const isDraftCell = !!(rp && layoutDrafts[rp]);
+  // Cell crop. Cells without an originalData entry (newly added) treat any crop as a change.
   const cur = getDisplayCell(cp)?.crop || null;
   let origCell;
-  try { origCell = isDraftCell ? null : getNested(originalData, cp); } catch { origCell = null; }
+  try { origCell = getNested(originalData, cp); } catch { origCell = null; }
   const orig = origCell?.crop || null;
   if (JSON.stringify(cur) !== JSON.stringify(orig)) cropEdits.add(cp);
   else cropEdits.delete(cp);
@@ -1337,68 +1238,12 @@ fileInput.addEventListener('change', () => {
 
 /* ── row layout controls (draft system) ── */
 function attachRowControls() {
-  document.querySelectorAll('.row-kind-select').forEach(sel => {
-    sel.addEventListener('change', () => {
-      const rp = sel.dataset.rowPath;
-      const newKind = sel.value;
-      const origRow = getNested(data, rp);
-      const origKind = origRow.kind || 'fullbleed';
-
-      if (newKind === origKind && !layoutDrafts[rp]) return;
-
-      if (newKind === origKind) {
-        delete layoutDrafts[rp];
-      } else {
-        const baseCells = layoutDrafts[rp] ? layoutDrafts[rp].cells : JSON.parse(JSON.stringify(origRow.cells || []));
-        const singleKinds = ['fullbleed', 'portrait', 'scrollable'];
-        // For single-cell kinds, trim to 1 (explicit user choice).
-        // For pair/strip, pad up to the minimum (2 or 3) but don't trim — preserve any extras the user has.
-        const minLen = singleKinds.includes(newKind) ? 1 : newKind === 'pair' ? 2 : 3;
-        while (baseCells.length < minLen) baseCells.push({ img: 'new-image', cap: '' });
-        if (singleKinds.includes(newKind)) while (baseCells.length > 1) baseCells.pop();
-
-        layoutDrafts[rp] = {
-          kind: newKind,
-          cells: baseCells,
-          cap: newKind === 'strip' ? (origRow.cap || '') : undefined,
-        };
-      }
-
-      showProject(currentId, true);
-      updateStatus();
-    });
-  });
-
   document.querySelectorAll('[data-action="add-cell"]').forEach(btn => {
     btn.addEventListener('click', () => {
       const rp = btn.dataset.rowPath;
-      const origRow = getNested(data, rp);
-      const draft = layoutDrafts[rp] || {
-        kind: origRow.kind,
-        cells: JSON.parse(JSON.stringify(origRow.cells)),
-        cap: origRow.cap,
-      };
-      draft.cells.push({ img: 'new-image', cap: '' });
-      // Auto-promote kind by active (non-deleted) cell count.
-      const active = draft.cells.filter(c => !c._deleted).length;
-      if (active >= 3 && draft.kind !== 'strip') {
-        draft.kind = 'strip';
-        if (draft.cap === undefined) draft.cap = '';
-      } else if (active === 2 && draft.kind !== 'pair' && draft.kind !== 'strip') {
-        draft.kind = 'pair';
-      }
-      layoutDrafts[rp] = draft;
-      showProject(currentId, true);
-      updateStatus();
-    });
-  });
-
-  document.querySelectorAll('[data-action="discard-draft"]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const rp = btn.dataset.rowPath;
-      // Drop any in-progress edits that target cells inside the draft we're throwing away.
-      cleanupRemovedPaths(rp + '.cells.');
-      delete layoutDrafts[rp];
+      const row = getNested(data, rp);
+      if (!row.cells) row.cells = [];
+      row.cells.push({ img: 'new-image', cap: '' });
       showProject(currentId, true);
       updateStatus();
     });
@@ -1421,9 +1266,6 @@ function cleanupRemovedPaths(prefix) {
       URL.revokeObjectURL(replacedImages[key].url);
       delete replacedImages[key];
     }
-  }
-  for (const key of Object.keys(layoutDrafts)) {
-    if (key.startsWith(prefix)) delete layoutDrafts[key];
   }
   for (const cp of cropEdits) {
     if (cp.startsWith(prefix)) cropEdits.delete(cp);
@@ -1448,40 +1290,20 @@ function deleteChapter(idx) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   SAVE — commit drafts to data
-   ══════════════════════════════════════════════════════════════════════ */
-
-function commitDrafts() {
-  let saved = 0;
-  for (const [rp, draft] of Object.entries(layoutDrafts)) {
-    const row = getNested(data, rp);
-    row.kind = draft.kind;
-    row.cells = draft.cells;
-    if (draft.cap !== undefined) row.cap = draft.cap;
-    else delete row.cap;
-    saved++;
-  }
-  Object.keys(layoutDrafts).forEach(k => delete layoutDrafts[k]);
-  return saved;
-}
-
-/* ══════════════════════════════════════════════════════════════════════
    STATUS
    ══════════════════════════════════════════════════════════════════════ */
 
 function updateStatus() {
   const textChanges = document.querySelectorAll('.changed').length;
   const imgChanges = Object.keys(replacedImages).length;
-  const draftCount = Object.keys(layoutDrafts).length;
   const cropCount = cropEdits.size;
   const deleteCount = deletedImages.size;
-  const n = textChanges + imgChanges + draftCount + cropCount + deleteCount;
+  const n = textChanges + imgChanges + cropCount + deleteCount;
   const parts = [];
   if (textChanges) parts.push(`${textChanges} text`);
   if (imgChanges)  parts.push(`${imgChanges} img`);
   if (cropCount)   parts.push(`${cropCount} crop`);
   if (deleteCount) parts.push(`${deleteCount} deleted`);
-  if (draftCount)  parts.push(`${draftCount} layout preview`);
   const s = document.getElementById('status');
   s.textContent = n ? parts.join(' · ') : 'No changes';
   s.className = n ? 'status has-changes' : 'status';
@@ -1493,10 +1315,9 @@ function updateStatus() {
 function hasUnsavedChanges() {
   const textChanges = document.querySelectorAll('.changed').length;
   const imgChanges = Object.keys(replacedImages).length;
-  const draftCount = Object.keys(layoutDrafts).length;
   const cropCount = cropEdits.size;
   const deleteCount = deletedImages.size;
-  return textChanges + imgChanges + draftCount + cropCount + deleteCount;
+  return textChanges + imgChanges + cropCount + deleteCount;
 }
 
 function guardSwitch(targetId) {
@@ -1506,14 +1327,12 @@ function guardSwitch(targetId) {
     const parts = [];
     const tc = document.querySelectorAll('.changed').length;
     const ic = Object.keys(replacedImages).length;
-    const dc = Object.keys(layoutDrafts).length;
     const cc = cropEdits.size;
     const delc = deletedImages.size;
     if (tc) parts.push(`${tc} text edit(s)`);
     if (ic) parts.push(`${ic} image replacement(s)`);
     if (cc) parts.push(`${cc} crop change(s)`);
     if (delc) parts.push(`${delc} image deletion(s)`);
-    if (dc) parts.push(`${dc} layout draft(s)`);
     if (!confirm(`You have unsaved changes: ${parts.join(', ')}.\n\nSwitch project anyway? Changes will remain in memory but make sure to export before closing.`)) return;
   }
   showProject(targetId);
@@ -1554,25 +1373,12 @@ function so(o,l) {
   if (o.w!==undefined&&o.nat) return `{ x: ${o.x}, y: ${o.y}, w: ${o.w}, h: ${o.h}, nat: [${o.nat[0]}, ${o.nat[1]}] }`;
   if (e.length<=4&&e.every(([,v])=>typeof v==='string'||typeof v==='boolean'||typeof v==='number')) return `{ ${e.map(([k,v])=>`${k}: ${sv(v,0)}`).join(', ')} }`;
   if (o.img!==undefined) { let s=`{ img: ${sv(o.img,0)}`; if(o.cap!==undefined)s+=`, cap: ${sv(o.cap,0)}`; if(o.crop)s+=`, crop: ${sv(o.crop,0)}`; return s+' }'; }
-  if (o.kind&&o.cells) { let s=`{ kind: ${sv(o.kind,0)}, cells: ${sv(o.cells,l+1)}`; if(o.cap)s+=`, cap: ${sv(o.cap,0)}`; return s+' }'; }
+  if (o.cells) { let s=`{ cells: ${sv(o.cells,l+1)}`; if(o.cap)s+=`, cap: ${sv(o.cap,0)}`; return s+' }'; }
   return `{\n${e.map(([k,v])=>pad(l+1)+`${k}: ${sv(v,l+1)},`).join('\n')}\n${pad(l)}}`;
 }
 
 function doPreview() {
   const previewData = JSON.parse(JSON.stringify(data));
-
-  // apply uncommitted layout drafts
-  for (const [rp, draft] of Object.entries(layoutDrafts)) {
-    const parts = rp.split('.');
-    const pid = parts.shift();
-    let target = previewData[pid];
-    for (let i = 0; i < parts.length - 1; i++) target = target[isNaN(parts[i]) ? parts[i] : +parts[i]];
-    const row = target[isNaN(parts.at(-1)) ? parts.at(-1) : +parts.at(-1)];
-    row.kind = draft.kind;
-    row.cells = draft.cells;
-    if (draft.cap !== undefined) row.cap = draft.cap;
-    else delete row.cap;
-  }
 
   // strip deleted cells and empty rows from preview data
   for (const pid of Object.keys(previewData)) {
@@ -1630,19 +1436,10 @@ function stripDeleted(obj) {
     if (ch.rows) {
       ch.rows.forEach(row => {
         if (row.cells) row.cells = row.cells.filter(c => !c._deleted);
-        // Normalize kind to match remaining cell count so renderer invariants hold.
-        if (row.cells && row.cells.length > 0) {
-          const n = row.cells.length;
-          if (n === 1 && (row.kind === 'pair' || row.kind === 'strip')) {
-            row.kind = 'fullbleed';
-            delete row.cap;
-          } else if (n === 2 && row.kind === 'strip') {
-            row.kind = 'pair';
-            delete row.cap;
-          } else if (n >= 3 && row.kind === 'pair') {
-            row.kind = 'strip';
-          }
-        }
+        // Layout is now derived from cell count — drop legacy `kind` so saved files stay clean.
+        delete row.kind;
+        // A `cap` only makes sense on multi-cell rows; single-cell rows use the cell's own caption.
+        if (row.cells && row.cells.length <= 1) delete row.cap;
       });
       ch.rows = ch.rows.filter(row => !row.cells || row.cells.length > 0);
     }
@@ -1716,7 +1513,7 @@ function dl(content, name, type, href) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   SAVE TO DISK — write files directly via dev-server API
+   SAVE TO PROJECT — write files directly via dev-server API
    ══════════════════════════════════════════════════════════════════════ */
 
 function showToast(msg, ok) {
@@ -1747,11 +1544,8 @@ async function doSaveToDisk() {
   btn.disabled = true;
 
   try {
-    // 1. Commit layout drafts first
-    commitDrafts();
-
-    // 2. Rename any 'new-image' placeholder cells to a unique slug derived from the upload filename,
-    //    so the JS we save in step 3 already references the final stems.
+    // 1. Rename any 'new-image' placeholder cells to a unique slug derived from the upload filename,
+    //    so the JS we save below already references the final stems.
     const usedStems = new Set();
     for (const pid of Object.keys(data)) {
       (data[pid].chapters || []).forEach(ch => (ch.rows || []).forEach(row => {
@@ -1866,6 +1660,21 @@ async function doSaveToDisk() {
       delete replacedImages[k];
     });
     cropEdits.clear();
+    deletedImages.clear();
+    // Strip _deleted cells (and emptied rows) from in-memory data so the editor
+    // matches what was just written. Without this the red placeholders stick
+    // around even though the saved file no longer references those cells.
+    for (const pid of Object.keys(data)) {
+      const p = data[pid];
+      if (p.chapters) p.chapters.forEach(ch => {
+        if (ch.rows) {
+          ch.rows.forEach(row => {
+            if (row.cells) row.cells = row.cells.filter(c => !c._deleted);
+          });
+          ch.rows = ch.rows.filter(row => !row.cells || row.cells.length > 0);
+        }
+      });
+    }
     originalData = JSON.parse(JSON.stringify(data));
     originalHeroData = JSON.parse(JSON.stringify(heroData));
 
@@ -1878,9 +1687,9 @@ async function doSaveToDisk() {
     showToast('Saved: ' + parts.join(' + '), true);
   } catch (e) {
     showToast('Error: ' + e.message, false);
-    console.error('Save to disk failed:', e);
+    console.error('Save to project failed:', e);
   } finally {
-    btn.textContent = 'Save to disk';
+    btn.textContent = 'Save to project';
     btn.disabled = false;
   }
 }
@@ -1898,8 +1707,8 @@ loadSource().then(() => {
     data = JSON.parse(JSON.stringify(originalData));
     heroData = JSON.parse(JSON.stringify(originalHeroData));
     Object.keys(replacedImages).forEach(k => { URL.revokeObjectURL(replacedImages[k].url); delete replacedImages[k]; });
-    Object.keys(layoutDrafts).forEach(k => delete layoutDrafts[k]);
     cropEdits.clear();
+    deletedImages.clear();
     showProject(currentId);
     updateStatus();
   };

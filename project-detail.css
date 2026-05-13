@@ -268,14 +268,12 @@ body { overflow-x: hidden; }
 /* ------------------------------------------------------------------ */
 
 .s-image,
-.s-pair,
-.s-strip {
+.s-row {
   background: var(--void);
 }
 
 .s-image .s-image-media,
-.s-pair  .s-pair-media,
-.s-strip .s-strip-media {
+.s-row .s-row-media {
   position: absolute;
   inset: 0;
   display: flex;
@@ -291,11 +289,11 @@ body { overflow-x: hidden; }
 }
 .s-image .s-image-media {
   overflow: hidden;
+  container-type: size;
 }
 
 .s-image .s-cap,
-.s-pair  .s-cap,
-.s-strip .s-cap {
+.s-row   .s-cap {
   position: absolute;
   bottom: 32px;
   left: 32px;
@@ -340,101 +338,26 @@ body { overflow-x: hidden; }
 
 
 /* ------------------------------------------------------------------ */
-/* Portrait section — tall image centred in a narrow column            */
+/* Row section — N images split into equal columns                     */
 /* ------------------------------------------------------------------ */
 
-.s-portrait {
-  background: var(--void);
-}
-.s-portrait .s-portrait-media {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4vh 0;
-  overflow: hidden;
-}
-.s-portrait img,
-.s-portrait video {
-  max-height: 92vh;
-  max-width: 50vw;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-}
-@media (max-width: 720px) {
-  .s-portrait img,
-  .s-portrait video {
-    max-width: 85vw;
-  }
-}
-
-
-/* ------------------------------------------------------------------ */
-/* Scrollable section — tall image at natural aspect, free scroll      */
-/* ------------------------------------------------------------------ */
-
-.s-scrollable {
-  min-height: auto;
-  height: auto;
-  overflow: visible;
-  padding: 6vh 0;
-  flex-direction: column;
-  align-items: center;
-  background: var(--void);
-}
-.s-scrollable .s-scrollable-media {
-  position: relative;
-  width: 80vw;
-  max-width: 1100px;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-}
-.s-scrollable img,
-.s-scrollable video {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-}
-.s-scrollable .s-cap {
-  position: relative;
-  bottom: auto;
-  left: auto;
-  margin-top: 1.5rem;
-  opacity: 1;
-  transform: none;
-  max-width: 80vw;
-}
-@media (max-width: 720px) {
-  .s-scrollable .s-scrollable-media { width: 92vw; }
-  .s-scrollable .s-cap { max-width: 92vw; }
-}
-
-
-/* ------------------------------------------------------------------ */
-/* Pair section — split-screen, two images at full height              */
-/* ------------------------------------------------------------------ */
-
-.s-pair .s-pair-media {
+.s-row .s-row-media {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;            /* hairline between the two images */
+  grid-template-columns: repeat(var(--cols, 2), 1fr);
+  gap: 1px;
   background: var(--hair-soft);
 }
-.s-pair .s-pair-media > .pane {
+.s-row .s-row-media > .pane {
   position: relative;
   overflow: hidden;
   background: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
+  container-type: size;
 }
-.s-pair .s-pair-media img,
-.s-pair .s-pair-media video {
+.s-row .s-row-media img,
+.s-row .s-row-media video {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -442,40 +365,9 @@ body { overflow-x: hidden; }
   display: block;
 }
 @media (max-width: 720px) {
-  /* On narrow screens, stack the pair vertically — each pane gets
-     half-height. Snap stays per-section so the user scrolls past the
-     pair as a single block. */
-  .s-pair .s-pair-media { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
-}
-
-
-/* ------------------------------------------------------------------ */
-/* Strip section — process / iteration sequence                         */
-/* ------------------------------------------------------------------ */
-
-.s-strip .s-strip-media {
-  display: grid;
-  grid-template-columns: repeat(var(--strip-cols, 6), 1fr);
-  gap: 2px;
-  background: var(--hair-soft);
-  padding: 8vh 4vw;
-  align-items: center;
-}
-.s-strip .s-strip-media > .pane {
-  position: relative;
-  background: var(--ink);
-  aspect-ratio: 3 / 2;
-  overflow: hidden;
-}
-.s-strip .s-strip-media img,
-.s-strip .s-strip-media video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;     /* strip uses cover for sequence rhythm */
-  display: block;
-}
-@media (max-width: 720px) {
-  .s-strip .s-strip-media { grid-template-columns: repeat(2, 1fr); padding: 8vh 6vw; }
+  /* Narrow screens cap columns at 2 — panes wrap onto multiple rows
+     rather than getting crushed. */
+  .s-row .s-row-media { grid-template-columns: repeat(2, 1fr); }
 }
 
 
@@ -486,9 +378,9 @@ body { overflow-x: hidden; }
 .s-crop {
   position: relative;
   overflow: hidden;
-  width: 100%;
-  flex: 0 0 auto;
-  align-self: center;
+  height: min(100cqh, calc(100cqw / var(--ar, 1)));
+  aspect-ratio: var(--ar, 1);
+  margin: auto;
 }
 .s-crop img {
   position: absolute;
@@ -681,7 +573,6 @@ body { overflow-x: hidden; }
   :root { --ui-pad: 14px; --chip-h: 30px; }
   .story-progress { display: none; }
   .s-image .s-cap,
-  .s-pair  .s-cap,
-  .s-strip .s-cap { bottom: 18px; left: 18px; right: 18px; max-width: none; }
+  .s-row   .s-cap { bottom: 18px; left: 18px; right: 18px; max-width: none; }
   .s-intro { padding: 16vh 6vw 14vh; }
 }
