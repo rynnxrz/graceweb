@@ -137,12 +137,21 @@
   .crop-ratio-btn { font-family: 'SF Mono', monospace; font-size: .75rem; padding: .3rem .6rem; border: 1px solid #ccc; border-radius: 3px; background: #fff; color: #555; cursor: pointer; transition: all .12s; min-height: 32px; }
   .crop-ratio-btn:hover { border-color: #999; color: #333; }
   .crop-ratio-btn.active { border-color: #d97706; color: #d97706; }
+  .crop-ratio-btn.bg-active { border-color: #111; color: #111; font-weight: 600; }
   .crop-info-display { color: #666; font-variant-numeric: tabular-nums; min-width: 120px; text-align: center; }
   .crop-toolbar .toolbar-gap { width: 1px; height: 14px; background: #ddd; flex-shrink: 0; }
   .crop-apply-btn { font-family: 'SF Mono', monospace; font-size: .75rem; padding: .3rem .7rem; border: 1px solid #22c55e; border-radius: 3px; background: #fff; color: #16a34a; cursor: pointer; transition: all .12s; min-height: 32px; }
   .crop-apply-btn:hover { background: #f0fdf4; }
   .crop-cancel-btn { font-family: 'SF Mono', monospace; font-size: .75rem; padding: .3rem .7rem; border: 1px solid #ccc; border-radius: 3px; background: #fff; color: #555; cursor: pointer; transition: all .12s; min-height: 32px; }
   .crop-cancel-btn:hover { border-color: #999; color: #333; }
+  .trim-modal { width: min(820px, 92vw); background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: .8rem; box-shadow: 0 10px 40px rgba(0,0,0,.15); }
+  .trim-video-preview { width: 100%; max-height: 52vh; background: #000; display: block; border-radius: 4px; }
+  .trim-controls { margin-top: .7rem; display: grid; gap: .5rem; font-family: 'SF Mono', monospace; font-size: .75rem; }
+  .trim-tabs { display: flex; gap: .4rem; flex-wrap: wrap; }
+  .trim-tab { border: 1px solid #ccc; background: #fff; padding: .25rem .55rem; border-radius: 3px; cursor: pointer; }
+  .trim-tab.active { border-color: #d97706; color: #d97706; }
+  .trim-range { display: grid; grid-template-columns: 58px 1fr 72px; gap: .5rem; align-items: center; }
+  .trim-range input[type="range"] { width: 100%; }
 
   /* ── crop preview in editor ── */
   .crop-preview-wrap { position: relative; overflow: hidden; border-radius: 2px; }
@@ -202,7 +211,7 @@
 
 <div class="page" id="page"></div>
 <div class="save-toast" id="save-toast" role="alert" aria-live="assertive"></div>
-<input type="file" id="file-input" class="hidden-input" accept="image/*">
+<input type="file" id="file-input" class="hidden-input" accept="image/*,video/*,.gif">
 
 <script>
 const JS_PATH   = 'project-detail.js';
@@ -220,6 +229,8 @@ let originalHeroData = {};
 
 // replaced images: { key: { blob, url, name } }
 const replacedImages = {};
+// replaced videos/gifs: { key: { blob, url, name } }
+const replacedVideos = {};
 
 // crop edits: tracks cell paths where crop was toggled from original
 const cropEdits = new Set();
@@ -295,6 +306,8 @@ function parseHeroes(src, source) {
    ══════════════════════════════════════════════════════════════════════ */
 
 function imgUrl(folder, stem) { return `${IMG_BASE}${folder}/images/webp/${stem}.webp`; }
+function videoUrl(folder, name) { return `${IMG_BASE}${folder}/videos/${name}`; }
+function isGifName(name) { return /\.gif$/i.test(name || ''); }
 
 function ed(text, path) {
   const v = (text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -318,6 +331,14 @@ function getNested(obj, path) {
   return t;
 }
 
+function tryGetNested(obj, path) {
+  try {
+    return getNested(obj, path);
+  } catch {
+    return null;
+  }
+}
+
 // For a cell path like 'pid.chapters.0.rows.1.cells.3', return its row path 'pid.chapters.0.rows.1'
 function rowPathOf(cp) {
   const i = cp.lastIndexOf('.cells.');
@@ -327,6 +348,19 @@ function rowPathOf(cp) {
 // Returns the cell object the user currently sees.
 function getDisplayCell(cp) {
   return getNested(data, cp);
+}
+
+function cropBgValue(cr) {
+  return (cr && (cr.bg === 'black' || cr.bg === 'white' || cr.bg === 'transparent'))
+    ? cr.bg
+    : 'transparent';
+}
+
+function cropBgCss(cr) {
+  const bg = cropBgValue(cr);
+  if (bg === 'black') return '#000';
+  if (bg === 'white') return '#fff';
+  return 'transparent';
 }
 
 // Returns the count of (non-deleted) cells in the row at the given row path.
@@ -352,25 +386,37 @@ function getFrameAspect(cp) {
 
 function renderCell(cell, folder, cp) {
   if (cell._deleted) {
-    return `<div class="img-cell"><div class="img-missing" tabindex="0" role="button" data-cell-path="${cp}" data-folder="${folder}">add image: ${cell.img || 'new-image'}</div></div>`;
+    return `<div class="img-cell"><div class="img-missing" tabindex="0" role="button" data-cell-path="${cp}" data-folder="${folder}">add media: ${cell.img || cell.video || 'new-media'}</div></div>`;
   }
 
   const replaced = replacedImages[cp];
-  const src = replaced ? replaced.url : imgUrl(folder, cell.img);
-  const badge = replaced ? '<span class="replaced-badge">NEW</span>' : '';
+  const replacedVideo = replacedVideos[cp];
+  const isVideoCell = !!(cell.video || replacedVideo);
+  const src = isVideoCell
+    ? (replacedVideo ? replacedVideo.url : videoUrl(folder, cell.video))
+    : (replaced ? replaced.url : imgUrl(folder, cell.img));
+  const badge = (replaced || replacedVideo) ? '<span class="replaced-badge">NEW</span>' : '';
   const cr = cell.crop || null;
   const hasCrop = !!cr;
   const newCrop = isNewCrop(cr);
 
   let imgHtml;
-  if (newCrop) {
+  if (isVideoCell) {
+    const trim = cell.videoTrim || null;
+    const trimAttrs = trim ? ` data-vstart="${trim.start || 0}" data-vend="${trim.end || 0}"` : '';
+    if (isGifName(replacedVideo?.name || cell.video)) {
+      imgHtml = `<img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}">`;
+    } else {
+      imgHtml = `<video src="${src}" data-cell-path="${cp}" data-folder="${folder}"${trimAttrs} autoplay loop muted playsinline preload="metadata" style="width:100%;display:block;background:#000"></video>`;
+    }
+  } else if (newCrop) {
     const { x, y, w, h, nat } = cr;
     const [nw, nh] = nat;
     const ratio = nw && nh ? ((w * nw) / (h * nh)).toFixed(4) : 'auto';
     const imgW = (100 / w * 100).toFixed(2);
     const imgL = (-x / w * 100).toFixed(2);
     const imgT = (-y / h * 100).toFixed(2);
-    const inner = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio};--ar:${ratio}">
+    const inner = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio};--ar:${ratio};background:${cropBgCss(cr)}">
       <img src="${src}" alt="" loading="lazy" data-cell-path="${cp}" data-folder="${folder}"
         style="width:${imgW}%;left:${imgL}%;top:${imgT}%"
         onerror="this.parentElement.outerHTML='<div class=img-missing tabindex=0 role=button data-cell-path=\\'${cp}\\' data-folder=\\'${folder}\\'>add image: ${cell.img}</div>'">
@@ -392,7 +438,10 @@ function renderCell(cell, folder, cp) {
   }
 
   const toolbarHtml = `<div class="img-toolbar">
-    <button data-tb="edit" data-cell-path="${cp}">edit</button>
+    ${isVideoCell ? '' : `<button data-tb="edit" data-cell-path="${cp}">edit</button>`}
+    ${isVideoCell ? `<button data-tb="trim-video" data-cell-path="${cp}">trim</button>` : ''}
+    <button data-tb="move-left" data-cell-path="${cp}">←</button>
+    <button data-tb="move-right" data-cell-path="${cp}">→</button>
     <button data-tb="replace" data-cell-path="${cp}">replace</button>
     <button data-tb="delete" data-cell-path="${cp}" class="tb-delete">delete</button>
   </div>`;
@@ -402,7 +451,7 @@ function renderCell(cell, folder, cp) {
     ${toolbarHtml}
     ${badge}
     <div class="img-cap">${ed(cell.cap, cp+'.cap')}</div>
-    <div class="img-stem">${cell.img}</div>
+    <div class="img-stem">${cell.img || cell.video || ''}</div>
   </div>`;
 }
 
@@ -419,6 +468,8 @@ function renderRow(row, folder, rp) {
   // controls
   h += `<div class="row-controls">`;
   h += `<span class="row-ctrl-label">${layoutLabel}</span>`;
+  h += `<button class="row-ctrl-btn" data-action="move-row-up" data-row-path="${rp}">↑ group</button>`;
+  h += `<button class="row-ctrl-btn" data-action="move-row-down" data-row-path="${rp}">↓ group</button>`;
   h += `<button class="row-ctrl-btn" data-action="add-cell" data-row-path="${rp}">+ cell</button>`;
   h += `<button class="row-ctrl-btn danger" data-action="delete-row" data-row-path="${rp}">× delete group</button>`;
   h += `</div>`;
@@ -458,7 +509,7 @@ function renderHeroSection(id) {
       const imgW = (100 / w * 100).toFixed(2);
       const imgL = (-x / w * 100).toFixed(2);
       const imgT = (-y / ch * 100).toFixed(2);
-      heroImgHtml = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio}">
+      heroImgHtml = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio};background:${cropBgCss(cr)}">
         <img src="${src}" alt="" loading="lazy" data-hero-id="${id}" data-hero-source="${source}"
           style="width:${imgW}%;left:${imgL}%;top:${imgT}%"
           onerror="this.style.minHeight='80px';this.style.border='1px dashed #7f1d1d'">
@@ -507,7 +558,7 @@ function findFirstImageCellInData(d) {
     for (const row of ch.rows || []) {
       const cells = Array.isArray(row) ? row : row.cells;
       const c = (cells || [])[0];
-      if (c && c.img) return c;
+      if (c && (c.img || c.video)) return c;
     }
   }
   return null;
@@ -515,25 +566,33 @@ function findFirstImageCellInData(d) {
 
 function renderIntroHeroSection(d, id) {
   const introCfg = d.intro || null;
-  const usingCustom = !!(introCfg && introCfg.img);
+  const usingCustom = !!(introCfg && (introCfg.img || introCfg.video));
   const fallbackCell = !usingCustom ? findFirstImageCellInData(d) : null;
   const cp = `intro:${id}`;
-  const stem = usingCustom ? introCfg.img : (fallbackCell?.img || '');
+  const stem = usingCustom ? (introCfg.img || introCfg.video) : (fallbackCell?.img || '');
   const replaced = replacedImages[cp];
-  const src = replaced ? replaced.url : (stem ? imgUrl(d.folder, stem) : '');
+  const replacedVideo = replacedVideos[cp];
+  const isVideo = !!(introCfg?.video || replacedVideo);
+  const src = replacedVideo ? replacedVideo.url
+    : replaced ? replaced.url
+    : (stem ? (isVideo ? videoUrl(d.folder, stem) : imgUrl(d.folder, stem)) : '');
   const cr = usingCustom ? (introCfg.crop || null) : (fallbackCell?.crop || null);
   const hasCrop = !!cr;
   const newCrop = isNewCrop(cr);
 
   let imgHtml;
-  if (src && newCrop) {
+  if (isVideo && src) {
+    const trim = introCfg?.videoTrim || null;
+    const trimAttrs = trim ? ` data-vstart="${trim.start || 0}" data-vend="${trim.end || 0}"` : '';
+    imgHtml = `<video src="${src}" alt="" loading="lazy" data-intro-id="${id}"${trimAttrs} autoplay loop muted playsinline preload="metadata" style="width:100%;display:block;background:#000"></video>`;
+  } else if (src && newCrop) {
     const { x, y, w, h: ch, nat } = cr;
     const [nw, nh] = nat;
     const ratio = nw && nh ? ((w * nw) / (ch * nh)).toFixed(4) : 'auto';
     const imgW = (100 / w * 100).toFixed(2);
     const imgL = (-x / w * 100).toFixed(2);
     const imgT = (-y / ch * 100).toFixed(2);
-    imgHtml = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio}">
+    imgHtml = `<div class="crop-preview-wrap" style="aspect-ratio:${ratio};background:${cropBgCss(cr)}">
       <img src="${src}" alt="" loading="lazy" data-intro-id="${id}"
         style="width:${imgW}%;left:${imgL}%;top:${imgT}%">
     </div>`;
@@ -543,7 +602,7 @@ function renderIntroHeroSection(d, id) {
   } else if (src) {
     imgHtml = `<img src="${src}" alt="" loading="lazy" data-intro-id="${id}">`;
   } else {
-    imgHtml = `<div class="img-missing" data-cell-path="${cp}" tabindex="0" role="button">add hero image</div>`;
+    imgHtml = `<div class="img-missing" data-cell-path="${cp}" tabindex="0" role="button">add hero media</div>`;
   }
 
   const badge = replaced ? '<span class="replaced-badge" style="position:absolute;top:22px;left:4px">NEW</span>' : '';
@@ -551,8 +610,9 @@ function renderIntroHeroSection(d, id) {
     ? (replaced ? `custom · ${replaced.name}` : `custom · ${stem}`)
     : `fallback · chapter 1 / cell 1 (${stem || 'none'})`;
 
-  const editBtn = src ? `<button class="row-ctrl-btn" data-tb="edit" data-cell-path="${cp}">crop</button>` : '';
-  const replaceBtn = `<button class="row-ctrl-btn" data-tb="replace" data-cell-path="${cp}">${usingCustom || replaced ? 'replace' : 'use custom image'}</button>`;
+  const editBtn = (src && !isVideo) ? `<button class="row-ctrl-btn" data-tb="edit" data-cell-path="${cp}">crop</button>` : '';
+  const trimBtn = (src && isVideo) ? `<button class="row-ctrl-btn" data-tb="trim-video" data-cell-path="${cp}">trim video</button>` : '';
+  const replaceBtn = `<button class="row-ctrl-btn" data-tb="replace" data-cell-path="${cp}">${usingCustom || replaced || replacedVideo ? 'replace' : 'use custom media'}</button>`;
   const clearBtn = (usingCustom || replaced) ? `<button class="row-ctrl-btn" data-tb="intro-clear" data-cell-path="${cp}">revert to fallback</button>` : '';
   const cropResetBtn = (usingCustom && hasCrop) ? `<button class="row-ctrl-btn" data-tb="intro-reset-crop" data-cell-path="${cp}">remove crop</button>` : '';
 
@@ -571,7 +631,7 @@ function renderIntroHeroSection(d, id) {
           ${badge}
         </div>
         <div class="crop-controls" style="margin-top:.4rem;display:flex;gap:.4rem;align-items:center;flex-wrap:wrap">
-          ${editBtn}${replaceBtn}${cropResetBtn}${clearBtn}${cropInfo}
+          ${editBtn}${trimBtn}${replaceBtn}${cropResetBtn}${clearBtn}${cropInfo}
         </div>
       </div>
     </div>
@@ -665,6 +725,19 @@ function attachAll() {
   attachRowControls();
   attachToolbarActions();
   attachChapterControls();
+  setupEditorVideoTrimLoops();
+}
+
+function setupEditorVideoTrimLoops() {
+  document.querySelectorAll('video[data-vstart], video[data-vend]').forEach(v => {
+    const start = Number(v.dataset.vstart || 0);
+    const end = Number(v.dataset.vend || 0);
+    const applyStart = () => { if (v.currentTime < start) v.currentTime = start; };
+    v.addEventListener('loadedmetadata', applyStart, { once: true });
+    if (end > start) {
+      v.addEventListener('timeupdate', () => { if (v.currentTime >= end) v.currentTime = start; });
+    }
+  });
 }
 
 function getCropObj(key) {
@@ -746,6 +819,7 @@ function openCropOverlay(cp) {
   if (isNewCrop(existing)) {
     box = { x: existing.x, y: existing.y, w: existing.w, h: existing.h };
   }
+  let fillBg = cropBgValue(existing);
   let lockedRatio = null; // width/height in image-pixel space
   let natW = 0, natH = 0;
 
@@ -791,9 +865,10 @@ function openCropOverlay(cp) {
   CROP_RATIOS.forEach((r, i) => {
     const btn = document.createElement('button');
     btn.className = 'crop-ratio-btn' + (i === 0 ? ' active' : '');
+    btn.dataset.ratio = String(i);
     btn.textContent = r.label;
     btn.addEventListener('click', () => {
-      toolbar.querySelectorAll('.crop-ratio-btn').forEach(b => b.classList.remove('active'));
+      toolbar.querySelectorAll('.crop-ratio-btn[data-ratio]').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       lockedRatio = r.value;
       if (lockedRatio !== null) applyRatioToBox();
@@ -811,13 +886,40 @@ function openCropOverlay(cp) {
   gap2.className = 'toolbar-gap';
   toolbar.appendChild(gap2);
 
+  const bgButtons = [
+    { label: 'bg: transparent', value: 'transparent' },
+    { label: 'bg: white', value: 'white' },
+    { label: 'bg: black', value: 'black' },
+  ];
+  const bgBtnEls = [];
+  bgButtons.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'crop-ratio-btn';
+    btn.textContent = opt.label;
+    btn.dataset.bg = opt.value;
+    btn.addEventListener('click', () => {
+      fillBg = opt.value;
+      bgBtnEls.forEach(b => b.classList.toggle('bg-active', b.dataset.bg === fillBg));
+      updateBoxDOM();
+    });
+    bgBtnEls.push(btn);
+    toolbar.appendChild(btn);
+  });
+  bgBtnEls.forEach(b => b.classList.toggle('bg-active', b.dataset.bg === fillBg));
+
+  const gapBg = document.createElement('div');
+  gapBg.className = 'toolbar-gap';
+  toolbar.appendChild(gapBg);
+
   const resetBtn = document.createElement('button');
   resetBtn.className = 'crop-cancel-btn';
   resetBtn.textContent = 'reset';
   resetBtn.addEventListener('click', () => {
     box = { x: 0, y: 0, w: 100, h: 100 };
+    fillBg = 'transparent';
+    bgBtnEls.forEach(b => b.classList.toggle('bg-active', b.dataset.bg === fillBg));
     lockedRatio = null;
-    toolbar.querySelectorAll('.crop-ratio-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+    toolbar.querySelectorAll('.crop-ratio-btn[data-ratio]').forEach((b,i) => b.classList.toggle('active', i===0));
     updateBoxDOM();
   });
   toolbar.appendChild(resetBtn);
@@ -837,7 +939,8 @@ function openCropOverlay(cp) {
       y: +box.y.toFixed(1),
       w: +box.w.toFixed(1),
       h: +box.h.toFixed(1),
-      nat: [natW, natH]
+      nat: [natW, natH],
+      bg: fillBg
     };
     if (cropVal.x === 0 && cropVal.y === 0 && cropVal.w === 100 && cropVal.h === 100) {
       setCropObj(cp, null);
@@ -931,6 +1034,17 @@ function openCropOverlay(cp) {
     cropChecker.style.top = box.y + '%';
     cropChecker.style.width = box.w + '%';
     cropChecker.style.height = box.h + '%';
+    if (fillBg === 'transparent') {
+      cropChecker.style.backgroundColor = '#f5f5f5';
+      cropChecker.style.backgroundImage =
+        'linear-gradient(45deg, #d4d4d4 25%, transparent 25%),' +
+        'linear-gradient(-45deg, #d4d4d4 25%, transparent 25%),' +
+        'linear-gradient(45deg, transparent 75%, #d4d4d4 75%),' +
+        'linear-gradient(-45deg, transparent 75%, #d4d4d4 75%)';
+    } else {
+      cropChecker.style.backgroundColor = fillBg === 'white' ? '#fff' : '#000';
+      cropChecker.style.backgroundImage = 'none';
+    }
     // info
     const rW = natW ? (box.w * natW / 100).toFixed(0) : '?';
     const rH = natH ? (box.h * natH / 100).toFixed(0) : '?';
@@ -1038,22 +1152,40 @@ function handleToolbarAction(e) {
 
   if (action === 'edit') {
     openCropOverlay(cp);
+  } else if (action === 'move-left') {
+    moveCell(cp, -1);
+  } else if (action === 'move-right') {
+    moveCell(cp, 1);
   } else if (action === 'replace') {
     if (cp.startsWith('intro:')) {
-      pendingReplace = { type: 'intro', id: cp.slice('intro:'.length) };
+      const id = cp.slice('intro:'.length);
+      const def = data[id]?.intro?.video ? 'video' : 'image';
+      const media = chooseMediaType(def);
+      pendingReplace = { type: 'intro', id, media };
+      fileInput.accept = media === 'video' ? 'video/*,.gif' : 'image/*';
     } else {
-      pendingReplace = { type: 'cell', path: cp };
+      const cell = tryGetNested(data, cp);
+      const def = cell?.video ? 'video' : 'image';
+      const media = chooseMediaType(def);
+      pendingReplace = { type: 'cell', path: cp, media };
+      fileInput.accept = media === 'video' ? 'video/*,.gif' : 'image/*';
     }
     fileInput.value = '';
     fileInput.click();
   } else if (action === 'delete') {
     deleteImage(cp);
+  } else if (action === 'trim-video') {
+    openVideoTrim(cp);
   } else if (action === 'intro-clear') {
     const id = cp.slice('intro:'.length);
     delete data[id].intro;
     if (replacedImages[cp]) {
       URL.revokeObjectURL(replacedImages[cp].url);
       delete replacedImages[cp];
+    }
+    if (replacedVideos[cp]) {
+      URL.revokeObjectURL(replacedVideos[cp].url);
+      delete replacedVideos[cp];
     }
     cropEdits.delete(cp);
     markCropEdit(cp);
@@ -1067,15 +1199,181 @@ function handleToolbarAction(e) {
   }
 }
 
+function openVideoTrim(cp) {
+  let target;
+  let src = '';
+  if (cp.startsWith('intro:')) {
+    const id = cp.slice('intro:'.length);
+    if (!data[id].intro) return;
+    target = data[id].intro;
+    src = replacedVideos[cp]?.url || (target.video ? videoUrl(data[id].folder, target.video) : '');
+  } else {
+    target = tryGetNested(data, cp);
+    if (target?.video) {
+      const pid = cp.split('.')[0];
+      src = replacedVideos[cp]?.url || videoUrl(data[pid].folder, target.video);
+    }
+  }
+  if (!target || !target.video || !src || isGifName(target.video)) return;
+
+  const current = target.videoTrim || { start: 0, end: 0 };
+  const overlay = document.createElement('div');
+  overlay.className = 'crop-overlay';
+  overlay.innerHTML = `
+    <div class="trim-modal">
+      <video class="trim-video-preview" src="${src}" controls muted playsinline preload="metadata"></video>
+      <div class="trim-controls">
+        <div class="trim-tabs">
+          <button class="trim-tab active" data-len="0">full</button>
+          <button class="trim-tab" data-len="5">5s</button>
+          <button class="trim-tab" data-len="10">10s</button>
+          <button class="trim-tab" data-len="15">15s</button>
+          <button class="trim-tab" data-len="30">30s</button>
+        </div>
+        <div class="trim-range"><span>start</span><input id="trim-start" type="range" min="0" max="0" step="0.1"><span id="trim-start-v">0.0s</span></div>
+        <div class="trim-range"><span>end</span><input id="trim-end" type="range" min="0" max="0" step="0.1"><span id="trim-end-v">0.0s</span></div>
+        <div style="display:flex;gap:.5rem;justify-content:flex-end">
+          <button class="crop-cancel-btn" data-trim-cancel>cancel</button>
+          <button class="crop-apply-btn" data-trim-apply>apply</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  const video = overlay.querySelector('.trim-video-preview');
+  const startR = overlay.querySelector('#trim-start');
+  const endR = overlay.querySelector('#trim-end');
+  const startV = overlay.querySelector('#trim-start-v');
+  const endV = overlay.querySelector('#trim-end-v');
+
+  const close = () => overlay.remove();
+  overlay.querySelector('[data-trim-cancel]').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+  const setLabels = () => {
+    startV.textContent = `${Number(startR.value).toFixed(1)}s`;
+    const ev = Number(endR.value);
+    endV.textContent = `${ev <= 0 ? 'full' : `${ev.toFixed(1)}s`}`;
+  };
+  const clampRanges = () => {
+    const s = Number(startR.value), e = Number(endR.value), d = Number(endR.max);
+    if (e > 0 && e <= s) endR.value = Math.min(d, s + 0.1).toFixed(1);
+    setLabels();
+  };
+  const applyLoopPreview = () => {
+    const s = Number(startR.value), e = Number(endR.value);
+    if (video.currentTime < s) video.currentTime = s;
+    if (e > 0 && video.currentTime >= e) video.currentTime = s;
+  };
+  video.addEventListener('timeupdate', applyLoopPreview);
+
+  video.addEventListener('loadedmetadata', () => {
+    const d = Number(video.duration || 0);
+    startR.max = String(d);
+    endR.max = String(d);
+    startR.value = String(Math.min(current.start || 0, d));
+    endR.value = String((current.end && current.end > 0) ? Math.min(current.end, d) : 0);
+    setLabels();
+    video.currentTime = Number(startR.value) || 0;
+  }, { once: true });
+
+  startR.addEventListener('input', clampRanges);
+  endR.addEventListener('input', clampRanges);
+
+  overlay.querySelectorAll('.trim-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      overlay.querySelectorAll('.trim-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const len = Number(btn.dataset.len || 0);
+      const d = Number(endR.max || 0);
+      if (len <= 0) {
+        endR.value = '0';
+      } else {
+        const s = Number(startR.value);
+        endR.value = String(Math.min(d, s + len));
+      }
+      clampRanges();
+    });
+  });
+
+  overlay.querySelector('[data-trim-apply]').addEventListener('click', () => {
+    target.videoTrim = {
+      start: +Number(startR.value).toFixed(2),
+      end: +Number(endR.value).toFixed(2),
+    };
+    close();
+    showProject(currentId, true);
+    updateStatus();
+  });
+}
+
 function deleteImage(cp) {
   deletedImages.add(cp);
   if (replacedImages[cp]) {
     URL.revokeObjectURL(replacedImages[cp].url);
     delete replacedImages[cp];
   }
+  if (replacedVideos[cp]) {
+    URL.revokeObjectURL(replacedVideos[cp].url);
+    delete replacedVideos[cp];
+  }
   cropEdits.delete(cp);
   const cell = getDisplayCell(cp);
   if (cell) cell._deleted = true;
+  showProject(currentId, true);
+  updateStatus();
+}
+
+function hasPathPrefix(path, prefix) {
+  return path === prefix || path.startsWith(prefix + '.');
+}
+
+function remapStatePaths(remap) {
+  const remapped = {};
+  for (const [k, v] of Object.entries(replacedImages)) remapped[remap(k)] = v;
+  for (const k of Object.keys(replacedImages)) delete replacedImages[k];
+  Object.assign(replacedImages, remapped);
+  const remappedVideos = {};
+  for (const [k, v] of Object.entries(replacedVideos)) remappedVideos[remap(k)] = v;
+  for (const k of Object.keys(replacedVideos)) delete replacedVideos[k];
+  Object.assign(replacedVideos, remappedVideos);
+
+  const nextCrop = new Set();
+  for (const cp of cropEdits) nextCrop.add(remap(cp));
+  cropEdits.clear();
+  nextCrop.forEach(cp => cropEdits.add(cp));
+
+  const nextDeleted = new Set();
+  for (const cp of deletedImages) nextDeleted.add(remap(cp));
+  deletedImages.clear();
+  nextDeleted.forEach(cp => deletedImages.add(cp));
+}
+
+function swapRowStatePaths(a, b) {
+  remapStatePaths(path => {
+    if (hasPathPrefix(path, a)) return b + path.slice(a.length);
+    if (hasPathPrefix(path, b)) return a + path.slice(b.length);
+    return path;
+  });
+}
+
+function swapCellStatePaths(a, b) {
+  remapStatePaths(path => {
+    if (path === a) return b;
+    if (path === b) return a;
+    return path;
+  });
+}
+
+function moveCell(cp, dir) {
+  const m = cp.match(/^(.*\.cells)\.(\d+)$/);
+  if (!m) return;
+  const cells = getNested(data, m[1]);
+  const idx = Number(m[2]);
+  const next = idx + dir;
+  if (!Array.isArray(cells) || next < 0 || next >= cells.length) return;
+  [cells[idx], cells[next]] = [cells[next], cells[idx]];
+  swapCellStatePaths(`${m[1]}.${idx}`, `${m[1]}.${next}`);
   showProject(currentId, true);
   updateStatus();
 }
@@ -1126,6 +1424,17 @@ function attachNav() {
 let pendingReplace = null;
 const fileInput = document.getElementById('file-input');
 
+function chooseMediaType(defaultType = 'image') {
+  const answer = window.prompt('Choose media type: "image" or "video"', defaultType);
+  return String(answer || defaultType).trim().toLowerCase() === 'video' ? 'video' : 'image';
+}
+
+function openFilePickerForMedia(type) {
+  fileInput.accept = type === 'video' ? 'video/*,.gif' : 'image/*';
+  fileInput.value = '';
+  fileInput.click();
+}
+
 // Preserve upload detail in editor workflow:
 // keep source resolution unless extremely large, and export WebP at high quality.
 async function convertToWebp(file) {
@@ -1167,7 +1476,7 @@ function attachImageClick() {
   document.querySelectorAll('.img-missing').forEach(el => {
     el.setAttribute('tabindex', '0');
     el.setAttribute('role', 'button');
-    el.setAttribute('aria-label', 'Add image — click or press Enter');
+    el.setAttribute('aria-label', 'Add media — click or press Enter');
   });
 
   const page = document.getElementById('page');
@@ -1182,9 +1491,12 @@ function handleImageDelegation(e) {
   if (!el) return;
   if (el.closest('.crop-active')) return;
   e.preventDefault();
-  pendingReplace = { type: 'cell', path: el.dataset.cellPath };
-  fileInput.value = '';
-  fileInput.click();
+  const cp = el.dataset.cellPath;
+  const media = chooseMediaType(cp?.startsWith('intro:') ? 'video' : 'image');
+  pendingReplace = cp?.startsWith('intro:')
+    ? { type: 'intro', id: cp.slice('intro:'.length), media }
+    : { type: 'cell', path: cp, media };
+  openFilePickerForMedia(media);
 }
 
 function handleImageKeyDelegation(e) {
@@ -1193,9 +1505,12 @@ function handleImageKeyDelegation(e) {
   if (!el) return;
   if (el.closest('.crop-active')) return;
   e.preventDefault();
-  pendingReplace = { type: 'cell', path: el.dataset.cellPath };
-  fileInput.value = '';
-  fileInput.click();
+  const cp = el.dataset.cellPath;
+  const media = chooseMediaType(cp?.startsWith('intro:') ? 'video' : 'image');
+  pendingReplace = cp?.startsWith('intro:')
+    ? { type: 'intro', id: cp.slice('intro:'.length), media }
+    : { type: 'cell', path: cp, media };
+  openFilePickerForMedia(media);
 }
 
 function attachHeroClick() {
@@ -1211,8 +1526,7 @@ function attachHeroClick() {
       } else {
         pendingReplace = { type: 'hero', id: el.dataset.heroId, source: el.dataset.heroSource };
       }
-      fileInput.value = '';
-      fileInput.click();
+      openFilePickerForMedia('image');
     }
     el.addEventListener('click', triggerReplace);
     el.addEventListener('keydown', e => {
@@ -1224,36 +1538,38 @@ function attachHeroClick() {
 fileInput.addEventListener('change', async () => {
   if (!fileInput.files.length || !pendingReplace) return;
   const file = fileInput.files[0];
-  const converted = await convertToWebp(file);
+  const media = pendingReplace.media || 'image';
+  const converted = media === 'video'
+    ? { blob: file, lgBlob: null, name: file.name }
+    : await convertToWebp(file);
   const url = URL.createObjectURL(converted.blob);
 
   if (pendingReplace.type === 'cell') {
     const cp = pendingReplace.path;
-    replacedImages[cp] = { ...converted, url };
-    // Un-delete the cell if it was previously deleted (re-add flow).
     const cell = getDisplayCell(cp);
+    if (media === 'video') {
+      if (replacedImages[cp]) { URL.revokeObjectURL(replacedImages[cp].url); delete replacedImages[cp]; }
+      replacedVideos[cp] = { ...converted, url };
+      if (cell) {
+        delete cell.img;
+        delete cell.crop;
+        cell.video = cell.video || 'new-video';
+      }
+      cropEdits.delete(cp);
+    } else {
+      if (replacedVideos[cp]) { URL.revokeObjectURL(replacedVideos[cp].url); delete replacedVideos[cp]; }
+      replacedImages[cp] = { ...converted, url };
+      if (cell) {
+        delete cell.video;
+        cell.img = cell.img || 'new-image';
+      }
+    }
+    // Un-delete the cell if it was previously deleted (re-add flow).
     if (cell && cell._deleted) {
       delete cell._deleted;
       deletedImages.delete(cp);
-      showProject(currentId, true);
-      updateStatus();
-      pendingReplace = null;
-      return;
     }
-    const imgEl = document.querySelector(`img[data-cell-path="${cp}"]`);
-    const missEl = document.querySelector(`.img-missing[data-cell-path="${cp}"]`);
-    if (imgEl) {
-      imgEl.src = url;
-      const cellEl = imgEl.closest('.img-cell');
-      if (cellEl && !cellEl.querySelector('.replaced-badge'))
-        cellEl.insertAdjacentHTML('beforeend', '<span class="replaced-badge">NEW</span>');
-    } else if (missEl) {
-      const folder = missEl.dataset.folder;
-      const div = document.createElement('div');
-      div.className = 'img-cell';
-      div.innerHTML = `<img src="${url}" alt="" data-cell-path="${cp}" data-folder="${folder}"><div class="img-toolbar"><button data-tb="edit" data-cell-path="${cp}">edit</button><button data-tb="replace" data-cell-path="${cp}">replace</button><button data-tb="delete" data-cell-path="${cp}" class="tb-delete">delete</button></div><span class="replaced-badge">NEW</span>`;
-      missEl.replaceWith(div);
-    }
+    showProject(currentId, true);
   } else if (pendingReplace.type === 'hero') {
     const key = `hero:${pendingReplace.id}:${pendingReplace.source}`;
     replacedImages[key] = { ...converted, url };
@@ -1267,8 +1583,20 @@ fileInput.addEventListener('change', async () => {
   } else if (pendingReplace.type === 'intro') {
     const id = pendingReplace.id;
     const key = `intro:${id}`;
-    replacedImages[key] = { ...converted, url };
-    if (!data[id].intro || !data[id].intro.img) data[id].intro = { img: 'new-image' };
+    if (!data[id].intro) data[id].intro = {};
+    if (media === 'video') {
+      if (replacedImages[key]) { URL.revokeObjectURL(replacedImages[key].url); delete replacedImages[key]; }
+      replacedVideos[key] = { ...converted, url };
+      delete data[id].intro.img;
+      delete data[id].intro.crop;
+      data[id].intro.video = data[id].intro.video || 'new-video';
+    } else {
+      if (replacedVideos[key]) { URL.revokeObjectURL(replacedVideos[key].url); delete replacedVideos[key]; }
+      replacedImages[key] = { ...converted, url };
+      delete data[id].intro.video;
+      delete data[id].intro.videoTrim;
+      if (!data[id].intro.img) data[id].intro.img = 'new-image';
+    }
     showProject(currentId, true);
   }
 
@@ -1314,6 +1642,38 @@ function attachRowControls() {
       updateStatus();
     });
   });
+
+  document.querySelectorAll('[data-action="move-row-up"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rp = btn.dataset.rowPath;
+      const m = rp.match(/^(.*\.rows)\.(\d+)$/);
+      if (!m) return;
+      const rows = getNested(data, m[1]);
+      const idx = Number(m[2]);
+      const prev = idx - 1;
+      if (!Array.isArray(rows) || prev < 0 || idx >= rows.length) return;
+      [rows[prev], rows[idx]] = [rows[idx], rows[prev]];
+      swapRowStatePaths(`${m[1]}.${prev}`, `${m[1]}.${idx}`);
+      showProject(currentId, true);
+      updateStatus();
+    });
+  });
+
+  document.querySelectorAll('[data-action="move-row-down"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rp = btn.dataset.rowPath;
+      const m = rp.match(/^(.*\.rows)\.(\d+)$/);
+      if (!m) return;
+      const rows = getNested(data, m[1]);
+      const idx = Number(m[2]);
+      const next = idx + 1;
+      if (!Array.isArray(rows) || idx < 0 || next >= rows.length) return;
+      [rows[idx], rows[next]] = [rows[next], rows[idx]];
+      swapRowStatePaths(`${m[1]}.${idx}`, `${m[1]}.${next}`);
+      showProject(currentId, true);
+      updateStatus();
+    });
+  });
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -1331,6 +1691,12 @@ function cleanupRemovedPaths(prefix) {
     if (key.startsWith(prefix)) {
       URL.revokeObjectURL(replacedImages[key].url);
       delete replacedImages[key];
+    }
+  }
+  for (const key of Object.keys(replacedVideos)) {
+    if (key.startsWith(prefix)) {
+      URL.revokeObjectURL(replacedVideos[key].url);
+      delete replacedVideos[key];
     }
   }
   for (const cp of cropEdits) {
@@ -1361,7 +1727,7 @@ function deleteChapter(idx) {
 
 function updateStatus() {
   const textChanges = document.querySelectorAll('.changed').length;
-  const imgChanges = Object.keys(replacedImages).length;
+  const imgChanges = Object.keys(replacedImages).length + Object.keys(replacedVideos).length;
   const cropCount = cropEdits.size;
   const deleteCount = deletedImages.size;
   const n = textChanges + imgChanges + cropCount + deleteCount;
@@ -1380,7 +1746,7 @@ function updateStatus() {
 
 function hasUnsavedChanges() {
   const textChanges = document.querySelectorAll('.changed').length;
-  const imgChanges = Object.keys(replacedImages).length;
+  const imgChanges = Object.keys(replacedImages).length + Object.keys(replacedVideos).length;
   const cropCount = cropEdits.size;
   const deleteCount = deletedImages.size;
   return textChanges + imgChanges + cropCount + deleteCount;
@@ -1392,7 +1758,7 @@ function guardSwitch(targetId) {
   if (n > 0) {
     const parts = [];
     const tc = document.querySelectorAll('.changed').length;
-    const ic = Object.keys(replacedImages).length;
+    const ic = Object.keys(replacedImages).length + Object.keys(replacedVideos).length;
     const cc = cropEdits.size;
     const delc = deletedImages.size;
     if (tc) parts.push(`${tc} text edit(s)`);
@@ -1436,9 +1802,14 @@ function sa(a,l) {
 }
 function so(o,l) {
   const e=Object.entries(o);
-  if (o.w!==undefined&&o.nat) return `{ x: ${o.x}, y: ${o.y}, w: ${o.w}, h: ${o.h}, nat: [${o.nat[0]}, ${o.nat[1]}] }`;
+  if (o.w!==undefined&&o.nat) return `{ x: ${o.x}, y: ${o.y}, w: ${o.w}, h: ${o.h}, nat: [${o.nat[0]}, ${o.nat[1]}], bg: '${cropBgValue(o)}' }`;
   if (e.length<=4&&e.every(([,v])=>typeof v==='string'||typeof v==='boolean'||typeof v==='number')) return `{ ${e.map(([k,v])=>`${k}: ${sv(v,0)}`).join(', ')} }`;
-  if (o.img!==undefined) { let s=`{ img: ${sv(o.img,0)}`; if(o.cap!==undefined)s+=`, cap: ${sv(o.cap,0)}`; if(o.crop)s+=`, crop: ${sv(o.crop,0)}`; return s+' }'; }
+  if (o.img!==undefined || o.video!==undefined) {
+    let s = `{ ${o.video!==undefined ? `video: ${sv(o.video,0)}` : `img: ${sv(o.img,0)}`}`;
+    if(o.cap!==undefined) s += `, cap: ${sv(o.cap,0)}`;
+    if(o.crop && o.video===undefined) s += `, crop: ${sv(o.crop,0)}`;
+    return s + ' }';
+  }
   if (o.cells) { let s=`{ cells: ${sv(o.cells,l+1)}`; if(o.cap)s+=`, cap: ${sv(o.cap,0)}`; return s+' }'; }
   return `{\n${e.map(([k,v])=>pad(l+1)+`${k}: ${sv(v,l+1)},`).join('\n')}\n${pad(l)}}`;
 }
@@ -1476,6 +1847,34 @@ function doPreview() {
       let target = previewData[pid];
       for (const k of parts) target = target[isNaN(k) ? k : +k];
       target._src = entry.url;
+    } catch(e) {}
+  }
+  for (const [key, entry] of Object.entries(replacedVideos)) {
+    if (key.startsWith('hero:')) continue;
+    if (key.startsWith('intro:')) {
+      const id = key.slice('intro:'.length);
+      if (previewData[id]) {
+        if (!previewData[id].intro) previewData[id].intro = {};
+        previewData[id].intro._vsrc = entry.url;
+      }
+      continue;
+    }
+    try {
+      const parts = key.split('.');
+      const pid = parts.shift();
+      let target = previewData[pid];
+      for (const k of parts) target = target[isNaN(k) ? k : +k];
+      target._vsrc = entry.url;
+    } catch(e) {}
+  }
+  for (const [key, entry] of Object.entries(replacedVideos)) {
+    if (key.startsWith('hero:') || key.startsWith('intro:')) continue;
+    try {
+      const parts = key.split('.');
+      const pid = parts.shift();
+      let target = previewData[pid];
+      for (const k of parts) target = target[isNaN(k) ? k : +k];
+      target._vsrc = entry.url;
     } catch(e) {}
   }
 
@@ -1542,7 +1941,7 @@ function injectHeroCrops(src, source) {
     const crop = h[source + 'Crop'];
     if (!crop) continue;
     const cropStr = isNewCrop(crop)
-      ? `{ x: ${crop.x}, y: ${crop.y}, w: ${crop.w}, h: ${crop.h}, nat: [${crop.nat[0]}, ${crop.nat[1]}] }`
+      ? `{ x: ${crop.x}, y: ${crop.y}, w: ${crop.w}, h: ${crop.h}, nat: [${crop.nat[0]}, ${crop.nat[1]}], bg: '${cropBgValue(crop)}' }`
       : `{ s: ${crop.s}, x: ${crop.x}, y: ${crop.y} }`;
     const heroLineRe = new RegExp(`(id:\\s*'${id}'[\\s\\S]*?hero:\\s*.+?)([,\\s]*\\}|,\\s*\\n)`);
     out = out.replace(heroLineRe, (match, before, after) => {
@@ -1553,18 +1952,20 @@ function injectHeroCrops(src, source) {
 }
 
 async function doExportImages() {
-  const keys = Object.keys(replacedImages);
+  const keys = [...Object.keys(replacedImages), ...Object.keys(replacedVideos)];
   if (!keys.length) return;
   for (const key of keys) {
-    const entry = replacedImages[key];
+    const entry = replacedImages[key] || replacedVideos[key];
     let filename;
     if (key.startsWith('hero:')) {
       const [, id, source] = key.split(':');
       const origPath = heroData[id]?.[source] || '';
       filename = origPath.split('/').pop() || `hero-${id}-${source}.${entry.name.split('.').pop()}`;
     } else {
-      const cell = getNested(data, key);
-      filename = `${cell.img}.${entry.name.split('.').pop()}`;
+      const cell = tryGetNested(data, key);
+      if (!cell) continue;
+      if (cell.video) filename = cell.video;
+      else filename = `${cell.img}.${entry.name.split('.').pop()}`;
     }
     dl(null, filename, null, entry.url);
     await new Promise(r => setTimeout(r, 300));
@@ -1611,8 +2012,11 @@ async function doSaveToDisk() {
 
   const _saveLog = { mismatched: 0 };
   console.group('[save] start');
-  console.log(`  replacedImages: ${Object.keys(replacedImages).length}`);
+  console.log(`  replaced media: ${Object.keys(replacedImages).length + Object.keys(replacedVideos).length}`);
   for (const [k, e] of Object.entries(replacedImages)) {
+    console.log(`    ${k} ← "${e.name}" (${e.blob.type || '?'}, ${e.blob.size} B)`);
+  }
+  for (const [k, e] of Object.entries(replacedVideos)) {
     console.log(`    ${k} ← "${e.name}" (${e.blob.type || '?'}, ${e.blob.size} B)`);
   }
   console.log(`  crops: ${cropEdits.size}, deletes: ${deletedImages.size}, textChanges: ${document.querySelectorAll('.changed').length}`);
@@ -1622,9 +2026,13 @@ async function doSaveToDisk() {
     // 1. Rename any 'new-image' placeholder cells to a unique slug derived from the upload filename,
     //    so the JS we save below already references the final stems.
     const usedStems = new Set();
+    const usedVideoNames = new Set();
     for (const pid of Object.keys(data)) {
       (data[pid].chapters || []).forEach(ch => (ch.rows || []).forEach(row => {
-        (row.cells || []).forEach(c => { if (c.img && c.img !== 'new-image') usedStems.add(`${pid}/${c.img}`); });
+        (row.cells || []).forEach(c => {
+          if (c.img && c.img !== 'new-image') usedStems.add(`${pid}/${c.img}`);
+          if (c.video && c.video !== 'new-video') usedVideoNames.add(`${pid}/${c.video}`);
+        });
       }));
     }
     const slugify = s => (s || 'image')
@@ -1649,13 +2057,47 @@ async function doSaveToDisk() {
         usedStems.add(`${id}/${candidate}`);
         continue;
       }
-      const cell = getNested(data, key);
+      const cell = tryGetNested(data, key);
       if (!cell || (cell.img && cell.img !== 'new-image')) continue;
       const pid = key.split('.')[0];
       let stem = slugify(entry.name), candidate = stem, n = 2;
       while (usedStems.has(`${pid}/${candidate}`)) candidate = `${stem}-${n++}`;
       cell.img = candidate;
       usedStems.add(`${pid}/${candidate}`);
+    }
+    for (const [key, entry] of Object.entries(replacedVideos)) {
+      if (key.startsWith('hero:')) continue;
+      if (key.startsWith('intro:')) {
+        const id = key.slice('intro:'.length);
+        const cfg = data[id]?.intro;
+        if (!cfg) continue;
+        if (cfg.video && cfg.video !== 'new-video') {
+          usedVideoNames.add(`${id}/${cfg.video}`);
+          continue;
+        }
+        const ext = (entry.name.split('.').pop() || 'mp4').toLowerCase();
+        let stem = slugify(entry.name), candidate = `${stem}.${ext}`, n = 2;
+        while (usedVideoNames.has(`${id}/${candidate}`)) candidate = `${stem}-${n++}.${ext}`;
+        cfg.video = candidate;
+        delete cfg.img;
+        delete cfg.crop;
+        usedVideoNames.add(`${id}/${candidate}`);
+        continue;
+      }
+      const cell = tryGetNested(data, key);
+      if (!cell) continue;
+      if (cell.video && cell.video !== 'new-video') {
+        usedVideoNames.add(`${key.split('.')[0]}/${cell.video}`);
+        continue;
+      }
+      const pid = key.split('.')[0];
+      const ext = (entry.name.split('.').pop() || 'mp4').toLowerCase();
+      let stem = slugify(entry.name), candidate = `${stem}.${ext}`, n = 2;
+      while (usedVideoNames.has(`${pid}/${candidate}`)) candidate = `${stem}-${n++}.${ext}`;
+      cell.video = candidate;
+      delete cell.img;
+      delete cell.crop;
+      usedVideoNames.add(`${pid}/${candidate}`);
     }
 
     // 3. Save project-detail.js
@@ -1691,7 +2133,7 @@ async function doSaveToDisk() {
       specSrcText = specOut;
     }
 
-    // 5. Save replaced images to disk
+    // 5. Save replaced images/videos to disk
     let imgSaved = 0;
     for (const [key, entry] of Object.entries(replacedImages)) {
       let targetPath;
@@ -1721,7 +2163,8 @@ async function doSaveToDisk() {
         if (!lgResp.ok) throw new Error(`Failed to save image ${lgPath}: ${await lgResp.text()}`);
         imgSaved++;
       } else {
-        const cell = getNested(data, key);
+        const cell = tryGetNested(data, key);
+        if (!cell) continue;
         const pid = key.split('.')[0];
         const ext = (entry.name.split('.').pop() || 'webp').toLowerCase();
         targetPath = `${IMG_BASE}${data[pid].folder}/images/webp/${cell.img}.${ext}`;
@@ -1752,11 +2195,37 @@ async function doSaveToDisk() {
       if (!resp.ok) throw new Error(`Failed to save image ${targetPath}: ${await resp.text()}`);
       imgSaved++;
     }
+    for (const [key, entry] of Object.entries(replacedVideos)) {
+      let targetPath = '';
+      if (key.startsWith('hero:')) continue;
+      if (key.startsWith('intro:')) {
+        const id = key.slice('intro:'.length);
+        const cfg = data[id]?.intro;
+        if (!cfg || !cfg.video) continue;
+        targetPath = `${IMG_BASE}${data[id].folder}/videos/${cfg.video}`;
+      } else {
+        const cell = tryGetNested(data, key);
+        if (!cell || !cell.video) continue;
+        const pid = key.split('.')[0];
+        targetPath = `${IMG_BASE}${data[pid].folder}/videos/${cell.video}`;
+      }
+      const fd = new FormData();
+      fd.append('file', entry.blob, entry.name);
+      fd.append('path', targetPath);
+      resp = await fetch('/api/save-image', { method: 'POST', body: fd });
+      console.log(`[save]   HTTP ${resp.status} → ${targetPath}`);
+      if (!resp.ok) throw new Error(`Failed to save media ${targetPath}: ${await resp.text()}`);
+      imgSaved++;
+    }
 
     // 5. Clear state — changes are now persisted
     Object.keys(replacedImages).forEach(k => {
       URL.revokeObjectURL(replacedImages[k].url);
       delete replacedImages[k];
+    });
+    Object.keys(replacedVideos).forEach(k => {
+      URL.revokeObjectURL(replacedVideos[k].url);
+      delete replacedVideos[k];
     });
     cropEdits.clear();
     deletedImages.clear();
@@ -1812,6 +2281,7 @@ loadSource().then(() => {
     data = JSON.parse(JSON.stringify(originalData));
     heroData = JSON.parse(JSON.stringify(originalHeroData));
     Object.keys(replacedImages).forEach(k => { URL.revokeObjectURL(replacedImages[k].url); delete replacedImages[k]; });
+    Object.keys(replacedVideos).forEach(k => { URL.revokeObjectURL(replacedVideos[k].url); delete replacedVideos[k]; });
     cropEdits.clear();
     deletedImages.clear();
     showProject(currentId);

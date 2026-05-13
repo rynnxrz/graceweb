@@ -36,11 +36,11 @@
           prose: ['Located along the Heishui River in Guangxi, the site is defined by karst mountains, dense vegetation and a sequence of river views. The masterplan arranges villas, homestays and public facilities as low-rise courtyard clusters, following the natural terrain rather than imposing a singular landmark. Each cluster is positioned in response to topography, daylight, ventilation and proximity to water, creating a resort embedded within the valley landscape.'],
           rows: [
             { cells: [
-                { img: 'heishui-hero-resort', cap: 'Resort across the Blackwater — slate roofs into mountain', crop: { x: 0, y: 11.7, w: 99.7, h: 75.2, nat: [1400, 1045] } },
+                { img: 'heishui-hero-resort', cap: 'Resort across the Blackwater — slate roofs into mountain', crop: { x: 0, y: 11.7, w: 99.7, h: 75.2, nat: [1400, 1045], bg: 'transparent' } },
               ] },
             { cells: [
-                { img: 'heishui-axo-zone', cap: 'Site axonometric — zone analysis, river substrate', crop: { x: -4.7, y: -5.9, w: 111.8, h: 113.1, nat: [1390, 1400] } },
-                { img: 'heishui-axo-zone-2', cap: '', crop: { x: 0.1, y: 10.4, w: 98.7, h: 83.5, nat: [1185, 1400] } },
+                { img: 'heishui-axo-zone', cap: 'Site axonometric — zone analysis, river substrate', crop: { x: -4.7, y: -5.9, w: 111.8, h: 113.1, nat: [1390, 1400], bg: 'transparent' } },
+                { img: 'heishui-axo-zone-2', cap: '', crop: { x: 0.1, y: 10.4, w: 98.7, h: 83.5, nat: [1185, 1400], bg: 'transparent' } },
               ] },
           ],
         },
@@ -50,12 +50,12 @@
           prose: ['The public facilities are positioned as shared anchors within the resort, connecting arrival, dining, tea, leisure and river-view experiences. Rather than standing as isolated objects, each building is arranged around courtyards, shaded thresholds and framed views, creating a sequence of social spaces embedded in the landscape.'],
           rows: [
             { cells: [
-                { img: 'heishui-render-waterfall', cap: 'Angular stone buildings with waterfall feature, karst mountains beyond', crop: { x: 7.5, y: 0.5, w: 86.9, h: 86.9, nat: [1063, 1064] } },
-                { img: 'img-4257', cap: '', crop: { x: 4.9, y: 0, w: 82.4, h: 100, nat: [1274, 1400] } },
+                { img: 'heishui-render-waterfall', cap: 'Angular stone buildings with waterfall feature, karst mountains beyond', crop: { x: 7.5, y: 0.5, w: 86.9, h: 86.9, nat: [1063, 1064], bg: 'transparent' } },
+                { img: 'img-4257', cap: '', crop: { x: 4.9, y: 0, w: 82.4, h: 100, nat: [1274, 1400], bg: 'transparent' } },
               ] },
             { cells: [
-                { img: 'heishui-render-01', cap: 'glass pavilions, riverbank', crop: { x: 0, y: 6, w: 100, h: 90, nat: [1400, 875] } },
-                { img: 'heishui-render-02', cap: 'pathway through trees', crop: { x: 8.9, y: 6.1, w: 80.4, h: 68.1, nat: [1400, 930] } },
+                { img: 'heishui-render-01', cap: 'glass pavilions, riverbank', crop: { x: 0, y: 6, w: 100, h: 90, nat: [1400, 875], bg: 'transparent' } },
+                { img: 'heishui-render-02', cap: 'pathway through trees', crop: { x: 8.9, y: 6.1, w: 80.4, h: 68.1, nat: [1400, 930], bg: 'transparent' } },
               ] },
           ],
         },
@@ -65,17 +65,17 @@
           prose: ['The accommodation is developed through one-, two- and four-bedroom villa typologies that adjust courtyard proportion, room depth and orientation according to terrain, privacy and river views. Rendered scenes test how these spaces are experienced across the day, using shaded interiors, low rooflines and warm lighting to soften the buildings into the valley landscape.'],
           rows: [
             { cells: [
-                { img: 'heishui-render-05', cap: 'Courtyard, dark angular roof, karst behind', crop: { x: 0.7, y: 6.3, w: 79.6, h: 81.2, nat: [1400, 772] } },
-                { img: 'heishui-render-06', cap: 'Guest pavilion — garden path, wooden deck bridge', crop: { x: 12.6, y: 0, w: 69.4, h: 84.6, nat: [1280, 1400] } },
+                { img: 'heishui-render-05', cap: 'Courtyard, dark angular roof, karst behind', crop: { x: 0.7, y: 6.3, w: 79.6, h: 81.2, nat: [1400, 772], bg: 'transparent' } },
+                { img: 'heishui-render-06', cap: 'Guest pavilion — garden path, wooden deck bridge', crop: { x: 12.6, y: 0, w: 69.4, h: 84.6, nat: [1280, 1400], bg: 'transparent' } },
               ] },
             { cells: [
                 { img: 'heishui-render-03', cap: 'Two pavilions, mountain mist' },
               ] },
             { cells: [
-                { img: 'heishui-interior', cap: 'Interior — dramatic stone opening with pool and mountain view', crop: { x: 4.7, y: -0.4, w: 99.8, h: 100.4, nat: [1400, 1044] } },
-                { img: '2025-10-09-11-13-31', cap: '', crop: { x: 1.5, y: 0, w: 102.6, h: 90.5, nat: [1400, 1190] } },
-                { img: '2025-10-09-11-14-00', cap: '', crop: { x: 0.9, y: 0.3, w: 88.9, h: 100, nat: [1400, 933] } },
-                { img: '2023-03-27-3-06-51', cap: '', crop: { x: -3, y: 0.2, w: 90.6, h: 100, nat: [1400, 951] } },
+                { img: 'heishui-interior', cap: 'Interior — dramatic stone opening with pool and mountain view', crop: { x: 4.7, y: -0.4, w: 99.8, h: 100.4, nat: [1400, 1044], bg: 'transparent' } },
+                { img: '2025-10-09-11-13-31', cap: '', crop: { x: 1.5, y: 0, w: 102.6, h: 90.5, nat: [1400, 1190], bg: 'transparent' } },
+                { img: '2025-10-09-11-14-00', cap: '', crop: { x: 0.9, y: 0.3, w: 88.9, h: 100, nat: [1400, 933], bg: 'transparent' } },
+                { img: '2023-03-27-3-06-51', cap: '', crop: { x: -3, y: 0.2, w: 90.6, h: 100, nat: [1400, 951], bg: 'transparent' } },
               ] },
           ],
         },
@@ -323,35 +323,29 @@
         ['Year',        'Year 2 (Master\'s thesis)'],
         ['Method',      'Conditional GAN · parametric'],
       ],
-      intro: ['Aberdeen\'s typhoon-shelter waterfront still works the way it has for half a century — fishermen at dawn, wet floors, tarp roofs hung over the dry market. Tide-ReWoven asks whether the same scaffolding could be tuned by light, salt, and tide instead of by tarp.'],
+      intro: { video: '01-harbour-as-input-curated-01.mp4' },
       chapters: [
         {
           note: 'Chapter 01 · site',
-          title: 'Aberdeen — reading the harbour',
-          prose: ['The first task was reading the harbour as it is: tidal range, wind corridors, vendor density by hour. The wholesale fish market interior — wet, loud, functional — set the standard the new structure had to match.'],
+          title: 'A working harbour under ecological and spatial pressure',
+          prose: ['Located in Aberdeen, Hong Kong, the project begins with a working fish market where seafood trade, boat activity, waterfront circulation and informal public life overlap. The existing market is compressed into a narrow linear edge, while parking and operational zones interrupt the relationship between city, water and fishing community. The proposal treats these conflicts not as background conditions, but as the starting point for a new spatial system.'],
           rows: [
             { cells: [
-                { img: 'tide-site-analysis', cap: 'Site analysis board — Hong Kong / Aberdeen maps, environmental data, urban planning iterations' },
+                { img: 'tide-site-analysis', cap: 'Site analysis board — Hong Kong / Aberdeen maps, environmental data, urban planning iterations', crop: { x: 12.6, y: 14.1, w: 36.9, h: 84, nat: [2929, 1716], bg: 'transparent' } },
+                { img: '02-portfolio-current-system-overview', cap: '', crop: { x: 50, y: 14.1, w: 35.1, h: 79.9, nat: [2929, 1716], bg: 'transparent' } },
+                { img: '02-portfolio-current-system-overview-2', cap: 'Aberdeen wholesale fish market — existing conditions, six views', crop: { x: 85.4, y: 15.3, w: 12.6, h: 80.5, nat: [2929, 1716], bg: 'transparent' } },
               ] },
             { cells: [
-                { img: 'tide-site-photo', cap: 'Aberdeen wholesale fish market — existing conditions, six views' },
-                { img: 'tide-plan', cap: 'Market masterplan — harbour edge' },
+                { img: '10-thesis-current-market-zoning-axon-2', cap: '', crop: { x: 2.3, y: 18.6, w: 95.9, h: 76.3, nat: [2263, 1600], bg: 'transparent' } },
+                { img: '09-thesis-existing-fish-market-photos-2', cap: '', crop: { x: 2.7, y: 18.4, w: 91.3, h: 72.7, nat: [2263, 1600], bg: 'transparent' } },
               ] },
           ],
         },
         {
-          note: 'Chapter 02 · vision',
-          title: 'A market that breathes with the tide',
-          prose: ['The new roofscape is read as a single sectional system — fishnet-chitosan composite stretched between bamboo masts, indexed to tide table and air-quality readings. At low tide the membrane hangs taut; at high tide, slack.'],
-          rows: [
-            { cells: [
-                { img: 'tide-hero-section', cap: 'Sectional study — fishnet-chitosan membrane at the harbour edge' },
-              ] },
-            { cells: [
-                { img: 'tide-aerial', cap: 'Aerial render — harbour market on waterfront, organic forms with piers' },
-                { img: 'tide-harbour-iso', cap: 'Isometric — harbour market view and underwater plan' },
-              ] },
-          ],
+          note: 'Chapter 02 · BIOLOGICAL TRANSLATION',
+          title: 'Circulation drawn by boats, tide and users',
+          prose: ['The planning strategy is developed from changing movement rather than fixed zoning. User routes, boat routes and tidal conditions are translated into spatial patterns through pathfinding and particle-based simulations. Low tide, high tide and inter-tide conditions generate different occupancy zones, allowing the market to shift between trade, loading, gathering and informal waterfront use.'],
+          rows: [],
         },
         {
           note: 'Chapter 03 · method',
@@ -359,7 +353,6 @@
           prose: ['The membrane geometry was generated by a conditional GAN trained on Micrasterias diatom morphology and wave-forms sampled from the harbour. Parametric inputs — algal photo-tropism, tidal range, vendor density — were embedded in the latent space.'],
           rows: [
             { cells: [
-                { img: 'tide-site-analysis-02', cap: 'Site analysis — secondary mapping, spatial data overlay' },
                 { img: 'tide-method-gan', cap: 'Algae to computation — GAN training pipeline, morphological analysis' },
               ] },
             { cells: [
@@ -979,7 +972,7 @@
         const isShape = !Array.isArray(row);
         const cells  = isShape ? row.cells : row;
         const c = (cells || [])[0];
-        if (c && c.img) return c;
+        if (c && (c.img || c.video)) return c;
       }
     }
     return null;
@@ -989,9 +982,14 @@
 
   function mediaTag(cell, d) {
     if (cell.video) {
-      const vsrc   = `${BASE}${d.folder}/videos/${cell.video}`;
+      const vsrc   = cell._vsrc || `${BASE}${d.folder}/videos/${cell.video}`;
       const poster = cell.poster ? imgSrc(d.folder, cell.poster) : '';
-      return `<video src="${vsrc}" ${poster ? `poster="${poster}"` : ''} autoplay loop muted playsinline preload="metadata" aria-label="${escapeHtml(cell.cap || '')}"></video>`;
+      const trim = cell.videoTrim || null;
+      const trimAttrs = trim ? ` data-vstart="${trim.start || 0}" data-vend="${trim.end || 0}"` : '';
+      if (/\.gif$/i.test(cell.video)) {
+        return `<img src="${vsrc}" alt="${escapeHtml(cell.cap || '')}" loading="lazy" decoding="async">`;
+      }
+      return `<video src="${vsrc}" ${poster ? `poster="${poster}"` : ''}${trimAttrs} autoplay loop muted playsinline preload="metadata" aria-label="${escapeHtml(cell.cap || '')}"></video>`;
     }
     const src = cell._src || imgSrc(d.folder, cell.img);
     const cr = cell.crop;
@@ -1002,7 +1000,8 @@
       const imgW = (100 / cr.w * 100).toFixed(2);
       const imgL = (-cr.x / cr.w * 100).toFixed(2);
       const imgT = (-cr.y / cr.h * 100).toFixed(2);
-      return `<div class="s-crop" style="--ar:${ratio}"><img src="${src}" alt="${escapeHtml(cell.cap || '')}" style="width:${imgW}%;left:${imgL}%;top:${imgT}%" loading="lazy" decoding="async"></div>`;
+      const bg = (cr.bg === 'white' || cr.bg === 'black' || cr.bg === 'transparent') ? cr.bg : 'transparent';
+      return `<div class="s-crop" style="--ar:${ratio};--crop-bg:${bg}"><img src="${src}" alt="${escapeHtml(cell.cap || '')}" style="width:${imgW}%;left:${imgL}%;top:${imgT}%" loading="lazy" decoding="async"></div>`;
     }
 
     let cropAttr = '';
@@ -1067,6 +1066,23 @@
   }
 
   function introSection(d, firstCell) {
+    const introVideo = firstCell?.video;
+    if (introVideo) {
+      const vsrc = firstCell._vsrc || `${BASE}${d.folder}/videos/${introVideo}`;
+      const trim = firstCell.videoTrim || null;
+      const trimAttrs = trim ? ` data-vstart="${trim.start || 0}" data-vend="${trim.end || 0}"` : '';
+      return `
+        <section class="s-intro">
+          <video class="s-intro-video" src="${vsrc}"${trimAttrs} autoplay loop muted playsinline preload="metadata"></video>
+          <p class="s-intro-no">${escapeHtml(d.no || '')}</p>
+          <h1 class="s-intro-name">${escapeHtml(d.name)}</h1>
+          ${d.binomial ? `<p class="s-intro-binomial">${escapeHtml(d.binomial)}</p>` : ''}
+          ${d.meta     ? `<p class="s-intro-meta">${escapeHtml(d.meta)}</p>` : ''}
+          ${d.abstract ? `<p class="s-intro-abstract">${escapeHtml(d.abstract)}</p>` : ''}
+          <p class="s-intro-scroll-cue">scroll</p>
+        </section>
+      `;
+    }
     const bgUrl = firstCell ? (firstCell._src || imgSrcLg(d.folder, firstCell.img)) : '';
     const cr = firstCell?.crop;
     let cssVars = bgUrl ? `--bg-img: url('${bgUrl}');` : '';
@@ -1164,8 +1180,8 @@
     const prevId = orderArr[(idx - 1 + orderArr.length) % orderArr.length];
     const nextId = orderArr[(idx + 1) % orderArr.length];
 
-    const firstCell = d.intro?.img
-      ? { img: d.intro.img, crop: d.intro.crop, _src: d.intro._src }
+    const firstCell = (d.intro?.img || d.intro?.video)
+      ? { img: d.intro.img, video: d.intro.video, crop: d.intro.crop, videoTrim: d.intro.videoTrim, _src: d.intro._src, _vsrc: d.intro._vsrc }
       : findFirstImageCell(d);
     const sections = [];
     sections.push(introSection(d, firstCell));
@@ -1190,6 +1206,7 @@
     storyEl.setAttribute('aria-busy', 'true');
     storyEl.innerHTML = sections.join('');
     storyEl.setAttribute('aria-busy', 'false');
+    setupVideoTrimLoops(storyEl);
 
     requestAnimationFrame(() => {
       document.querySelector('.s-intro')?.classList.add('is-loaded');
@@ -1227,6 +1244,25 @@
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') window.location.href = 'index.html';
+    });
+  }
+
+  function setupVideoTrimLoops(root) {
+    root.querySelectorAll('video[data-vstart], video[data-vend]').forEach(v => {
+      const start = Number(v.dataset.vstart || 0);
+      const end = Number(v.dataset.vend || 0);
+      if (!Number.isFinite(start) || start < 0) return;
+      const applyStart = () => {
+        if (v.currentTime < start || Math.abs(v.currentTime - start) > 3) {
+          try { v.currentTime = start; } catch {}
+        }
+      };
+      v.addEventListener('loadedmetadata', applyStart, { once: true });
+      if (end > start) {
+        v.addEventListener('timeupdate', () => {
+          if (v.currentTime >= end) v.currentTime = start;
+        });
+      }
     });
   }
 
