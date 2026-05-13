@@ -39,7 +39,7 @@
                 { img: 'heishui-hero-resort', cap: 'Resort across the Blackwater — slate roofs into mountain' },
               ] },
             { cells: [
-                { img: 'heishui-axo-zone', cap: 'Site axonometric — zone analysis, river substrate', crop: { x: -13.2, y: -22.7, w: 126, h: 146.1, nat: [1882, 2481] } },
+                { img: 'heishui-axo-zone', cap: 'Site axonometric — zone analysis, river substrate', crop: { x: 51.9, y: 1.2, w: 40.5, h: 96.2, nat: [1400, 990] } },
               ] },
           ],
         },
@@ -54,6 +54,7 @@
             { cells: [
                 { img: 'heishui-render-01', cap: 'glass pavilions, riverbank' },
                 { img: 'heishui-render-02', cap: 'pathway through trees' },
+                { img: 'rca', cap: '' },
               ] },
           ],
         },

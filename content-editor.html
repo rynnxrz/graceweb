@@ -1124,6 +1124,34 @@ function attachNav() {
 let pendingReplace = null;
 const fileInput = document.getElementById('file-input');
 
+// Mirrors scripts/convert-originals-to-webp.py — 1400px @ q82 for page render, 2000px @ q86 for lg/lightbox.
+async function convertToWebp(file) {
+  if (file.type === 'image/webp') return { blob: file, lgBlob: file, name: file.name };
+  let bitmap;
+  try {
+    bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  } catch (e) {
+    console.warn('[convert] createImageBitmap failed, uploading original:', e.message);
+    return { blob: file, lgBlob: null, name: file.name };
+  }
+  const stem = file.name.replace(/\.[^.]+$/, '') || 'image';
+  const render = (maxEdge, quality) => new Promise((resolve, reject) => {
+    const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
+    const w = Math.max(1, Math.round(bitmap.width * scale));
+    const h = Math.max(1, Math.round(bitmap.height * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
+    canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob returned null')), 'image/webp', quality);
+  });
+  try {
+    const [blob, lgBlob] = await Promise.all([render(1400, 0.82), render(2000, 0.86)]);
+    return { blob, lgBlob, name: stem + '.webp' };
+  } finally {
+    bitmap.close?.();
+  }
+}
+
 function attachImageClick() {
   document.querySelectorAll('.img-missing').forEach(el => {
     el.setAttribute('tabindex', '0');
@@ -1182,14 +1210,15 @@ function attachHeroClick() {
   });
 }
 
-fileInput.addEventListener('change', () => {
+fileInput.addEventListener('change', async () => {
   if (!fileInput.files.length || !pendingReplace) return;
   const file = fileInput.files[0];
-  const url = URL.createObjectURL(file);
+  const converted = await convertToWebp(file);
+  const url = URL.createObjectURL(converted.blob);
 
   if (pendingReplace.type === 'cell') {
     const cp = pendingReplace.path;
-    replacedImages[cp] = { blob: file, url, name: file.name };
+    replacedImages[cp] = { ...converted, url };
     // Un-delete the cell if it was previously deleted (re-add flow).
     const cell = getDisplayCell(cp);
     if (cell && cell._deleted) {
@@ -1216,7 +1245,7 @@ fileInput.addEventListener('change', () => {
     }
   } else if (pendingReplace.type === 'hero') {
     const key = `hero:${pendingReplace.id}:${pendingReplace.source}`;
-    replacedImages[key] = { blob: file, url, name: file.name };
+    replacedImages[key] = { ...converted, url };
     const imgEl = document.querySelector(`img[data-hero-id="${pendingReplace.id}"][data-hero-source="${pendingReplace.source}"]`);
     if (imgEl) {
       imgEl.src = url;
@@ -1227,7 +1256,7 @@ fileInput.addEventListener('change', () => {
   } else if (pendingReplace.type === 'intro') {
     const id = pendingReplace.id;
     const key = `intro:${id}`;
-    replacedImages[key] = { blob: file, url, name: file.name };
+    replacedImages[key] = { ...converted, url };
     if (!data[id].intro || !data[id].intro.img) data[id].intro = { img: 'new-image' };
     showProject(currentId, true);
   }
@@ -1543,6 +1572,15 @@ async function doSaveToDisk() {
   btn.textContent = 'Saving…';
   btn.disabled = true;
 
+  const _saveLog = { mismatched: 0 };
+  console.group('[save] start');
+  console.log(`  replacedImages: ${Object.keys(replacedImages).length}`);
+  for (const [k, e] of Object.entries(replacedImages)) {
+    console.log(`    ${k} ← "${e.name}" (${e.blob.type || '?'}, ${e.blob.size} B)`);
+  }
+  console.log(`  crops: ${cropEdits.size}, deletes: ${deletedImages.size}, textChanges: ${document.querySelectorAll('.changed').length}`);
+  console.groupEnd();
+
   try {
     // 1. Rename any 'new-image' placeholder cells to a unique slug derived from the upload filename,
     //    so the JS we save below already references the final stems.
@@ -1620,37 +1658,61 @@ async function doSaveToDisk() {
     let imgSaved = 0;
     for (const [key, entry] of Object.entries(replacedImages)) {
       let targetPath;
+      let rendererPath = null;
+      let kind = 'cell';
       if (key.startsWith('hero:')) {
+        kind = 'hero';
         const [, id, source] = key.split(':');
         targetPath = heroData[id]?.[source] || '';
         if (!targetPath) continue;
       } else if (key.startsWith('intro:')) {
+        kind = 'intro';
         const id = key.slice('intro:'.length);
         const cfg = data[id]?.intro;
         if (!cfg || !cfg.img) continue;
         const ext = (entry.name.split('.').pop() || 'webp').toLowerCase();
         targetPath = `${IMG_BASE}${data[id].folder}/images/webp/${cfg.img}.${ext}`;
+        rendererPath = `${IMG_BASE}${data[id].folder}/images/webp/${cfg.img}.webp`;
 
         // Also save an `${stem}-lg.${ext}` copy because introSection uses imgSrcLg.
         const lgPath = `${IMG_BASE}${data[id].folder}/images/webp/${cfg.img}-lg.${ext}`;
         const lgFd = new FormData();
-        lgFd.append('file', entry.blob, entry.name);
+        lgFd.append('file', entry.lgBlob || entry.blob, entry.name);
         lgFd.append('path', lgPath);
         const lgResp = await fetch('/api/save-image', { method: 'POST', body: lgFd });
-        if (!lgResp.ok) throw new Error(`Failed to save image: ${lgPath}`);
+        console.log(`[save]   HTTP ${lgResp.status} → ${lgPath}`);
+        if (!lgResp.ok) throw new Error(`Failed to save image ${lgPath}: ${await lgResp.text()}`);
         imgSaved++;
       } else {
         const cell = getNested(data, key);
         const pid = key.split('.')[0];
         const ext = (entry.name.split('.').pop() || 'webp').toLowerCase();
         targetPath = `${IMG_BASE}${data[pid].folder}/images/webp/${cell.img}.${ext}`;
+        rendererPath = `${IMG_BASE}${data[pid].folder}/images/webp/${cell.img}.webp`;
       }
+
+      const mismatch = rendererPath && targetPath !== rendererPath;
+      console.group(`[save] ${kind} ${key}`);
+      if (kind === 'cell') {
+        const cell = getNested(data, key);
+        if (cell) console.log(`  cell.img = "${cell.img}"`);
+      } else if (kind === 'intro') {
+        console.log(`  intro.img = "${data[key.slice('intro:'.length)]?.intro?.img}"`);
+      }
+      console.log(`  target   = ${targetPath}`);
+      if (rendererPath) console.log(`  renderer = ${rendererPath}`);
+      if (mismatch) {
+        console.warn('  ⚠ EXTENSION MISMATCH — file will be saved but won\'t render. Pre-convert with scripts/convert-originals-to-webp.py before uploading.');
+        _saveLog.mismatched++;
+      }
+      console.groupEnd();
 
       const fd = new FormData();
       fd.append('file', entry.blob, entry.name);
       fd.append('path', targetPath);
       resp = await fetch('/api/save-image', { method: 'POST', body: fd });
-      if (!resp.ok) throw new Error(`Failed to save image: ${targetPath}`);
+      console.log(`[save]   HTTP ${resp.status} → ${targetPath}`);
+      if (!resp.ok) throw new Error(`Failed to save image ${targetPath}: ${await resp.text()}`);
       imgSaved++;
     }
 
@@ -1681,10 +1743,16 @@ async function doSaveToDisk() {
     showProject(currentId);
     updateStatus();
 
+    console.log(`[save] done — project-detail.js + ${imgSaved} image(s)${_saveLog.mismatched ? `, ${_saveLog.mismatched} with extension mismatch` : ''}`);
+
     const parts = [];
     parts.push('project-detail.js');
     if (imgSaved) parts.push(`${imgSaved} image(s)`);
-    showToast('Saved: ' + parts.join(' + '), true);
+    let toastMsg = 'Saved: ' + parts.join(' + ');
+    if (_saveLog.mismatched) {
+      toastMsg += `  ⚠ ${_saveLog.mismatched} non-webp upload — pre-convert with scripts/convert-originals-to-webp.py to make it render`;
+    }
+    showToast(toastMsg, !_saveLog.mismatched);
   } catch (e) {
     showToast('Error: ' + e.message, false);
     console.error('Save to project failed:', e);
