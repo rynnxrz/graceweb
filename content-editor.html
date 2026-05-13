@@ -420,6 +420,7 @@ function renderRow(row, folder, rp) {
   h += `<div class="row-controls">`;
   h += `<span class="row-ctrl-label">${layoutLabel}</span>`;
   h += `<button class="row-ctrl-btn" data-action="add-cell" data-row-path="${rp}">+ cell</button>`;
+  h += `<button class="row-ctrl-btn danger" data-action="delete-row" data-row-path="${rp}">× delete group</button>`;
   h += `</div>`;
 
   h += `<div class="img-row"${style}>`;
@@ -619,6 +620,7 @@ function showProject(id, preserveScroll) {
     h += '<div class="chapter">';
     h += `<div class="ch-controls">`;
     h += `<span class="row-ctrl-label">Chapter ${ci+1}</span>`;
+    h += `<button class="row-ctrl-btn" data-action="add-row" data-chapter-path="${cp}">+ image group</button>`;
     h += `<button class="row-ctrl-btn danger" data-action="delete-chapter" data-chapter-idx="${ci}">× delete</button>`;
     h += `</div>`;
     h += `<div class="ch-note">${ed(ch.note,cp+'.note')}</div>`;
@@ -1124,7 +1126,8 @@ function attachNav() {
 let pendingReplace = null;
 const fileInput = document.getElementById('file-input');
 
-// Mirrors scripts/convert-originals-to-webp.py — 1400px @ q82 for page render, 2000px @ q86 for lg/lightbox.
+// Preserve upload detail in editor workflow:
+// keep source resolution unless extremely large, and export WebP at high quality.
 async function convertToWebp(file) {
   if (file.type === 'image/webp') return { blob: file, lgBlob: file, name: file.name };
   let bitmap;
@@ -1135,8 +1138,13 @@ async function convertToWebp(file) {
     return { blob: file, lgBlob: null, name: file.name };
   }
   const stem = file.name.replace(/\.[^.]+$/, '') || 'image';
+  // Hard cap is only to avoid pathological browser memory spikes on huge images.
+  const HARD_MAX_EDGE = 4096;
+  const srcMaxEdge = Math.max(bitmap.width, bitmap.height);
+  const mainMaxEdge = Math.min(HARD_MAX_EDGE, srcMaxEdge);
+  const lgMaxEdge = Math.min(HARD_MAX_EDGE, Math.max(srcMaxEdge, 3000));
   const render = (maxEdge, quality) => new Promise((resolve, reject) => {
-    const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
+    const scale = Math.min(1, maxEdge / srcMaxEdge);
     const w = Math.max(1, Math.round(bitmap.width * scale));
     const h = Math.max(1, Math.round(bitmap.height * scale));
     const canvas = document.createElement('canvas');
@@ -1145,7 +1153,10 @@ async function convertToWebp(file) {
     canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob returned null')), 'image/webp', quality);
   });
   try {
-    const [blob, lgBlob] = await Promise.all([render(1400, 0.82), render(2000, 0.86)]);
+    const [blob, lgBlob] = await Promise.all([
+      render(mainMaxEdge, 0.95),
+      render(lgMaxEdge, 0.95),
+    ]);
     return { blob, lgBlob, name: stem + '.webp' };
   } finally {
     bitmap.close?.();
@@ -1273,6 +1284,32 @@ function attachRowControls() {
       const row = getNested(data, rp);
       if (!row.cells) row.cells = [];
       row.cells.push({ img: 'new-image', cap: '' });
+      showProject(currentId, true);
+      updateStatus();
+    });
+  });
+
+  document.querySelectorAll('[data-action="add-row"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cp = btn.dataset.chapterPath;
+      const ch = getNested(data, cp);
+      if (!ch.rows) ch.rows = [];
+      ch.rows.push({ cells: [{ img: 'new-image', cap: '' }], cap: '' });
+      showProject(currentId, true);
+      updateStatus();
+    });
+  });
+
+  document.querySelectorAll('[data-action="delete-row"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rp = btn.dataset.rowPath;
+      const m = rp.match(/^(.*\.rows)\.(\d+)$/);
+      if (!m) return;
+      const rows = getNested(data, m[1]);
+      const idx = Number(m[2]);
+      if (!Array.isArray(rows) || idx < 0 || idx >= rows.length) return;
+      cleanupRemovedPaths(rp);
+      rows.splice(idx, 1);
       showProject(currentId, true);
       updateStatus();
     });
