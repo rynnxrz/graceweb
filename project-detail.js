@@ -336,8 +336,7 @@
                 { img: '02-portfolio-current-system-overview-2', cap: 'Aberdeen wholesale fish market — existing conditions, six views', crop: { x: 85.4, y: 15.3, w: 12.6, h: 80.5, nat: [2929, 1716], bg: 'transparent' } },
               ] },
             { cells: [
-                { img: '10-thesis-current-market-zoning-axon-2', cap: '', crop: { x: 2.3, y: 18.6, w: 95.9, h: 76.3, nat: [2263, 1600], bg: 'transparent' } },
-                { img: '09-thesis-existing-fish-market-photos-2', cap: '', crop: { x: 2.7, y: 18.4, w: 91.3, h: 72.7, nat: [2263, 1600], bg: 'transparent' } },
+                { cap: '', video: '01-harbour-as-input-curated-03.mp4' },
               ] },
           ],
         },
@@ -1012,12 +1011,18 @@
     return `<img src="${src}" alt="${escapeHtml(cell.cap || '')}"${cropAttr} loading="lazy" decoding="async">`;
   }
 
-  function capHtml(text, plateNo, tag) {
+  function mediaCapHtml(text) {
+    if (!text) return '';
+    return `<figcaption class="s-media-cap"><p>${escapeHtml(text)}</p></figcaption>`;
+  }
+
+  function rowCapHtml(text, tag) {
+    if (!text) return '';
     return `
-      <figcaption class="s-cap">
+      <div class="s-row-cap">
         <span class="s-cap-tag">${escapeHtml(tag)}</span>
         <span class="s-cap-text">${escapeHtml(text)}</span>
-      </figcaption>
+      </div>
     `;
   }
 
@@ -1028,24 +1033,28 @@
 
     if (cells.length === 1) {
       const cell = cells[0];
-      const tag  = plateNo === 1
-        ? '[ HERO ]'
-        : `[ PLATE — ${String(plateNo).padStart(3, '0')} ]`;
       return `
         <section class="s-image">
-          <div class="s-image-media">${mediaTag(cell, d)}</div>
-          ${cell.cap ? capHtml(cell.cap, plateNo, tag) : ''}
+          <figure class="s-media-figure">
+            <div class="s-image-media">${mediaTag(cell, d)}</div>
+            ${mediaCapHtml(cell.explain || cell.cap)}
+          </figure>
         </section>
       `;
     }
 
-    const panes = cells.map((c) => `<div class="pane">${mediaTag(c, d)}</div>`).join('');
-    const cap   = sharedCap || cells.map((c) => c.cap).filter(Boolean).join('  ·  ');
+    const panes = cells.map((c) => `
+      <figure class="pane">
+        <div class="pane-media">${mediaTag(c, d)}</div>
+        ${mediaCapHtml(c.explain || c.cap)}
+      </figure>
+    `).join('');
+    const cap   = sharedCap || cells.map((c) => c.explain || c.cap).filter(Boolean).join(' ');
     const tag   = cells.length === 2 ? '[ PAIR ]' : '[ SEQUENCE ]';
     return `
       <section class="s-row" style="--cols: ${cells.length}">
         <div class="s-row-media">${panes}</div>
-        ${cap ? capHtml(cap, plateNo, tag) : ''}
+        ${rowCapHtml(cap, tag)}
       </section>
     `;
   }

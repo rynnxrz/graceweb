@@ -87,6 +87,25 @@
   .img-cell img { background: #f0f0f0; min-height: 50px; transition: opacity .15s; }
   .img-cell:hover img { opacity: .8; }
   .img-cap { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; margin-top: .2rem; }
+  .img-explain-wrap { margin-top: .45rem; }
+  .img-explain-label { font-family: 'SF Mono', monospace; font-size: .7rem; letter-spacing: .05em; color: #767676; text-transform: uppercase; margin-bottom: .18rem; }
+  .img-explain {
+    width: 100%;
+    min-height: 78px;
+    resize: vertical;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    padding: .45rem .55rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: .94rem;
+    line-height: 1.55;
+    color: #2f2f2f;
+    background: #fff;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+  }
+  .img-explain:hover { border-color: #cfcfcf; }
+  .img-explain:focus { border-color: #d97706; box-shadow: 0 0 0 2px rgba(217,119,6,.12); outline: none; }
+  .img-explain.changed { border-style: dashed; background: rgba(217,119,6,.05); }
   .img-stem { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; margin-top: .05rem; }
   .row-cap { font-family: 'SF Mono', monospace; font-size: .75rem; color: #666; margin-top: .35rem; font-style: italic; }
   .img-missing { background: #fef2f2; border: 1px dashed #dc2626; border-radius: 2px; display: flex; align-items: center; justify-content: center; min-height: 100px; font-family: 'SF Mono', monospace; font-size: .75rem; color: #dc2626; cursor: pointer; }
@@ -315,6 +334,12 @@ function ed(text, path) {
   return `<span contenteditable="true" data-path="${path}" data-orig="${v}" aria-label="Edit ${label}">${v}</span>`;
 }
 
+function edTextarea(text, path, rows = 4, placeholder = 'Add explanation text') {
+  const esc = (text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const orig = encodeURIComponent(text || '');
+  return `<textarea class="img-explain" data-path-input="${path}" data-orig-raw="${orig}" rows="${rows}" placeholder="${placeholder}" aria-label="Edit explanation">${esc}</textarea>`;
+}
+
 function setNested(obj, path, val) {
   const parts = path.split('.');
   const pid = parts.shift();
@@ -450,7 +475,10 @@ function renderCell(cell, folder, cp) {
     ${imgHtml}
     ${toolbarHtml}
     ${badge}
-    <div class="img-cap">${ed(cell.cap, cp+'.cap')}</div>
+    <div class="img-explain-wrap">
+      <div class="img-explain-label">Explanation</div>
+      ${edTextarea(cell.explain !== undefined ? cell.explain : (cell.cap || ''), cp + '.explain', 4, 'Write explanation paragraph for this media')}
+    </div>
     <div class="img-stem">${cell.img || cell.video || ''}</div>
   </div>`;
 }
@@ -1412,6 +1440,15 @@ function attachEditable() {
       updateStatus();
     });
   });
+
+  document.querySelectorAll('[data-path-input]').forEach(el => {
+    const orig = decodeURIComponent(el.dataset.origRaw || '');
+    el.addEventListener('input', () => {
+      setNested(data, el.dataset.pathInput, el.value);
+      el.classList.toggle('changed', el.value !== orig);
+      updateStatus();
+    });
+  });
 }
 
 function attachNav() {
@@ -1611,7 +1648,7 @@ function attachRowControls() {
       const rp = btn.dataset.rowPath;
       const row = getNested(data, rp);
       if (!row.cells) row.cells = [];
-      row.cells.push({ img: 'new-image', cap: '' });
+      row.cells.push({ img: 'new-image', explain: '' });
       showProject(currentId, true);
       updateStatus();
     });
@@ -1622,7 +1659,7 @@ function attachRowControls() {
       const cp = btn.dataset.chapterPath;
       const ch = getNested(data, cp);
       if (!ch.rows) ch.rows = [];
-      ch.rows.push({ cells: [{ img: 'new-image', cap: '' }], cap: '' });
+      ch.rows.push({ cells: [{ img: 'new-image', explain: '' }], cap: '' });
       showProject(currentId, true);
       updateStatus();
     });
@@ -1806,6 +1843,7 @@ function so(o,l) {
   if (e.length<=4&&e.every(([,v])=>typeof v==='string'||typeof v==='boolean'||typeof v==='number')) return `{ ${e.map(([k,v])=>`${k}: ${sv(v,0)}`).join(', ')} }`;
   if (o.img!==undefined || o.video!==undefined) {
     let s = `{ ${o.video!==undefined ? `video: ${sv(o.video,0)}` : `img: ${sv(o.img,0)}`}`;
+    if(o.explain!==undefined) s += `, explain: ${sv(o.explain,0)}`;
     if(o.cap!==undefined) s += `, cap: ${sv(o.cap,0)}`;
     if(o.crop && o.video===undefined) s += `, crop: ${sv(o.crop,0)}`;
     return s + ' }';
