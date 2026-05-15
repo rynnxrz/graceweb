@@ -276,8 +276,8 @@ body { overflow-x: hidden; }
 /* Image section — full viewport, image fills, caption overlay         */
 /* ------------------------------------------------------------------ */
 
-.s-image,
-.s-row {
+.story > .s-image,
+.story > .s-row {
   background: var(--void);
   display: flex;
   flex-direction: column;
